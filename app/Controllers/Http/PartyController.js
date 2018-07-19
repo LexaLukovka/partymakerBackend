@@ -7,12 +7,13 @@ class PartyController {
   async store({ request, auth }) {
     const { icon, form, finishForm } = request.all()
 
+    if (!finishForm.pictures) finishForm.pictures = []
+
     const address = await Location.create(form.from)
 
     const imagePromises = finishForm.pictures.map(async picture =>
       (await Picture.create({ url: picture })).id)
     const images = await Promise.all(imagePromises)
-
 
     const party = await Party.create({
       user_id: auth.current.user.id,
