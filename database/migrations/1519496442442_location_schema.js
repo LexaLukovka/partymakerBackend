@@ -8,8 +8,6 @@ class LocationSchema extends Schema {
       table.double('lng').notNullable()
       table.double('lat').notNullable()
       table.string('placeId').notNullable()
-      table.dateTime('date')
-      table.timestamp('time')
       table.timestamps()
     })
   }

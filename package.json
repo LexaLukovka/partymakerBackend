@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
+    "pm": "pm2 start server.js",
     "dev": "adonis serve --dev",
     "migrate": "adonis migration:refresh",
     "inspect": "nodemon --inspect server.js",

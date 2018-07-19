@@ -14,18 +14,18 @@ class Picture extends Model {
     return ['created_at', 'updated_at', 'id', 'pivot']
   }
 
-  static async upload(profilePics, cargo_id) {
+  static async upload(profilePics, party_id) {
     const uploads = Helpers.publicPath('uploads')
-    if (profilePics instanceof FileJar) { return await Picture._movePictures(profilePics, uploads, cargo_id) }
-    return await Picture._movePicture(profilePics, uploads, cargo_id)
+    if (profilePics instanceof FileJar) { return await Picture._movePictures(profilePics, uploads, party_id) }
+    return await Picture._movePicture(profilePics, uploads, party_id)
   }
 
-  static async _movePicture(profilePics, uploads, cargo_id) {
+  static async _movePicture(profilePics, uploads, party_id) {
     const name = generateName(profilePics.clientName, profilePics.subtype)
     await profilePics.move(uploads, { name })
 
     const picture = new Picture()
-    picture.cargo_id = cargo_id
+    picture.party_id = party_id
     picture.url = `/uploads/${name}`
     picture.save()
 
@@ -33,11 +33,11 @@ class Picture extends Model {
 
   }
 
-  static async _movePictures(profilePics, uploads, cargo_id) {
+  static async _movePictures(profilePics, uploads, party_id) {
     await profilePics.moveAll(uploads, (file) => {
       const name = generateName(file.clientName, file.subtype)
       const picture = new Picture()
-      picture.cargo_id = cargo_id
+      picture.party_id = party_id
       picture.url = `/uploads/${name}`
       picture.save()
       return ({ name })
