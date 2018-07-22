@@ -7,19 +7,21 @@ class Party extends Model {
     return ['address_id', 'user_id']
   }
 
-  pictures() {
-    return this.belongsToMany('App/Models/Picture')
+  admin() {
+    return this.belongsTo('App/Models/User', 'admin_id', 'id')
   }
 
   address() {
-    return this.belongsTo('App/Models/Location', 'address_id')
+    return this.belongsTo('App/Models/Address', 'address_id', 'id')
   }
 
   user() {
     return this.belongsTo('App/Models/User')
   }
 
+  pictures() {
+    return this.belongsToMany('App/Models/Picture')
+  }
 }
-
 
 module.exports = Party

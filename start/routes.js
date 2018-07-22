@@ -10,12 +10,6 @@ Route.get('user', 'UserController.user')
 
 Route.get('users/:id', 'UserController.show').middleware('auth')
 
-Route.resource('cargo', 'CargoController').middleware(new Map([
-  [['store', 'update', 'destroy'], ['auth']]
-]))
-
-Route.resource('party', 'PartyController').middleware(new Map([
-  [['store'], ['auth']]
-]))
+Route.resource('party', 'PartyController').middleware(new Map([['store', 'update', 'destroy'], ['auth']]))
 
 Route.resource('upload', 'UploadController')

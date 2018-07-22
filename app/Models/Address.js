@@ -1,6 +1,10 @@
 const Model = use('Model')
 
-class Location extends Model {
+class Address extends Model {
+
+  static get table() {
+    return 'address'
+  }
 
   static get createTimestamp() {
     return 'created_at'
@@ -13,6 +17,10 @@ class Location extends Model {
   static get hidden() {
     return ['created_at', 'updated_at', 'id']
   }
+
+  party() {
+    return this.hasOne('App/Models/Party')
+  }
 }
 
-module.exports = Location
+module.exports = Address

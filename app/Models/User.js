@@ -28,8 +28,17 @@ class User extends Model {
    *
    * @return {Object}
    */
+
+  static get hidden() {
+    return ['created_at', 'updated_at', 'password']
+  }
+
   tokens() {
     return this.hasMany('App/Models/Token')
+  }
+
+  parties() {
+    return this.hasMany('App/Models/Party', 'id', 'admin_id')
   }
 }
 
