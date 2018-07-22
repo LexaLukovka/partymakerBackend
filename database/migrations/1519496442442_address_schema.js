@@ -2,19 +2,20 @@ const Schema = use('Schema')
 
 class LocationSchema extends Schema {
   up() {
-    this.create('locations', (table) => {
+    this.create('address', (table) => {
       table.increments()
       table.string('address').notNullable()
+      table.string('district')
       table.double('lng').notNullable()
       table.double('lat').notNullable()
-      table.string('placeId').notNullable()
+      table.string('placeId')
       table.timestamps()
     })
   }
 
   // noinspection JSUnusedGlobalSymbols
   down() {
-    this.drop('locations')
+    this.drop('address')
   }
 }
 
