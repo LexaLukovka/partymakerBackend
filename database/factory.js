@@ -49,9 +49,10 @@ Factory.blueprint('App/Models/Address', (faker) => ({
 
 Factory.blueprint('App/Models/Food', (faker, i, data) => ({
   user_id: data.user.id,
+  party_id: data.party.id,
   title: faker.pickone(['Пицца', 'Бургеры', 'Фарш', 'Помидоры', 'Оругры']),
-  district: faker.pickone(['Космос', 'Шевчик', 'Бабурка', 'Вознесеновский', 'Хортицкий', 'Коммунарский', 'Заводской']),
-  lat: faker.latitude(),
-  lng: faker.longitude(),
-  placeId: null,
+  total: '2 коробки',
+  brand: faker.pickone(['Обычная', 'Селное', 'Красный', 'Зелень', 'Оругры']),
+  price: '50 грн',
+  bought: faker.bool(),
 }))
