@@ -75,6 +75,21 @@ class PartyController {
       success: true
     }
   }
+
+  async show({ request, params }) {
+
+    const party = await Party
+      .query()
+      .with('admin')
+      .with('address')
+      .where('id', params.id)
+      .first()
+
+    return {
+      status: 200,
+      data: party
+    }
+  }
 }
 
 module.exports = PartyController
