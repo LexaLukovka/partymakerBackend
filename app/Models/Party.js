@@ -1,4 +1,3 @@
-'use strict'
 
 const Model = use('Model')
 
@@ -15,13 +14,18 @@ class Party extends Model {
     return this.belongsTo('App/Models/Address', 'address_id', 'id')
   }
 
-  user() {
-    return this.belongsTo('App/Models/User')
+  users() {
+    return this.belongsToMany('App/Models/User')
   }
 
   pictures() {
     return this.belongsToMany('App/Models/Picture')
   }
+
+  async isOnParty(user_id) {
+    return !!this.users().where('id', user_id).first()
+  }
+
 }
 
 module.exports = Party

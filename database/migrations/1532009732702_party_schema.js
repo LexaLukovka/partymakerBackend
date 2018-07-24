@@ -10,6 +10,8 @@ class PartySchema extends Schema {
       table.integer('admin_id').unsigned().references('id').inTable('users').notNullable()
       table.integer('address_id').unsigned().references('id').inTable('address').notNullable()
       table.string('primary_picture')
+      table.integer('people_max')
+      table.integer('people_min')
       table.string('telegram_url')
       table.string('type').notNullable()
       table.string('description')

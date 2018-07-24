@@ -32,13 +32,11 @@ class PartyController {
     const {
       title,
       type,
-      status,
       address,
       pictures,
       telegram_url: telegramUrl,
       description,
       startTime,
-      endTime,
       private: privateParty,
     } = request.all()
 
@@ -56,13 +54,12 @@ class PartyController {
     const party = await Party.create({
       title,
       type,
-      status,
+      status: 'сбор участников',
       admin_id: auth.current.user.id,
       address_id: addressModel.id,
       primary_picture: images[0],
       telegram_url: telegramUrl,
       startTime,
-      endTime,
       description,
       private: privateParty,
     })

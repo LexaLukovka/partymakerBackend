@@ -34,6 +34,8 @@ Factory.blueprint('App/Models/Party', (faker, i, data) => {
     status: faker.pickone(['сбор участников', 'ожидание', 'проводится']),
     private: faker.bool(),
     startTime: faker.date({ year: 2018 }),
+    people_max: faker.integer({ min: 10, max: 20 }),
+    people_min: faker.integer({ min: 5, max: 10 }),
     endTime: faker.date({ year: 2018 }),
     telegram_url: 'https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ',
   }

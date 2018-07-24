@@ -34,8 +34,10 @@ class Seeder {
   async createParties() {
     const partyPromises = Array.from(new Array(50), async (val, index) => {
       const admin = await Factory.model('App/Models/User').create()
+      const users = await Factory.model('App/Models/User').createMany(10)
       const address = await Factory.model('App/Models/Address').create()
       const party = await Factory.model('App/Models/Party').create({ admin, address })
+      party.users().attach(users.map(user => user.id))
       printProgress(`creating ${index + 1} party...`)
 
       return party
