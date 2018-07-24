@@ -76,7 +76,7 @@ class PartyController {
     }
   }
 
-  async show({ request, params }) {
+  async show({ request, auth, params }) {
 
     const party = await Party
       .query()
