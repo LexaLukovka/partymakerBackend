@@ -33,16 +33,19 @@ class PartyController {
       title,
       type,
       address,
+      district,
       pictures,
       telegram_url: telegramUrl,
       description,
       startTime,
-      private: privateParty,
+      people_max: peopleMax,
+      people_min: peopleMin,
+      privateParty,
     } = request.all()
 
     const addressModel = await Address.create({
       address: address.address,
-      district: address.district,
+      district,
       lng: address.lng,
       lat: address.lat,
       placeId: address.placeId,
@@ -61,7 +64,9 @@ class PartyController {
       telegram_url: telegramUrl,
       startTime,
       description,
-      private: privateParty,
+      people_max: peopleMax,
+      people_min: peopleMin,
+      privateParty,
     })
 
     await party.pictures().attach(images)

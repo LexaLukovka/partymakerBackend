@@ -15,7 +15,7 @@ class PartySchema extends Schema {
       table.string('telegram_url')
       table.string('type').notNullable()
       table.string('description')
-      table.boolean('private').notNullable()
+      table.boolean('privateParty').notNullable()
       table.dateTime('startTime').notNullable()
       table.dateTime('endTime')
       table.timestamps()
