@@ -35,11 +35,11 @@ class PartyController {
       address,
       district,
       pictures,
-      telegram_url: telegramUrl,
+      telegramUrl,
       description,
       startTime,
-      people_max: peopleMax,
-      people_min: peopleMin,
+      peopleMax,
+      peopleMin,
       privateParty,
     } = request.all()
 
