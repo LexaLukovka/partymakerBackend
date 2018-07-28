@@ -1,5 +1,4 @@
 /* eslint-disable import/newline-after-import */
-const getPartiesResponse = require('./response.get.party.json')
 const postPartyRequest = require('./request.post.party.json')
 const postPartyResponse = require('./response.post.party')
 
@@ -10,7 +9,7 @@ const { test, trait } = use('Test/Suite')('party')
 trait('Test/ApiClient')
 trait('Auth/Client')
 
-test('make sure party is created', async ({ client, assert }) => {
+test('create party', async ({ client, assert }) => {
   const user = await User.find(1)
 
   const response = await client.post('/party')

@@ -1,10 +1,10 @@
-const postRegisterFails = require('./response.post.register.fails')
+const postRegister400Response = require('./response.post.register.400')
 
 const { test, trait } = use('Test/Suite')('auth')
 trait('Test/ApiClient')
 trait('Auth/Client')
 
-test('make sure register works', async ({ client, assert }) => {
+test('register user', async ({ client, assert }) => {
   const response = await client.post('/register')
     .field('name', 'Pavel Kostyuk')
     .field('email', 'pavliha@mailinator.com')
@@ -20,7 +20,7 @@ test('make sure register works', async ({ client, assert }) => {
   })
 })
 
-test('make sure register validation fails', async ({ client, assert }) => {
+test('cannot register again', async ({ client, assert }) => {
   const response = await client.post('/register')
     .accept('json')
     .field('name', 'Pavel Kostyuk')
@@ -31,10 +31,10 @@ test('make sure register validation fails', async ({ client, assert }) => {
 
   response.assertStatus(400)
 
-  assert.deepEqual(response.body, postRegisterFails)
+  assert.deepEqual(response.body, postRegister400Response)
 })
 
-test('make sure login works', async ({ client, assert }) => {
+test('login pavliha@mailinator.com', async ({ client, assert }) => {
 
   const response = await client.post('/login')
     .field('email', 'pavliha@mailinator.com')
