@@ -20,7 +20,7 @@ function printProgress(text) {
 class Seeder {
 
   async addFood(party) {
-    const foodPromises = Array.from(new Array(5), async (v, i) => {
+    const foodPromises = Array.from(new Array(2), async (v, i) => {
       const user = await Factory.model('App/Models/User').create()
       const food = await Factory.model('App/Models/Food').create({ user, party })
       printProgress(`creating ${i + 1} food...`)
@@ -32,9 +32,9 @@ class Seeder {
   }
 
   async createParties() {
-    const partyPromises = Array.from(new Array(50), async (val, index) => {
+    const partyPromises = Array.from(new Array(2), async (val, index) => {
       const admin = await Factory.model('App/Models/User').create()
-      const users = await Factory.model('App/Models/User').createMany(10)
+      const users = await Factory.model('App/Models/User').createMany(5)
       const address = await Factory.model('App/Models/Address').create()
       const party = await Factory.model('App/Models/Party').create({ admin, address })
       party.users().attach(users.map(user => user.id))
@@ -52,7 +52,7 @@ class Seeder {
     printProgress(0)
     const parties = await this.createParties()
 
-    const foodPromises = Array.from(new Array(10), async (v, i) => this.addFood(parties[i]))
+    const foodPromises = Array.from(new Array(2), async (v, i) => this.addFood(parties[i]))
 
     printProgress('waiting for seed to complete...')
 

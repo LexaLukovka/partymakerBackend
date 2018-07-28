@@ -1,5 +1,5 @@
 {
-  "name": "adonis-fullstack-app",
+  "name": "Partymaker",
   "version": "4.1.0",
   "adonis-version": "4.1.0",
   "description": "The fullstack application boilerplate for Adonisjs",
@@ -11,14 +11,13 @@
     "migrate": "adonis migration:refresh",
     "seed": "adonis seed",
     "inspect": "nodemon --inspect server.js",
-    "test": "node ace test",
+    "test": "adonis test",
     "boot": "npm run migrate && npm run seed"
   },
   "keywords": [
-    "adonisjs",
-    "adonis-app"
+    "partymaker"
   ],
-  "author": "Romchik",
+  "author": "Partymaker team",
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
@@ -33,6 +32,7 @@
     "@adonisjs/session": "^1.0.25",
     "@adonisjs/shield": "^1.0.6",
     "@adonisjs/validator": "^5.0.3",
+    "@adonisjs/vow": "^1.0.16",
     "babel-eslint": "^8.2.3",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",

@@ -1,0 +1,22 @@
+{
+  "title": "Cool party",
+  "type": "Шашлыки",
+  "private": true,
+  "telegram_url": "https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ",
+  "startTime": "Mon Jul 23 2019 00:26:20 GMT+0300 (Eastern European Summer Timekostykkosaasdqewqweasdkskos)",
+  "endTime": "Mon Jul 23 2019 02:26:20 GMT+0300 (Eastern European Summer Time)",
+  "description": "Народ го бухать))",
+  "people_max": 40,
+  "people_min": 10,
+  "district": "Хортицкий",
+  "pictures": [
+    "http://0.0.0.0:3333/images/summer.jpg",
+    "http://0.0.0.0:3333/images/solomun-ibiza-2015-destino.jpg",
+    "http://0.0.0.0:3333/images/ibiza.jpg"
+  ],
+  "address": {
+    "address": "591 Fecicu Plaza",
+    "lat": -60.07511,
+    "lng": 0.42462
+  }
+}
