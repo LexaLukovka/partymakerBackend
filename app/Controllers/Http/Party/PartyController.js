@@ -1,4 +1,4 @@
-/* eslint-disable radix */
+/* eslint-disable radix,object-shorthand */
 const Party = use('App/Models/Party')
 const Picture = use('App/Models/Picture')
 const Address = use('App/Models/Address')
@@ -33,14 +33,14 @@ class PartyController {
       title,
       type,
       address,
-      district,
       pictures,
-      telegramUrl,
+      district,
+      telegram_url,
       description,
       startTime,
-      peopleMax,
-      peopleMin,
-      privateParty,
+      people_max,
+      people_min,
+      private_party,
     } = request.all()
 
     const addressModel = await Address.create({
@@ -60,13 +60,13 @@ class PartyController {
       status: 'сбор участников',
       admin_id: auth.current.user.id,
       address_id: addressModel.id,
-      primary_picture: images[0],
-      telegram_url: telegramUrl,
+      primary_picture: pictures[0],
+      telegram_url,
       startTime,
       description,
-      people_max: peopleMax,
-      people_min: peopleMin,
-      privateParty,
+      people_max,
+      people_min,
+      private_party,
     })
 
     await party.pictures().attach(images)
@@ -91,6 +91,10 @@ class PartyController {
       status: 200,
       data: party
     }
+  }
+
+  async update() {
+    return 'dummy data'
   }
 }
 

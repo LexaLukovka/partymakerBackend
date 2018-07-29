@@ -1,4 +1,4 @@
-module.exports = class RegisterUser {
+module.exports = class Register {
 
   // noinspection JSUnusedGlobalSymbols
   get rules() {

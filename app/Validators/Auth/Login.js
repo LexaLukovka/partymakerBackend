@@ -1,4 +1,4 @@
-module.exports = class LoginUser {
+module.exports = class Login {
 
   // noinspection JSUnusedGlobalSymbols
   get rules() {

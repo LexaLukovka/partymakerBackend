@@ -1,0 +1,12 @@
+[
+  {
+    "message": "Пользователь с таким телефоном уже есть",
+    "field": "phone",
+    "validation": "unique"
+  },
+  {
+    "message": "Пользователь с такой почтой уже есть",
+    "field": "email",
+    "validation": "unique"
+  }
+]

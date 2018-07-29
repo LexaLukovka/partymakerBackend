@@ -1,0 +1,37 @@
+{
+  "status": 200,
+  "total": 2,
+  "data": [
+    {
+      "id": 2,
+      "title": null,
+      "status": "сбор участников",
+      "admin_id": 2,
+      "primary_picture": "http://0.0.0.0:4000/images/party.jpg",
+      "people_max": 17,
+      "people_min": 5,
+      "telegram_url": "https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ",
+      "type": "Автомобили",
+      "description": null,
+      "private": 0,
+      "startTime": 1530226249420,
+      "endTime": 1540308179797,
+      "created_at": "2018-07-28 23:30:32",
+      "updated_at": "2018-07-28 23:30:32",
+      "admin": {
+        "id": 2,
+        "name": "Bryan Hoffman",
+        "email": "les@emeozeri.as",
+        "phone": "2018291262",
+        "avatar_url": "//www.gravatar.com/avatar/c170e5a92883f6225c08d657a037aa2a"
+      },
+      "address": {
+        "address": "637 Fihhi Mill",
+        "district": "Хортицкий",
+        "lng": 101.64541,
+        "lat": 78.71894,
+        "placeId": null
+      }
+    }
+  ]
+}
