@@ -4,10 +4,11 @@ module.exports = class Store {
     return {
       title: 'required|string|max:30',
       type: 'required|string',
-      private: 'required|boolean',
-      startTime: `required|date|after:${new Date()}`,
-      endTime: `date|after:${new Date()}`,
-      description: 'required|string|min:10',
+      private_party: 'required|boolean',
+      start_time: 'required|string',
+      // startTime: `required|date|after:${new Date()}`,
+      end_time: `date|after:${new Date()}`,
+      description: 'required|string',
       people_max: 'required|integer',
       people_min: 'required|integer',
       pictures: 'array',
@@ -19,7 +20,7 @@ module.exports = class Store {
   // noinspection JSUnusedGlobalSymbols
   get messages() {
     return {
-      'title': 'Пользователь с таким телефоном уже есть',
+      'title': 'Тусовка с таким названием уже есть',
       'email.unique': 'Пользователь с такой почтой уже есть'
     }
   }

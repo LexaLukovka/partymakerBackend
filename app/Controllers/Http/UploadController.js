@@ -19,7 +19,8 @@ class UploadController {
     await profilePics.move(Helpers.publicPath('uploads'), { name })
 
     if (!profilePics.moved()) return [profilePics.error()]
-    return { url: `${Env.get('APP_URL')}:${Env.get('APP_PORT')}/uploads/${name}` }
+
+    return { url: `${Env.get('APP_URL')}/uploads/${name}` }
   }
 }
 
