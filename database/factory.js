@@ -33,7 +33,7 @@ Factory.blueprint('App/Models/Party', (faker, i, data) => {
     type: faker.pickone(['Шашлыки', 'Квартира', 'Дача', 'Пляж', 'На площади', 'Тематическая', 'Автомобили', 'Другое']),
     status: faker.pickone(['сбор участников', 'ожидание', 'проводится']),
     private: faker.bool(),
-    startTime: faker.date({ year: 2018 }),
+    start_time: faker.date({ year: 2018 }),
     people_max: faker.integer({ min: 10, max: 20 }),
     people_min: faker.integer({ min: 5, max: 10 }),
     endTime: faker.date({ year: 2018 }),

@@ -14,7 +14,8 @@ class PartyController {
       .query()
       .with('admin')
       .with('address')
-      .where('id', '>', parseInt(cursor) || 1)
+      .with('pictures')
+      .where('id', '>', parseInt(cursor) || 0)
       .limit(10)
       .orderBy('updated_at', 'DESC')
       .fetch()
@@ -37,15 +38,15 @@ class PartyController {
       district,
       telegram_url,
       description,
-      startTime,
+      start_time,
       people_max,
       people_min,
-      private: privateParty,
+      private_party,
     } = request.all()
 
     const addressModel = await Address.create({
       address: address.address,
-      district: district,
+      district,
       lng: address.lng,
       lat: address.lat,
       placeId: address.placeId,
@@ -62,11 +63,11 @@ class PartyController {
       address_id: addressModel.id,
       primary_picture: pictures[0],
       telegram_url,
-      startTime,
-      description: description,
-      people_max: people_max,
-      people_min: people_min,
-      private: privateParty,
+      start_time,
+      description,
+      people_max,
+      people_min,
+      private_party,
     })
 
     await party.pictures().attach(images)
