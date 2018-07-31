@@ -85,6 +85,7 @@ class PartyController {
       .query()
       .with('admin')
       .with('address')
+      .with('pictures')
       .where('id', params.id)
       .first()
 
