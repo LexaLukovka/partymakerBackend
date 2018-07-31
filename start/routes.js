@@ -27,6 +27,6 @@ Route.resource('party', 'Party/PartyController')
   ]))
   .apiOnly()
   .validator('Create')
-  .middleware(new Map([[['index', 'store'], ['auth']]]))
+  .middleware(new Map([['store']], ['auth']))
 
 Route.resource('upload', 'UploadController')
