@@ -1,6 +1,6 @@
 const User = use('App/Models/User')
 
-class UserController {
+class AuthController {
 
   async login({ request, auth }) {
 
@@ -30,4 +30,4 @@ class UserController {
 
 }
 
-module.exports = UserController
+module.exports = AuthController
