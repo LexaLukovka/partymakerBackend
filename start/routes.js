@@ -4,15 +4,15 @@ const Route = use('Route')
 
 Route.get('/', () => 'Server is running')
 
-Route.post('login', 'UserController.login')
+Route.post('login', 'AuthController.login')
   .validator('Auth/Login')
 
-Route.post('register', 'UserController.register')
+Route.post('register', 'AuthController.register')
   .validator('Auth/Register')
 
-Route.get('user', 'UserController.user')
+Route.get('user', 'AuthController.user')
 
-Route.get('users/:id', 'UserController.show')
+Route.get('users/:id', 'AuthController.show')
   .middleware('auth')
 
 Route.resource('party/:party_id/users', 'Party/UserController')
