@@ -15,6 +15,9 @@ Route.get('user', 'UserController.user')
 Route.get('users/:id', 'UserController.show')
   .middleware('auth')
 
+Route.get('user/:id/parties', 'Party/UserController.parties')
+  .middleware('auth')
+
 Route.resource('party/:party_id/users', 'Party/UserController')
   .middleware('auth')
 

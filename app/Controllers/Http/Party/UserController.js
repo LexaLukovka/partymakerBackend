@@ -5,7 +5,7 @@ const Party = use('App/Models/Party')
  * Resourceful controller for interacting with users
  */
 class UserController {
-
+  // noinspection JSUnusedGlobalSymbols
   async index({ params }) {
     const party = await Party.find(params.party_id)
     return party.users().fetch()
@@ -58,6 +58,22 @@ class UserController {
       status: 200,
       success: true,
       message: `${auth.user.name} left the party`
+    }
+  }
+
+  async parties({ request, auth, params }) {
+    const parties = await Party
+      .query()
+      .with('admin')
+      .with('address')
+      .with('pictures')
+      .where('admin_id', params.id)
+      .orderBy('updated_at', 'DESC')
+      .fetch()
+
+    return {
+      status: 200,
+      data: parties
     }
   }
 }
