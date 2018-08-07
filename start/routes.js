@@ -15,6 +15,9 @@ Route.get('user', 'AuthController.user')
 Route.get('users/:id', 'AuthController.show')
   .middleware('auth')
 
+Route.get('user/:id/parties', 'Party/UserController.parties')
+  .middleware('auth')
+
 Route.resource('party/:party_id/users', 'Party/UserController')
   .middleware('auth')
 
@@ -27,6 +30,6 @@ Route.resource('party', 'Party/PartyController')
   ]))
   .apiOnly()
   .validator('Create')
-  .middleware(new Map([['store']], ['auth']))
+  .middleware(new Map([[['store'], ['auth']]]))
 
 Route.resource('upload', 'UploadController')

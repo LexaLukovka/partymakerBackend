@@ -5,6 +5,7 @@ const Address = use('App/Models/Address')
 
 class PartyController {
 
+  // noinspection JSUnusedGlobalSymbols
   async index({ request }) {
     const { cursor } = request.all()
 
@@ -80,7 +81,6 @@ class PartyController {
   }
 
   async show({ request, auth, params }) {
-
     const party = await Party
       .query()
       .with('admin')
