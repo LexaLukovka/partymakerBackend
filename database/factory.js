@@ -30,14 +30,15 @@ Factory.blueprint('App/Models/Party', (faker, i, data) => {
     admin_id: data.admin.id,
     address_id: data.address.id,
     primary_picture: faker.pickone(paths),
+    title: faker.pickone(['Шашлыки', 'Квартира', 'Дача', 'Пляж', 'На площади', 'Тематическая', 'Автомобили', 'Другое']),
     type: faker.pickone(['Шашлыки', 'Квартира', 'Дача', 'Пляж', 'На площади', 'Тематическая', 'Автомобили', 'Другое']),
     status: faker.pickone(['сбор участников', 'ожидание', 'проводится']),
-    private: faker.bool(),
+    private_party: faker.bool(),
     start_time: faker.date({ year: 2018 }),
     people_max: faker.integer({ min: 10, max: 20 }),
     people_min: faker.integer({ min: 5, max: 10 }),
-    endTime: faker.date({ year: 2018 }),
     telegram_url: 'https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ',
+    description: faker.paragraph({ sentences: 1 })
   }
 })
 

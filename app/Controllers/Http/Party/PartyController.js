@@ -4,7 +4,6 @@ const Picture = use('App/Models/Picture')
 const Address = use('App/Models/Address')
 
 class PartyController {
-
   // noinspection JSUnusedGlobalSymbols
   async index({ request }) {
     const { cursor } = request.all()
@@ -95,6 +94,7 @@ class PartyController {
     }
   }
 
+  // noinspection JSUnusedGlobalSymbols
   async update() {
     return 'dummy data'
   }
