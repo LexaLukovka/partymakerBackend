@@ -33,3 +33,8 @@ Route.resource('party', 'Party/PartyController')
   .middleware(new Map([[['store'], ['auth']]]))
 
 Route.resource('upload', 'UploadController')
+
+
+Route.put('settings', 'SettingsController.update')
+  .middleware('auth')
+
