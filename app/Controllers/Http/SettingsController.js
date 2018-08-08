@@ -7,10 +7,9 @@ class SettingsController {
       .where('id', auth.user.id)
       .update(request.all())
 
-    return {
-      status: 200,
-      success: true
-    }
+    const user = await User.find(auth.user.id)
+
+    return auth.withRefreshToken().generate(user, true)
   }
 }
 
