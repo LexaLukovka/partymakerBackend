@@ -1,4 +1,4 @@
-const User = use('App/Models/User')
+/* eslint-disable no-console */
 /*
 |--------------------------------------------------------------------------
 | PartySeeder
@@ -36,7 +36,8 @@ class Seeder {
       const admin = await Factory.model('App/Models/User').create()
       const users = await Factory.model('App/Models/User').createMany(5)
       const address = await Factory.model('App/Models/Address').create()
-      const party = await Factory.model('App/Models/Party').create({ admin, address })
+      const place = await Factory.model('App/Models/Place').create({ admin, address })
+      const party = await Factory.model('App/Models/Party').create({ admin, address, place })
       party.users().attach(users.map(user => user.id))
       printProgress(`creating ${index + 1} party...`)
 
