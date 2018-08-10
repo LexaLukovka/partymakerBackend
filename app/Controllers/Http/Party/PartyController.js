@@ -6,7 +6,7 @@ const Address = use('App/Models/Address')
 class PartyController {
   // noinspection JSUnusedGlobalSymbols
   async index({ request }) {
-    const { cursor } = request.all()
+    const { cursor, ...params } = request.all()
 
     const total = await Party.total() // count parties
 
@@ -16,6 +16,7 @@ class PartyController {
       .with('address')
       .with('pictures')
       .where('id', '>', parseInt(cursor) || 0)
+      .where(params)
       .limit(10)
       .orderBy('updated_at', 'DESC')
       .fetch()
