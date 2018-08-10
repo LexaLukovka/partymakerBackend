@@ -1,8 +1,10 @@
+'use strict'
+
 const Model = use('Model')
 
-class Party extends Model {
-  static get hidden() {
-    return ['address_id', 'user_id']
+class Place extends Model {
+  static get table() {
+    return 'places'
   }
 
   admin() {
@@ -21,15 +23,10 @@ class Party extends Model {
     return this.belongsToMany('App/Models/Picture')
   }
 
-  async isOnParty(user_id) {
-    return !!this.users().where('id', user_id).first()
-  }
-
   static async total() {
     const { total } = (await this.query().count('* as total'))[0]
     return total
   }
-
 }
 
-module.exports = Party
+module.exports = Place

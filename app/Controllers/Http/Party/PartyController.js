@@ -8,7 +8,7 @@ class PartyController {
   async index({ request }) {
     const { cursor } = request.all()
 
-    const { total } = (await Party.query().count('* as total'))[0] // count parties
+    const total = await Party.total() // count parties
 
     const parties = await Party
       .query()

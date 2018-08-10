@@ -29,6 +29,7 @@ Factory.blueprint('App/Models/Party', (faker, i, data) => {
   return {
     admin_id: data.admin.id,
     address_id: data.address.id,
+    place_id: data.place.id,
     primary_picture: faker.pickone(paths),
     title: faker.pickone(['Шашлыки', 'Квартира', 'Дача', 'Пляж', 'На площади', 'Тематическая', 'Автомобили', 'Другое']),
     type: faker.pickone(['Шашлыки', 'Квартира', 'Дача', 'Пляж', 'На площади', 'Тематическая', 'Автомобили', 'Другое']),
@@ -59,3 +60,24 @@ Factory.blueprint('App/Models/Food', (faker, i, data) => ({
   price: '50 грн',
   bought: faker.bool(),
 }))
+
+Factory.blueprint('App/Models/Place', (faker, i, data) => {
+  const path = `${Env.get('APP_URL')}/images/`
+
+  const images = ['solomun-ibiza-2015-destino.jpg', 'ibiza.jpg', 'summer.jpg', 'party.jpg']
+
+  const paths = images.map(name => path + name)
+
+  return {
+    admin_id: data.admin.id,
+    title: faker.pickone(['Пески', 'Ждановский пляж', 'Карьер', 'На волне', 'Радуга']),
+    address_id: data.address.id,
+    primary_picture: faker.pickone(paths),
+    telegram_url: 'https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ',
+    type: faker.pickone(['Шашлыки', 'Квартира', 'Дача', 'Пляж', 'На площади', 'Тематическая', 'Автомобили', 'Другое']),
+    description: `
+    Очень хорошее место что бы бесплатно отдохнуть на природе. 
+    Пожарить шашлыков, весело провести время на майские праздники.
+  `,
+  }
+})
