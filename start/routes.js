@@ -21,6 +21,9 @@ Route.get('user/parties', 'Party/UserController.parties')
 Route.put('user/parties/:id/edit', 'Party/PartyController.update')
   .middleware('auth')
 
+Route.put('user/parties/:id/edit/address', 'Party/PartyController.updateAddress')
+  .middleware('auth')
+
 Route.resource('party/:party_id/users', 'Party/UserController')
   .middleware('auth')
 
