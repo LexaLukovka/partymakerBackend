@@ -22,12 +22,6 @@ class AuthController {
     return auth.withRefreshToken().generate(user, true)
 
   }
-
-  async user({ auth }) {
-
-    return auth.getUser()
-  }
-
 }
 
 module.exports = AuthController
