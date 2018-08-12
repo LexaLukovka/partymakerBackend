@@ -59,6 +59,22 @@ class UserController {
       message: `${auth.user.name} left the party`
     }
   }
+
+  async parties({ request, auth }) {
+    const parties = await Party
+      .query()
+      .with('admin')
+      .with('address')
+      .with('pictures')
+      .where('admin_id', auth.current.user.id)
+      .orderBy('updated_at', 'DESC')
+      .fetch()
+
+    return {
+      status: 200,
+      data: parties
+    }
+  }
 }
 
 module.exports = UserController
