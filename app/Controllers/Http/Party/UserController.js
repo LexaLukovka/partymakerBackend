@@ -61,13 +61,13 @@ class UserController {
     }
   }
 
-  async parties({ request, auth, params }) {
+  async parties({ request, auth }) {
     const parties = await Party
       .query()
       .with('admin')
       .with('address')
       .with('pictures')
-      .where('admin_id', params.id)
+      .where('admin_id', auth.current.user.id)
       .orderBy('updated_at', 'DESC')
       .fetch()
 

@@ -71,7 +71,8 @@ class PartyController {
       private_party,
     })
 
-    await party.pictures().attach(images)
+    await party.pictures()
+      .attach(images)
 
     return {
       status: 200,
@@ -96,8 +97,29 @@ class PartyController {
   }
 
   // noinspection JSUnusedGlobalSymbols
-  async update() {
-    return 'dummy data'
+  async update({ request, auth, params }) {
+    await Party
+      .query()
+      .with('admin')
+      .with('address')
+      .with('pictures')
+      .where('admin_id', auth.current.user.id)
+      .where('id', params.id)
+      .update(request.all())
+
+
+    const party = await Party
+      .query()
+      .with('admin')
+      .with('address')
+      .with('pictures')
+      .where('id', params.id)
+      .first()
+
+    return {
+      status: 200,
+      data: party
+    }
   }
 }
 

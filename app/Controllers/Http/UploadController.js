@@ -20,7 +20,8 @@ class UploadController {
 
     if (!profilePics.moved()) return [profilePics.error()]
 
-    return { url: `${Env.get('APP_URL')}/uploads/${name}` }
+    return { url: `http://localhost:3333/uploads/${name}` }
+    // return { url: `${Env.get('APP_URL')}/uploads/${name}` }
   }
 }
 
