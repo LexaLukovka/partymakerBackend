@@ -71,6 +71,7 @@ class PartyController {
       private_party,
     })
 
+    await party.users().attach([auth.user.id])
     await party.pictures().attach(images)
 
     return {

@@ -20,7 +20,7 @@ Route.resource('party', 'Party/PartyController')
   .middleware(new Map([[['store'], ['auth']]]))
 
 Route.resource('party/:party_id/users', 'Party/UserController')
-  .middleware('auth').apiOnly()
+  .middleware(new Map([[['store', 'show', 'update', 'destroy'], ['auth']]])).apiOnly()
 
 Route.resource('party/:party_id/food', 'Party/FoodController')
   .middleware(new Map([[['store', 'update', 'destroy'], ['auth']]])).apiOnly()
