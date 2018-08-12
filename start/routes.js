@@ -1,54 +1,61 @@
 /* eslint-disable max-len */
-
 const Route = use('Route')
 
-Route.get('/', () => 'Server is running')
+const SUD = new Map([[['store', 'update', 'destroy'], ['auth']]])
 
+/**
+ *
+ * Check if server is running
+ *
+ * */
+Route.get('/', () => 'Server is running')
+/**
+ *
+ * Authentication routes
+ *
+ * */
 Route.post('login', 'AuthController.login')
   .validator('Auth/Login')
 
 Route.post('register', 'AuthController.register')
   .validator('Auth/Register')
-
+/**
+ *
+ * User routes
+ *
+ * */
 Route.resource('user/parties', 'User/PartyController')
-  .middleware('auth').apiOnly()
-
-Route.get('user', 'AuthController.user')
-
-Route.get('users/:id', 'AuthController.show')
+  .apiOnly()
   .middleware('auth')
-
-Route.get('user/parties', 'Party/UserController.parties')
-  .middleware('auth')
-
-Route.put('user/parties/:id/edit', 'Party/PartyController.update')
-  .middleware('auth')
-
-Route.put('user/parties/:id/edit/address', 'Party/PartyController.updateAddress')
-  .middleware('auth')
-
+/**
+ *
+ * Party routes
+ *`
+ * */
 Route.resource('party/:party_id/users', 'Party/UserController')
+  .apiOnly()
   .middleware('auth')
 
 Route.resource('party/:party_id/food', 'Party/FoodController')
-  .middleware(new Map([[['store', 'update', 'destroy'], ['auth']]]))
+  .apiOnly()
+  .middleware(SUD)
 
 Route.resource('party', 'Party/PartyController')
   .validator(new Map([['party.store', 'Party/Store']]))
   .apiOnly()
-  .validator('Create')
-  .middleware(new Map([[['store'], ['auth']]]))
+  .middleware(SUD)
 
-Route.resource('party/:party_id/users', 'Party/UserController')
-  .middleware(new Map([[['store', 'show', 'update', 'destroy'], ['auth']]])).apiOnly()
-
-Route.resource('party/:party_id/food', 'Party/FoodController')
-  .middleware(new Map([[['store', 'update', 'destroy'], ['auth']]])).apiOnly()
-
-Route.resource('places', 'Place/PlaceController').apiOnly()
-
-Route.resource('upload', 'UploadController')
+/**
+ *
+ * Places routes
+ *
+ * */
+Route.resource('places', 'Place/PlaceController')
+  .apiOnly()
+  .middleware(SUD)
 
 Route.put('settings', 'SettingsController.update')
   .middleware('auth')
+
+Route.resource('upload', 'UploadController')
 
