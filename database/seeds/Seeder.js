@@ -12,8 +12,8 @@
 const Factory = use('Factory')
 
 function printProgress(text) {
-  process.stdout.clearLine()
-  process.stdout.cursorTo(0)
+  // process.stdout.clearLine()
+  // process.stdout.cursorTo(0)
   process.stdout.write(`${text}`)
 }
 
