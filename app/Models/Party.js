@@ -22,7 +22,8 @@ class Party extends Model {
   }
 
   async isOnParty(user_id) {
-    return !!this.users().where('id', user_id).first()
+    const users = await this.users().fetch()
+    return !!users.toJSON().find(user => user.id === user_id)
   }
 
   static async total() {

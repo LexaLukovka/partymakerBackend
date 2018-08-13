@@ -38,7 +38,8 @@ class Seeder {
       const address = await Factory.model('App/Models/Address').create()
       const place = await Factory.model('App/Models/Place').create({ admin, address })
       const party = await Factory.model('App/Models/Party').create({ admin, address, place })
-      party.users().attach(users.map(user => user.id))
+      await party.users().attach([admin.id])
+      await party.users().attach(users.map(user => user.id))
       printProgress(`creating ${index + 1} party...`)
 
       return party

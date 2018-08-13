@@ -36,6 +36,12 @@ Route.resource('party', 'Party/PartyController')
   .validator('Create')
   .middleware(new Map([[['store'], ['auth']]]))
 
+Route.resource('party/:party_id/users', 'Party/UserController')
+  .middleware(new Map([[['store', 'show', 'update', 'destroy'], ['auth']]])).apiOnly()
+
+Route.resource('party/:party_id/food', 'Party/FoodController')
+  .middleware(new Map([[['store', 'update', 'destroy'], ['auth']]])).apiOnly()
+
 Route.resource('places', 'Place/PlaceController').apiOnly()
 
 Route.resource('upload', 'UploadController')
