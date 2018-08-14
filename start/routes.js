@@ -24,9 +24,11 @@ Route.post('register', 'AuthController.register')
  * User routes
  *
  * */
-Route.resource('user/parties', 'User/PartyController')
+Route.resource('user/:id', 'User/UserController')
   .apiOnly()
-  .middleware('auth')
+
+Route.resource('user/:id/parties', 'User/PartyController')
+  .apiOnly()
 /**
  *
  * Party routes
