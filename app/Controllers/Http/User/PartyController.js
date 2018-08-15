@@ -1,13 +1,13 @@
 const Party = use('App/Models/Party')
 
 class PartyController {
-  async index({ request, auth }) {
+  async index({ request, params }) {
     const parties = await Party
       .query()
       .with('admin')
       .with('address')
       .with('pictures')
-      .where('admin_id', auth.user.id)
+      .where('admin_id', params.id)
       .orderBy('updated_at', 'DESC')
       .fetch()
 

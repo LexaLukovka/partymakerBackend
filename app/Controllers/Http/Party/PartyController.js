@@ -71,8 +71,10 @@ class PartyController {
       private_party,
     })
 
-    await party.users().attach([auth.user.id])
-    await party.pictures().attach(images)
+    await party.users()
+      .attach([auth.user.id])
+    await party.pictures()
+      .attach(images)
 
     return {
       status: 200,
@@ -108,27 +110,32 @@ class PartyController {
       'people_max',
       'people_min',
       'start_time',
-      'private_party'
+      'private_party',
     ])
 
-    await Party.query().where('id', params.id).update(partyValues)
+    await Party.query()
+      .where('id', params.id)
+      .update(partyValues)
 
     const party = await Party.find(params.id)
 
     const { address, district } = request.only(['address', 'district'])
 
     if (address) {
-      await party.address().update({
-        address: address.address,
-        lat: address.lat,
-        lng: address.lng,
-        placeId: address.placeId,
-      })
+      await party.address()
+        .update({
+          address: address.address,
+          lat: address.lat,
+          lng: address.lng,
+          placeId: address.placeId,
+        })
     }
 
     if (district) {
-      await party.address().update({ district })
+      await party.address()
+        .update({ district })
     }
+
 
     return {
       message: `Party ${party.title} updated `
