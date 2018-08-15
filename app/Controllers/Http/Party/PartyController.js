@@ -71,8 +71,8 @@ class PartyController {
       private_party,
     })
 
-    await party.pictures()
-      .attach(images)
+    await party.users().attach([auth.user.id])
+    await party.pictures().attach(images)
 
     return {
       status: 200,
@@ -81,6 +81,7 @@ class PartyController {
     }
   }
 
+  // noinspection JSUnusedGlobalSymbols
   async show({ request, auth, params }) {
     const party = await Party
       .query()
@@ -98,53 +99,42 @@ class PartyController {
 
   // noinspection JSUnusedGlobalSymbols
   async update({ request, auth, params }) {
-    await Party
-      .query()
-      .where('admin_id', auth.current.user.id)
-      .where('id', params.id)
-      .update(request.all())
 
+    const partyValues = request.only([
+      'title',
+      'type',
+      'telegram_url',
+      'description',
+      'people_max',
+      'people_min',
+      'start_time',
+      'private_party'
+    ])
 
-    const party = await Party
-      .query()
-      .with('admin')
-      .with('address')
-      .with('pictures')
-      .where('id', params.id)
-      .first()
+    await Party.query().where('id', params.id).update(partyValues)
+
+    const party = await Party.find(params.id)
+
+    const { address, district } = request.only(['address', 'district'])
+
+    if (address) {
+      await party.address().update({
+        address: address.address,
+        lat: address.lat,
+        lng: address.lng,
+        placeId: address.placeId,
+      })
+    }
+
+    if (district) {
+      await party.address().update({ district })
+    }
 
     return {
-      status: 200,
-      data: party
+      message: `Party ${party.title} updated `
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
-  async updateAddress({ request, auth, params }) {
-    const party = await Party
-      .query()
-      .where('id', params.id)
-      .first()
-
-    await Address
-      .query()
-      .where('id', party.address_id)
-      .update(request.all())
-
-
-    const parties = await Party
-      .query()
-      .with('admin')
-      .with('address')
-      .with('pictures')
-      .where('id', params.id)
-      .first()
-
-    return {
-      status: 200,
-      data: parties
-    }
-  }
 }
 
 module.exports = PartyController
