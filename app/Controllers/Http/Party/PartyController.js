@@ -142,6 +142,16 @@ class PartyController {
     }
   }
 
+  // noinspection JSUnusedGlobalSymbols
+  async destroy({ params }) {
+    const party = await Party.find(params.id)
+
+    party.delete()
+
+    return {
+      message: `Party ${party.id} ${party.title} delete `
+    }
+  }
 }
 
 module.exports = PartyController
