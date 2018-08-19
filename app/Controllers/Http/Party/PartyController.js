@@ -1,5 +1,7 @@
 /* eslint-disable radix,object-shorthand */
 const Party = use('App/Models/Party')
+const Place = use('App/Models/Place')
+
 const Picture = use('App/Models/Picture')
 const Address = use('App/Models/Address')
 
@@ -14,6 +16,7 @@ class PartyController {
       .query()
       .with('admin')
       .with('address')
+      .with('place')
       .with('pictures')
       .where('id', '>', parseInt(cursor) || 0)
       .where(params)
@@ -31,54 +34,39 @@ class PartyController {
 
   // noinspection JSUnusedGlobalSymbols
   async store({ request, auth }) {
-    const {
-      title,
-      type,
-      address,
-      pictures,
-      district,
-      telegram_url,
-      description,
-      start_time,
-      people_max,
-      people_min,
-      private_party,
-    } = request.all()
+    const req = request.all()
 
-    const addressModel = await Address.create({
-      address: address.address,
-      district,
-      lng: address.lng,
-      lat: address.lat,
-      placeId: address.placeId,
-    })
-
-    const imagePromises = pictures.map(async picture => (await Picture.create({ url: picture })).id)
-    const images = await Promise.all(imagePromises)
-
-    const party = await Party.create({
-      title,
-      type,
-      status: 'сбор участников',
-      admin_id: auth.current.user.id,
-      address_id: addressModel.id,
-      primary_picture: pictures[0],
-      telegram_url,
-      start_time,
-      description,
-      people_max,
-      people_min,
-      private_party,
-    })
-
-    await party.users()
-      .attach([auth.user.id])
-    await party.pictures()
-      .attach(images)
+    if (req.place_id) {
+      const place = await Place.find(req.place_id)
+      Party.makeUsingPlace(place, {
+        admin_id: auth.user.id,
+        title: req.title,
+        pictures: req.pictures,
+        telegram_url: req.telegram_url,
+        description: req.description,
+        start_time: req.start_time,
+        people_min: req.people_min,
+        private_party: req.private_party,
+      })
+    } else {
+      await Party.make({
+        admin_id: auth.user.id,
+        address: req.address,
+        title: req.title,
+        type: req.type,
+        pictures: req.pictures,
+        telegram_url: req.telegram_url,
+        description: req.description,
+        start_time: req.start_time,
+        people_max: req.people_max,
+        people_min: req.people_min,
+        private_party: req.private_party,
+      })
+    }
 
     return {
       status: 200,
-      message: `${title} created`,
+      message: `${req.title} created`,
       success: true
     }
   }
@@ -89,6 +77,7 @@ class PartyController {
       .query()
       .with('admin')
       .with('address')
+      .with('place')
       .with('pictures')
       .where('id', params.id)
       .first()
@@ -135,7 +124,6 @@ class PartyController {
       await party.address()
         .update({ district })
     }
-
 
     return {
       message: `Party ${party.title} updated `

@@ -12,8 +12,9 @@ module.exports = class Store {
       people_max: 'required|integer',
       people_min: 'required|integer',
       pictures: 'array',
+      place_id: 'integer',
       district: 'string',
-      address: 'required|object',
+      address: 'object',
     }
   }
 

@@ -32,7 +32,7 @@ class Seeder {
   }
 
   async createParties() {
-    const partyPromises = Array.from(new Array(2), async (val, index) => {
+    const partyPromises = Array.from(new Array(5), async (val, index) => {
       const admin = await Factory.model('App/Models/User').create()
       const users = await Factory.model('App/Models/User').createMany(5)
       const address = await Factory.model('App/Models/Address').create()
