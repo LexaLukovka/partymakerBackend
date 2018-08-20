@@ -46,6 +46,11 @@ class Picture extends Model {
     if (!profilePics.movedAll()) return [profilePics.error()]
 
   }
+
+  static async add(pictures) {
+    const imagePromises = pictures.map(async picture => (await Picture.create({ url: picture })).id)
+    return await Promise.all(imagePromises)
+  }
 }
 
 module.exports = Picture

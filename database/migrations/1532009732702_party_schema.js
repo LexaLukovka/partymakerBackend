@@ -9,7 +9,7 @@ class PartySchema extends Schema {
       table.string('status').notNullable()
       table.integer('admin_id').unsigned().references('id').inTable('users').notNullable()
       table.integer('place_id').unsigned().references('id').inTable('places')
-      table.integer('address_id').unsigned().references('id').inTable('address').notNullable()
+      table.integer('address_id').unsigned().references('id').inTable('address')
       table.string('primary_picture')
       table.integer('people_max')
       table.integer('people_min')

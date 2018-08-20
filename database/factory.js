@@ -1,4 +1,4 @@
-/* eslint-disable arrow-body-style */
+/* eslint-disable arrow-body-style,max-len */
 /*
 |--------------------------------------------------------------------------
 | Factory
@@ -25,14 +25,15 @@ Factory.blueprint('App/Models/Party', (faker, i, data) => {
 
   const images = ['solomun-ibiza-2015-destino.jpg', 'ibiza.jpg', 'summer.jpg', 'party.jpg']
 
+  const bool = faker.bool()
   const paths = images.map(name => path + name)
   return {
     admin_id: data.admin.id,
-    address_id: data.address.id,
-    place_id: data.place.id,
+    address_id: bool ? data.address.id : null,
+    place_id: bool ? null : data.place.id,
     primary_picture: faker.pickone(paths),
     title: faker.pickone(['Шашлыки', 'Квартира', 'Дача', 'Пляж', 'На площади', 'Тематическая', 'Автомобили', 'Другое']),
-    type: faker.pickone(['Шашлыки', 'Квартира', 'Дача', 'Пляж', 'На площади', 'Тематическая', 'Автомобили', 'Другое']),
+    type: faker.pickone(['apartment', 'beach', 'area', 'thematic', 'picnic', 'other']),
     status: faker.pickone(['сбор участников', 'ожидание', 'проводится']),
     private_party: faker.bool(),
     start_time: faker.date({ year: 2018 }),
@@ -70,11 +71,11 @@ Factory.blueprint('App/Models/Place', (faker, i, data) => {
 
   return {
     admin_id: data.admin.id,
-    title: faker.pickone(['Пески', 'Ждановский пляж', 'Карьер', 'На волне', 'Радуга']),
+    title: faker.pickone(['Пески', 'Ждановский пляж', 'Карьер', 'На волне', 'Радуга', 'Дерижабль', 'Мост', 'Охота на облака', 'Каписталист', 'Парк на космосе']),
     address_id: data.address.id,
     primary_picture: faker.pickone(paths),
     telegram_url: 'https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ',
-    type: faker.pickone(['Шашлыки', 'Квартира', 'Дача', 'Пляж', 'На площади', 'Тематическая', 'Автомобили', 'Другое']),
+    type: faker.pickone(['apartment', 'beach', 'area', 'thematic', 'picnic', 'other']),
     description: `
     Очень хорошее место что бы бесплатно отдохнуть на природе. 
     Пожарить шашлыков, весело провести время на майские праздники.
