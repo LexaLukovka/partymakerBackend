@@ -6,7 +6,7 @@ class Place extends Model {
   static get table() {
     return 'places'
   }
-
+  
   admin() {
     return this.belongsTo('App/Models/User', 'admin_id', 'id')
   }
