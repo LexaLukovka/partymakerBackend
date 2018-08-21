@@ -41,10 +41,12 @@ class PartyController {
       Party.makeUsingPlace(place, {
         admin_id: auth.user.id,
         title: req.title,
+        type: req.type,
         pictures: req.pictures,
         telegram_url: req.telegram_url,
         description: req.description,
         start_time: req.start_time,
+        people_max: req.people_max,
         people_min: req.people_min,
         private_party: req.private_party,
       })
