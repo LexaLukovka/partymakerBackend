@@ -5,6 +5,7 @@ const Place = use('App/Models/Place')
  * Resourceful controller for interacting with places
  */
 class PlaceController {
+  // noinspection JSUnusedGlobalSymbols
   /**
    * Show a list of all places.
    * GET places
@@ -24,6 +25,7 @@ class PlaceController {
       .orderBy('updated_at', 'DESC')
       .fetch()
 
+
     return {
       status: 200,
       cursor,
@@ -39,6 +41,7 @@ class PlaceController {
   async store({ request, response }) {
   }
 
+  // noinspection JSUnusedGlobalSymbols
   /**
    * Display a single place.
    * GET places/:id
