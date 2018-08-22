@@ -15,16 +15,16 @@ class Party extends Model {
     return this.belongsTo('App/Models/User', 'admin_id', 'id')
   }
 
-  place() {
-    return this.belongsTo('App/Models/Place')
-  }
-
   address() {
     return this.belongsTo('App/Models/Address', 'address_id', 'id')
   }
 
   users() {
     return this.belongsToMany('App/Models/User')
+  }
+
+  place() {
+    return this.belongsTo('App/Models/Place')
   }
 
   pictures() {
