@@ -1,4 +1,11 @@
 /* eslint-disable no-console */
+const readline = require('readline')
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+})
+
 /*
 |--------------------------------------------------------------------------
 | PartySeeder
@@ -12,9 +19,9 @@
 const Factory = use('Factory')
 
 function printProgress(text) {
-  process.stdout.clearLine()
-  process.stdout.cursorTo(0)
-  process.stdout.write(`${text}`)
+  readline.clearLine(process.stdout, 0)
+  readline.cursorTo(process.stdout, 0, null)
+  rl.write(`${text}`)
 }
 
 class Seeder {
@@ -37,6 +44,7 @@ class Seeder {
       const users = await Factory.model('App/Models/User').createMany(5)
       const address = await Factory.model('App/Models/Address').create()
       const place = await Factory.model('App/Models/Place').create({ admin, address })
+      users.forEach(user => Factory.model('App/Models/PlaceRating').create({ user, place }))
       const party = await Factory.model('App/Models/Party').create({ admin, address, place })
       await party.users().attach([admin.id])
       await party.users().attach(users.map(user => user.id))

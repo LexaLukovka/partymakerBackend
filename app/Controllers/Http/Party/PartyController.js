@@ -2,9 +2,6 @@
 const Party = use('App/Models/Party')
 const Place = use('App/Models/Place')
 
-const Picture = use('App/Models/Picture')
-const Address = use('App/Models/Address')
-
 class PartyController {
   // noinspection JSUnusedGlobalSymbols
   async index({ request }) {
@@ -38,7 +35,7 @@ class PartyController {
 
     if (req.place_id) {
       const place = await Place.find(req.place_id)
-      Party.makeUsingPlace(place, {
+      await Party.makeUsingPlace(place, {
         admin_id: auth.user.id,
         title: req.title,
         type: req.type,
@@ -128,7 +125,7 @@ class PartyController {
     }
 
     return {
-      message: `Party ${party.title} updated `
+      message: `Party ${party.title} updated `,
     }
   }
 
@@ -139,7 +136,7 @@ class PartyController {
     party.delete()
 
     return {
-      message: `Party ${party.id} ${party.title} delete `
+      message: `Party ${party.id} ${party.title} deleted`,
     }
   }
 }

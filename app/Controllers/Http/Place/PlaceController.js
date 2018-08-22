@@ -28,7 +28,7 @@ class PlaceController {
       status: 200,
       cursor,
       total,
-      data: places
+      data: places,
     }
   }
 
@@ -44,7 +44,7 @@ class PlaceController {
    * GET places/:id
    */
   async show({ request, auth, params }) {
-    const place = await Place
+    const placeModel = await Place
       .query()
       .with('admin')
       .with('address')
@@ -52,9 +52,17 @@ class PlaceController {
       .where('id', params.id)
       .first()
 
+    const rating = await placeModel.rating().avg('rating as rating')
+
+    const place = placeModel.toJSON()
+    if (rating[0] && rating[0].rating) {
+      place.rating = parseFloat(rating[0].rating.toFixed(1))
+    } else {
+      place.rating = null
+    }
     return {
       status: 200,
-      data: place
+      data: place,
     }
   }
 
