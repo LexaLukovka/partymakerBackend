@@ -40,7 +40,7 @@ Factory.blueprint('App/Models/Party', (faker, i, data) => {
     people_max: faker.integer({ min: 10, max: 20 }),
     people_min: faker.integer({ min: 5, max: 10 }),
     telegram_url: 'https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ',
-    description: faker.paragraph({ sentences: 1 })
+    description: faker.paragraph({ sentences: 1 }),
   }
 })
 
@@ -62,6 +62,12 @@ Factory.blueprint('App/Models/Address', (faker) => ({
   lat: faker.latitude(),
   lng: faker.longitude(),
   placeId: null,
+}))
+
+Factory.blueprint('App/Models/PlaceRating', (chance, i, data) => ({
+  user_id: data.user.id,
+  place_id: data.place.id,
+  rating: chance.integer({ min: 3, max: 5 }),
 }))
 
 Factory.blueprint('App/Models/Food', (faker, i, data) => ({

@@ -52,6 +52,11 @@ Route.resource('party', 'Party/PartyController')
  * Places routes
  *
  * */
+
+Route.resource('places/:place_id/votes', 'Place/RatingController')
+  .apiOnly()
+  .middleware('auth')
+
 Route.resource('places', 'Place/PlaceController')
   .apiOnly()
   .middleware(SUD)

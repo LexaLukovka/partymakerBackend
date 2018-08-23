@@ -19,6 +19,10 @@ class Place extends Model {
     return this.belongsToMany('App/Models/User')
   }
 
+  rating() {
+    return this.hasMany('App/Models/PlaceRating')
+  }
+
   pictures() {
     return this.belongsToMany('App/Models/Picture')
   }
