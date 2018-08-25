@@ -34,7 +34,10 @@ class Seeder {
 
   async createUsers() {
     printProgress('creating users...')
-    const defaultUsers = await Promise.all(USERS.map(user => User.create(user)))
+    const defaultUsers = await Promise.all(USERS.map(user => User.create({
+      ...user,
+      avatar_url: `${Env.get('APP_URL')}${user.avatar_url}`,
+    })))
     const randomUsers = await Factory.model('App/Models/User').createMany(100)
 
     return [...defaultUsers, ...randomUsers]
