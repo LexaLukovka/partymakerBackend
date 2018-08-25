@@ -41,9 +41,6 @@ Route.resource('party/:party_id/users', 'Party/UserController')
   .apiOnly()
   .middleware('auth')
 
-Route.resource('party/:party_id/food', 'Party/FoodController')
-  .apiOnly()
-  .middleware(SUD)
 
 Route.resource('party', 'Party/PartyController')
   .validator(new Map([['party.store', 'Party/Store']]))

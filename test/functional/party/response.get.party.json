@@ -7,7 +7,6 @@
       "title": null,
       "status": "сбор участников",
       "admin_id": 2,
-      "primary_picture": "http://0.0.0.0:4000/images/party.jpg",
       "people_max": 17,
       "people_min": 5,
       "telegram_url": "https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ",

@@ -8,7 +8,6 @@ class PlaceSchema extends Schema {
       table.string('title')
       table.integer('admin_id').unsigned().references('id').inTable('users').notNullable()
       table.integer('address_id').unsigned().references('id').inTable('address').notNullable()
-      table.string('primary_picture')
       table.string('telegram_url')
       table.string('type').notNullable()
       table.string('description')
