@@ -81,7 +81,6 @@ class Seeder {
 
     return Array.from(new Array(20), async () => {
       const admin = this.chance.pickone(users)
-      console.log(admin.id)
       const address = await Factory.model('App/Models/Address').create()
       const party = await Factory.model('App/Models/Party').create({
         admin,
