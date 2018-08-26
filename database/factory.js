@@ -21,17 +21,11 @@ Factory.blueprint('App/Models/User', (faker) => ({
   password: 'qwerty123',
 }))
 Factory.blueprint('App/Models/Party', (faker, i, data) => {
-  const path = `${Env.get('APP_URL')}/images/`
-
-  const images = ['solomun-ibiza-2015-destino.jpg', 'ibiza.jpg', 'summer.jpg', 'party.jpg']
-
   const bool = faker.bool()
-  const paths = images.map(name => path + name)
   return {
     admin_id: data.admin.id,
     address_id: bool ? data.address.id : null,
     place_id: bool ? null : data.place.id,
-    primary_picture: faker.pickone(paths),
     title: faker.pickone(['Шашлыки', 'Квартира', 'Дача', 'Пляж', 'На площади', 'Тематическая', 'Автомобили', 'Другое']),
     type: faker.pickone(['apartment', 'beach', 'area', 'thematic', 'picnic', 'other']),
     status: faker.pickone(['сбор участников', 'ожидание', 'проводится']),
@@ -70,28 +64,11 @@ Factory.blueprint('App/Models/PlaceRating', (chance, i, data) => ({
   rating: chance.integer({ min: 3, max: 5 }),
 }))
 
-Factory.blueprint('App/Models/Food', (faker, i, data) => ({
-  user_id: data.user.id,
-  party_id: data.party.id,
-  title: faker.pickone(['Пицца', 'Бургеры', 'Фарш', 'Помидоры', 'Оругры']),
-  total: '2 коробки',
-  brand: faker.pickone(['Обычная', 'Селное', 'Красный', 'Зелень', 'Оругры']),
-  price: '50 грн',
-  bought: faker.bool(),
-}))
-
 Factory.blueprint('App/Models/Place', (faker, i, data) => {
-  const path = `${Env.get('APP_URL')}/images/`
-
-  const images = ['solomun-ibiza-2015-destino.jpg', 'ibiza.jpg', 'summer.jpg', 'party.jpg']
-
-  const paths = images.map(name => path + name)
-
   return {
     admin_id: data.admin.id,
     title: faker.pickone(['Пески', 'Ждановский пляж', 'Карьер', 'На волне', 'Радуга', 'Дирижабль', 'Мост', 'Охота на облака', 'Каписталист', 'Дубовий Гай']),
     address_id: data.address.id,
-    primary_picture: faker.pickone(paths),
     telegram_url: 'https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ',
     type: faker.pickone(['apartment', 'beach', 'area', 'thematic', 'picnic', 'other']),
     description: `

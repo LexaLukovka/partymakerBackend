@@ -8,7 +8,6 @@ class PlacePictureSchema extends Schema {
       table.increments()
       table.integer('place_id').unsigned().references('id').inTable('places').notNullable()
       table.integer('picture_id').unsigned().references('id').inTable('pictures').notNullable()
-      table.timestamps()
     })
   }
 

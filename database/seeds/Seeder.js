@@ -1,22 +1,21 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console,function-paren-newline,import/newline-after-import */
 const readline = require('readline')
+const USERS = require('./users')
+const Chance = require('chance')
+const PLACES = require('./places')
+const PARTIES = require('./parties')
+const Party = use('App/Models/Party')
+const Env = use('Env')
+const Picture = use('App/Models/Picture')
+const Place = use('App/Models/Place')
+const Address = use('App/Models/Address')
+const Factory = use('Factory')
+const User = use('App/Models/User')
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 })
-
-/*
-|--------------------------------------------------------------------------
-| PartySeeder
-|--------------------------------------------------------------------------
-|
-| Make use of the Factory instance to seed database with dummy data or
-| make use of Lucid models directly.
-|
-*/
-
-const Factory = use('Factory')
 
 function printProgress(text) {
   readline.clearLine(process.stdout, 0)
@@ -26,50 +25,70 @@ function printProgress(text) {
 
 class Seeder {
 
-  async addFood(party) {
-    const foodPromises = Array.from(new Array(2), async (v, i) => {
-      const user = await Factory.model('App/Models/User').create()
-      const food = await Factory.model('App/Models/Food').create({ user, party })
-      printProgress(`creating ${i + 1} food...`)
-
-      return food
-    })
-    printProgress('creating food item list...')
-    return Promise.all(foodPromises)
+  constructor() {
+    this.chance = new Chance()
+    this.createParties = this.createParties.bind(this)
+    this.createPlaces = this.createPlaces.bind(this)
+    this.createUsers = this.createUsers.bind(this)
   }
 
-  async createParties() {
-    const partyPromises = Array.from(new Array(5), async (val, index) => {
-      const admin = await Factory.model('App/Models/User').create()
-      const users = await Factory.model('App/Models/User').createMany(5)
-      const address = await Factory.model('App/Models/Address').create()
-      const place = await Factory.model('App/Models/Place').create({ admin, address })
-      users.forEach(user => Factory.model('App/Models/PlaceRating').create({ user, place }))
-      const party = await Factory.model('App/Models/Party').create({ admin, address, place })
-      await party.users().attach([admin.id])
-      await party.users().attach(users.map(user => user.id))
-      printProgress(`creating ${index + 1} party...`)
+  async createUsers() {
+    printProgress('creating users...')
+    const defaultUsers = await Promise.all(USERS.map(user => User.create({
+      ...user,
+      avatar_url: `${Env.get('APP_URL')}${user.avatar_url}`,
+    })))
+    const randomUsers = await Factory.model('App/Models/User').createMany(100)
 
-      return party
-    })
+    return [...defaultUsers, ...randomUsers]
+  }
 
+  createPlaces(users) {
+    printProgress('creating places...')
+    return Promise.all(PLACES.map(async place => {
+      const address = await Address.create(place.address)
+
+      const pictures = await Picture.add(place.pictures.map(picture => `${Env.get('APP_URL')}${picture}`))
+
+      const placeModel = await Place.create({
+        title: place.title,
+        telegram_url: place.telegram_url,
+        type: place.type,
+        description: place.description,
+        admin_id: (this.chance.pickone(users)).id,
+        address_id: address.id,
+      })
+
+      placeModel.pictures().attach(pictures)
+
+      return placeModel
+    }))
+  }
+
+  createParties(users) {
     printProgress('creating parties...')
-
-    return Promise.all(partyPromises)
+    return Promise.all(PARTIES.map(party =>
+      Party.make({
+        admin_id: (this.chance.pickone(users)).id,
+        ...party,
+      }),
+    ))
   }
 
   async run() {
-    printProgress(0)
-    const parties = await this.createParties()
+    const users = await this.createUsers()
+    const places = await this.createPlaces(users)
+    await this.createParties(users)
 
-    const foodPromises = Array.from(new Array(2), async (v, i) => this.addFood(parties[i]))
+    await Promise.all(
+      users.map(user =>
+        places.map(place =>
+          Factory.model('App/Models/PlaceRating').create({ user, place }),
+        ),
+      ),
+    )
 
-    printProgress('waiting for seed to complete...')
-
-    await Promise.all(foodPromises)
-    printProgress('done')
-
-    console.log('\n')
+    printProgress('Done. You can stop the app Ctrl+C \n')
   }
 }
 
