@@ -27,7 +27,8 @@ class Seeder {
 
   constructor() {
     this.chance = new Chance()
-    this.createParties = this.createParties.bind(this)
+    this.createRealParties = this.createRealParties.bind(this)
+    this.createFakeParties = this.createFakeParties.bind(this)
     this.createPlaces = this.createPlaces.bind(this)
     this.createUsers = this.createUsers.bind(this)
   }
@@ -65,8 +66,8 @@ class Seeder {
     }))
   }
 
-  createParties(users) {
-    printProgress('creating parties...')
+  createRealParties(users) {
+    printProgress('creating real parties...')
     return Promise.all(PARTIES.map(party =>
       Party.make({
         admin_id: (this.chance.pickone(users)).id,
@@ -75,10 +76,31 @@ class Seeder {
     ))
   }
 
+  createFakeParties(users, places) {
+    printProgress('creating fake parties...')
+
+    return Array.from(new Array(20), async () => {
+      const admin = this.chance.pickone(users)
+      console.log(admin.id)
+      const address = await Factory.model('App/Models/Address').create()
+      const party = await Factory.model('App/Models/Party').create({
+        admin,
+        address,
+        place: this.chance.pickone(places),
+      })
+      await party.users().attach([admin.id])
+      await party.users().attach(users.map(user => user.id))
+
+      return party
+    })
+
+  }
+
   async run() {
     const users = await this.createUsers()
     const places = await this.createPlaces(users)
-    await this.createParties(users)
+    await this.createRealParties(users)
+    await this.createFakeParties(users, places)
 
     await Promise.all(
       users.map(user =>
