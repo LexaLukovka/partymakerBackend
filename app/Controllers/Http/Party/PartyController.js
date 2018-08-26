@@ -1,6 +1,7 @@
 /* eslint-disable radix,object-shorthand */
 const Party = use('App/Models/Party')
 const Place = use('App/Models/Place')
+const Picture = use('App/Models/Picture')
 
 class PartyController {
   // noinspection JSUnusedGlobalSymbols
@@ -126,6 +127,19 @@ class PartyController {
 
     return {
       message: `Party ${party.title} updated `,
+    }
+  }
+
+  // noinspection JSUnusedGlobalSymbols
+  async updatePictures({ request, params }) {
+    const images = await Picture.add(request.all().pictures)
+    const party = await Party.find(params.id)
+
+    await party.pictures()
+      .attach(images)
+
+    return {
+      message: `Party ${party.title} updated pictures `,
     }
   }
 
