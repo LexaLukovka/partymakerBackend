@@ -66,3 +66,5 @@ Route.put('settings', 'SettingsController.update')
 
 Route.resource('upload', 'UploadController')
 
+
+Route.delete('pictures/:picture', 'Party/PicturesController.destroy')
