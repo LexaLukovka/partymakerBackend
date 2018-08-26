@@ -96,6 +96,12 @@ class Party extends Model {
     await party.pictures()
       .attach(images)
   }
+
+  static async update(id, values) {
+
+
+    return Party.query().where('id', id).update(values)
+  }
 }
 
 module.exports = Party

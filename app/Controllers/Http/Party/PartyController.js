@@ -26,7 +26,7 @@ class PartyController {
       status: 200,
       cursor,
       total,
-      data: parties
+      data: parties,
     }
   }
 
@@ -67,7 +67,7 @@ class PartyController {
     return {
       status: 200,
       message: `${req.title} created`,
-      success: true
+      success: true,
     }
   }
 
@@ -84,47 +84,37 @@ class PartyController {
 
     return {
       status: 200,
-      data: party
+      data: party,
     }
   }
 
   // noinspection JSUnusedGlobalSymbols
   async update({ request, auth, params }) {
 
-    const partyValues = request.only([
-      'title',
-      'type',
-      'telegram_url',
-      'description',
-      'people_max',
-      'people_min',
-      'start_time',
-      'private_party',
-    ])
+    const req = request.all()
 
-    await Party.query()
-      .where('id', params.id)
-      .update(partyValues)
+    await Party.update(params.id, {
+      title: req.title,
+      type: req.type,
+      telegram_url: req.telegram_url,
+      description: req.description,
+      people_max: req.people_max,
+      people_min: req.people_min,
+      start_time: req.start_time,
+      private_party: req.private_party,
+    })
 
     const party = await Party.find(params.id)
 
-    const { address, district } = request.only(['address', 'district'])
+    if (req.address) await party.address().update(req.address)
 
-    if (address) {
-      await party.address()
-        .update({
-          address: address.address,
-          lat: address.lat,
-          lng: address.lng,
-          placeId: address.placeId,
-        })
-    }
+    const oldPictures = await party.pictures.fetch()
 
-    if (district) {
-      await party.address()
-        .update({ district })
-    }
+    const toRemove = req.pictures.filter(picture => oldPictures.find(picture))
 
+    const toAdd = oldPictures.filter(picture => req.pictures.find(picture))
+
+    debugger
     return {
       message: `Party ${party.title} updated `,
     }
