@@ -9,7 +9,8 @@ class SettingsController {
 
     const user = await User.find(auth.user.id)
 
-    return auth.withRefreshToken().generate(user, true)
+    return auth.withRefreshToken()
+      .generate(user, true)
   }
 }
 
