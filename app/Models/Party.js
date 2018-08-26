@@ -7,8 +7,8 @@ class Party extends Model {
     return ['address_id', 'user_id', 'place_id']
   }
 
-  static castDates(key, value) {
-    return value.toISOString()
+  getStartTime(value) {
+    return (new Date(value)).toString()
   }
 
   admin() {
