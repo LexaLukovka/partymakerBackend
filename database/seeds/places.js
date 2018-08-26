@@ -4,6 +4,13 @@ module.exports = [
     telegram_url: 'https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ',
     pictures: [
       '/images/places/kichkas_beach.jpg',
+      '/images/places/kichkas_beach2.jpg',
+      '/images/places/kichkas_beach3.jpg',
+      '/images/places/kichkas_beach4.jpg',
+      '/images/places/kichkas_beach5.jpg',
+      '/images/places/kichkas_beach6.jpg',
+      '/images/places/kichkas_beach7.jpg',
+      '/images/places/kichkas_beach8.jpg',
     ],
     address: {
       address: 'Лейтенанта Шмидта, 185, Запорожье, Запорожская область, 69000',
