@@ -99,7 +99,6 @@ class Party extends Model {
 
   static async update(id, values) {
 
-
     return Party.query().where('id', id).update(values)
   }
 }

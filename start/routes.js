@@ -61,16 +61,6 @@ Route.resource('places', 'Place/PlaceController')
   .apiOnly()
   .middleware(SUD)
 
-/**
- *
- * Pictures routes add/delete for party
- *
- * */
-
-Route.post('party/:id/pictures', 'Party/PartyController.updatePictures')
-
-Route.delete('pictures/:picture', 'Party/PicturesController.destroy')
-
 
 Route.put('settings', 'SettingsController.update')
   .middleware('auth')

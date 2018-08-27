@@ -1,4 +1,7 @@
 /* eslint-disable radix,object-shorthand */
+const difference = require('lodash/difference')
+const intersection = require('lodash/intersection')
+
 const Party = use('App/Models/Party')
 const Place = use('App/Models/Place')
 const Picture = use('App/Models/Picture')
@@ -108,28 +111,24 @@ class PartyController {
 
     if (req.address) await party.address().update(req.address)
 
-    const oldPictures = await party.pictures.fetch()
+    if (req.pictures) {
+      const oldPicturesModels = (await party.pictures().fetch()).toJSON()
+      const oldPictures = oldPicturesModels.map(picture => picture.url)
 
-    const toRemove = req.pictures.filter(picture => oldPictures.find(picture))
+      const toAdd = difference(req.pictures, oldPictures)
+      const toRemove = difference(oldPictures, intersection(req.pictures, oldPictures))
 
-    const toAdd = oldPictures.filter(picture => req.pictures.find(picture))
+      const toRemoveModels = await Picture.remove(toRemove)
+      const toAddModels = await Picture.add(toAdd)
 
-    debugger
+      await party.pictures().attach(toAddModels.map(p => p.id))
+      await party.pictures().detach(toRemoveModels.map(p => p.id))
+
+      await Picture.clean()
+    }
+
     return {
       message: `Party ${party.title} updated `,
-    }
-  }
-
-  // noinspection JSUnusedGlobalSymbols
-  async updatePictures({ request, params }) {
-    const images = await Picture.add(request.all().pictures)
-    const party = await Party.find(params.id)
-
-    await party.pictures()
-      .attach(images)
-
-    return {
-      message: `Party ${party.title} updated pictures `,
     }
   }
 
