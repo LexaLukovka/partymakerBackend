@@ -67,10 +67,8 @@ class Party extends Model {
       private_party: data.private_party,
     })
 
-    await party.users()
-      .attach([data.admin_id])
-    await party.pictures()
-      .attach(images)
+    await party.users().attach([data.admin_id])
+    await party.pictures().attach(images.map(image => image.id))
   }
 
   static async makeUsingPlace(place, data) {
