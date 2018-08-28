@@ -1,16 +1,30 @@
 const User = use('App/Models/User')
+const Hash = use('Hash')
 
 class SettingsController {
   // noinspection JSUnusedGlobalSymbols
   async update({ request, auth }) {
+
+    const req = request.all()
+
+    const updatePassword = async () => {
+      if (!(req.password && req.oldPassword)) return undefined
+      const isSame = await Hash.verify(req.oldPassword, auth.user.password)
+      return isSame ? req.password : undefined
+    }
+
     await User.query()
       .where('id', auth.user.id)
-      .update(request.all())
+      .update({
+        name: req.name,
+        email: req.email,
+        phone: req.phone,
+        password: await updatePassword()
+      })
 
-    const user = await User.find(auth.user.id)
 
     return auth.withRefreshToken()
-      .generate(user, true)
+      .generate(await User.find(auth.user.id), true)
   }
 }
 
