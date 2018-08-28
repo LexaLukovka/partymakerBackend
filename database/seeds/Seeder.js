@@ -39,7 +39,8 @@ class Seeder {
       ...user,
       avatar_url: `${Env.get('APP_URL')}${user.avatar_url}`,
     })))
-    const randomUsers = await Factory.model('App/Models/User').createMany(100)
+    const randomUsers = await Factory.model('App/Models/User')
+      .createMany(100)
 
     return [...defaultUsers, ...randomUsers]
   }
@@ -60,7 +61,8 @@ class Seeder {
         address_id: address.id,
       })
 
-      placeModel.pictures().attach(pictures)
+      placeModel.pictures()
+        .attach(pictures.map(p => p.id))
 
       return placeModel
     }))
@@ -81,14 +83,18 @@ class Seeder {
 
     return Array.from(new Array(20), async () => {
       const admin = this.chance.pickone(users)
-      const address = await Factory.model('App/Models/Address').create()
-      const party = await Factory.model('App/Models/Party').create({
-        admin,
-        address,
-        place: this.chance.pickone(places),
-      })
-      await party.users().attach([admin.id])
-      await party.users().attach(users.map(user => user.id))
+      const address = await Factory.model('App/Models/Address')
+        .create()
+      const party = await Factory.model('App/Models/Party')
+        .create({
+          admin,
+          address,
+          place: this.chance.pickone(places),
+        })
+      await party.users()
+        .attach([admin.id])
+      await party.users()
+        .attach(users.map(user => user.id))
 
       return party
     })
