@@ -1,5 +1,5 @@
 {
-  "name": "Partymaker",
+  "name": "partymaker",
   "version": "4.1.0",
   "adonis-version": "4.1.0",
   "description": "The fullstack application boilerplate for Adonisjs",
@@ -41,6 +41,7 @@
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.8.2",
+    "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "sqlite3": "^4.0.0",
     "url-parse": "^1.4.3"

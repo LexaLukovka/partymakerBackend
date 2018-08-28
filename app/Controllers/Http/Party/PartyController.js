@@ -1,4 +1,7 @@
 /* eslint-disable radix,object-shorthand */
+const difference = require('lodash/difference')
+const intersection = require('lodash/intersection')
+
 const Party = use('App/Models/Party')
 const Place = use('App/Models/Place')
 const Picture = use('App/Models/Picture')
@@ -26,7 +29,7 @@ class PartyController {
       status: 200,
       cursor,
       total,
-      data: parties
+      data: parties,
     }
   }
 
@@ -67,7 +70,7 @@ class PartyController {
     return {
       status: 200,
       message: `${req.title} created`,
-      success: true
+      success: true,
     }
   }
 
@@ -84,62 +87,48 @@ class PartyController {
 
     return {
       status: 200,
-      data: party
+      data: party,
     }
   }
 
   // noinspection JSUnusedGlobalSymbols
   async update({ request, auth, params }) {
 
-    const partyValues = request.only([
-      'title',
-      'type',
-      'telegram_url',
-      'description',
-      'people_max',
-      'people_min',
-      'start_time',
-      'private_party',
-    ])
+    const req = request.all()
 
-    await Party.query()
-      .where('id', params.id)
-      .update(partyValues)
+    await Party.update(params.id, {
+      title: req.title,
+      type: req.type,
+      telegram_url: req.telegram_url,
+      description: req.description,
+      people_max: req.people_max,
+      people_min: req.people_min,
+      start_time: req.start_time,
+      private_party: req.private_party,
+    })
 
     const party = await Party.find(params.id)
 
-    const { address, district } = request.only(['address', 'district'])
+    if (req.address) await party.address().update(req.address)
 
-    if (address) {
-      await party.address()
-        .update({
-          address: address.address,
-          lat: address.lat,
-          lng: address.lng,
-          placeId: address.placeId,
-        })
-    }
+    if (req.pictures) {
+      const oldPicturesModels = (await party.pictures().fetch()).toJSON()
+      const oldPictures = oldPicturesModels.map(picture => picture.url)
 
-    if (district) {
-      await party.address()
-        .update({ district })
+      const toAdd = difference(req.pictures, oldPictures)
+      const toRemove = difference(oldPictures, intersection(req.pictures, oldPictures))
+
+      const toRemoveModels = await Picture.remove(toRemove)
+      const toAddModels = await Picture.add(toAdd)
+
+      await party.pictures().attach(toAddModels.map(p => p.id))
+      await party.pictures().detach(toRemoveModels.map(p => p.id))
+
+      await Picture.clean()
     }
 
     return {
       message: `Party ${party.title} updated `,
-    }
-  }
-
-  // noinspection JSUnusedGlobalSymbols
-  async updatePictures({ request, params }) {
-    const images = await Picture.add(request.all().pictures)
-    const party = await Party.find(params.id)
-
-    await party.pictures()
-      .attach(images)
-
-    return {
-      message: `Party ${party.title} updated pictures `,
     }
   }
 
