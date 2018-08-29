@@ -89,10 +89,8 @@ class Party extends Model {
       private_party: data.private_party,
     })
 
-    await party.users()
-      .attach([data.admin_id])
-    await party.pictures()
-      .attach(images)
+    await party.users().attach([data.admin_id])
+    await party.pictures().attach(images.map(p => p.id))
   }
 
   static async update(id, values) {
