@@ -1,9 +1,9 @@
 /* eslint-disable no-console,function-paren-newline,import/newline-after-import */
-const readline = require('readline')
 const USERS = require('./users')
 const Chance = require('chance')
 const PLACES = require('./places')
 const PARTIES = require('./parties')
+const flatten = require('lodash/flattenDeep')
 const Party = use('App/Models/Party')
 const Env = use('Env')
 const Picture = use('App/Models/Picture')
@@ -12,15 +12,9 @@ const Address = use('App/Models/Address')
 const Factory = use('Factory')
 const User = use('App/Models/User')
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-})
-
 function printProgress(text) {
-  readline.clearLine(process.stdout, 0)
-  readline.cursorTo(process.stdout, 0, null)
-  rl.write(`${text}`)
+  console.log(text)
+  return text
 }
 
 class Seeder {
@@ -40,7 +34,7 @@ class Seeder {
       avatar_url: `${Env.get('APP_URL')}${user.avatar_url}`,
     })))
     const randomUsers = await Factory.model('App/Models/User')
-      .createMany(100)
+      .createMany(5)
 
     return [...defaultUsers, ...randomUsers]
   }
@@ -61,7 +55,7 @@ class Seeder {
         address_id: address.id,
       })
 
-      placeModel.pictures()
+      await placeModel.pictures()
         .attach(pictures.map(p => p.id))
 
       return placeModel
@@ -81,7 +75,7 @@ class Seeder {
   createFakeParties(users, places) {
     printProgress('creating fake parties...')
 
-    return Array.from(new Array(20), async () => {
+    const promises = Array.from(new Array(20), async () => {
       const admin = this.chance.pickone(users)
       const address = await Factory.model('App/Models/Address')
         .create()
@@ -99,6 +93,21 @@ class Seeder {
       return party
     })
 
+    return Promise.all(flatten(promises))
+  }
+
+  createFakeRating(user, place) {
+    return Factory.model('App/Models/PlaceRating').create({
+      user,
+      place
+    })
+  }
+
+  createFakeRatings(users, places) {
+    printProgress('creating fake ratings...')
+    const promises = users.map(user => places.map(place => this.createFakeRating(user, place)))
+
+    return Promise.all(flatten(promises))
   }
 
   async run() {
@@ -106,16 +115,9 @@ class Seeder {
     const places = await this.createPlaces(users)
     await this.createRealParties(users)
     await this.createFakeParties(users, places)
+    await this.createFakeRatings(users, places)
 
-    await Promise.all(
-      users.map(user =>
-        places.map(place =>
-          Factory.model('App/Models/PlaceRating').create({ user, place }),
-        ),
-      ),
-    )
-
-    printProgress('Done. You can stop the app Ctrl+C \n')
+    return true
   }
 }
 
