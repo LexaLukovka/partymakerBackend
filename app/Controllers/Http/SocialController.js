@@ -29,6 +29,7 @@ class SocialController {
 
       return 'Logged in'
     } catch (error) {
+      console.error(error)
       return 'Unable to authenticate. Try again later'
     }
   }
