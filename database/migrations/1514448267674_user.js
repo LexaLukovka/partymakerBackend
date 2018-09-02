@@ -11,6 +11,7 @@ class UserSchema extends Schema {
       table.string('avatar_url', 254)
       table.string('provider_id').nullable()
       table.string('provider').nullable()
+      table.string('token').nullable()
       table.timestamps()
     })
   }
