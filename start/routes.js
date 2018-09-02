@@ -14,13 +14,12 @@ Route.get('/', () => 'Server is running')
  * Authentication routes
  *
  * */
-Route.post('login', 'AuthController.login')
-  .validator('Auth/Login')
+Route.post('login', 'AuthController.login').validator('Auth/Login')
+Route.post('register', 'AuthController.register').validator('Auth/Register')
 
-Route.post('register', 'AuthController.register')
-  .validator('Auth/Register')
+Route.get('get-login-redirect/:provider', 'SocialController.getRedirectUrl')
 
-Route.get('login/facebook', 'SocialController.redirect')
+Route.get('login/:provider', 'SocialController.redirect')
 Route.get('facebook/callback', 'SocialController.callback')
 /**
  *

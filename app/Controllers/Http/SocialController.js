@@ -3,9 +3,8 @@
 const User = use('App/Models/User')
 
 class SocialController {
-  async redirect({ ally }) {
-    await ally.driver('facebook')
-      .redirect()
+  async redirect({ ally,params }) {
+    return await ally.driver(params.provider).redirect()
   }
 
   async callback({ ally, auth }) {
@@ -17,12 +16,12 @@ class SocialController {
       const userDetails = {
         email: fbUser.getEmail(),
         token: fbUser.getAccessToken(),
-        login_source: 'facebook'
+        login_source: 'facebook',
       }
 
       // search for existing user
       const whereClause = {
-        email: fbUser.getEmail()
+        email: fbUser.getEmail(),
       }
 
       const user = await User.findOrCreate(whereClause, userDetails)
