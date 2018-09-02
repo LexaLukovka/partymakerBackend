@@ -16,7 +16,7 @@ class SocialController {
       const userDetails = {
         email: fbUser.getEmail(),
         token: fbUser.getAccessToken(),
-        login_source: params.provider,
+        provider: params.provider,
       }
 
       // search for existing user
