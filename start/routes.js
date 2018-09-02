@@ -20,7 +20,7 @@ Route.post('register', 'AuthController.register').validator('Auth/Register')
 Route.get('get-login-redirect/:provider', 'SocialController.getRedirectUrl')
 
 Route.get('login/:provider', 'SocialController.redirect')
-Route.get('facebook/callback', 'SocialController.callback')
+Route.get('/authenticated/:provider/', 'SocialController.callback')
 /**
  *
  * User routes

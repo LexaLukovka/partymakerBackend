@@ -4,7 +4,7 @@ const User = use('App/Models/User')
 
 class SocialController {
   async redirect({ ally,params }) {
-    return await ally.driver(params.provider).redirect()
+    await ally.driver(params.provider).redirect()
   }
 
   async callback({ ally, auth }) {
