@@ -14,9 +14,11 @@ class SocialController {
 
       // user details to be saved
       const userDetails = {
+        name: fbUser.getName(),
         email: fbUser.getEmail(),
         token: fbUser.getAccessToken(),
         provider: params.provider,
+        avatar_url: fbUser.getAvatar()
       }
 
       // search for existing user
