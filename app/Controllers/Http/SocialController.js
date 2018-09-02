@@ -27,9 +27,7 @@ class SocialController {
       }
 
       const user = await User.findOrCreate(whereClause, userDetails)
-      await auth.login(user)
-
-      return 'Logged in'
+      return auth.withRefreshToken().generate(user, true)
     } catch (error) {
       console.error(error)
       return 'Unable to authenticate. Try again later'
