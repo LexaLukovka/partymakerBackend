@@ -1,7 +1,6 @@
 'use strict'
 
 const Helpers = use('Helpers')
-const Env = use('Env')
 
 function generateName(extension) {
   return `${new Date().getTime()}.${extension}`
@@ -20,7 +19,7 @@ class UploadController {
 
     if (!profilePics.moved()) return [profilePics.error()]
 
-    return { url: `${Env.get('APP_URL')}/uploads/${name}` }
+    return { url: `/uploads/${name}` }
   }
 }
 

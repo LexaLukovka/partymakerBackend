@@ -1,5 +1,6 @@
 'use strict'
 
+const Env = use('Env')
 const Hash = use('Hash')
 const Model = use('Model')
 
@@ -28,6 +29,11 @@ class User extends Model {
    *
    * @return {Object}
    */
+
+  getAvatarUrl(url) {
+    if (url.includes('//')) return url
+    return `${Env.get('APP_URL')}${url}`
+  }
 
   static get hidden() {
     return ['created_at', 'updated_at', 'password']

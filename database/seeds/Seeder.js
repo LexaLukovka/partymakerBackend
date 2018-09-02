@@ -5,7 +5,6 @@ const PLACES = require('./places')
 const PARTIES = require('./parties')
 const flatten = require('lodash/flattenDeep')
 const Party = use('App/Models/Party')
-const Env = use('Env')
 const Picture = use('App/Models/Picture')
 const Place = use('App/Models/Place')
 const Address = use('App/Models/Address')
@@ -29,10 +28,7 @@ class Seeder {
 
   async createUsers() {
     printProgress('creating users...')
-    const defaultUsers = await Promise.all(USERS.map(user => User.create({
-      ...user,
-      avatar_url: `${Env.get('APP_URL')}${user.avatar_url}`,
-    })))
+    const defaultUsers = await Promise.all(USERS.map(user => User.create({ ...user })))
     const randomUsers = await Factory.model('App/Models/User')
       .createMany(5)
 
@@ -44,7 +40,7 @@ class Seeder {
     return Promise.all(PLACES.map(async place => {
       const address = await Address.create(place.address)
 
-      const pictures = await Picture.add(place.pictures.map(picture => `${Env.get('APP_URL')}${picture}`))
+      const pictures = await Picture.add(place.pictures.map(picture => picture))
 
       const placeModel = await Place.create({
         title: place.title,
@@ -55,8 +51,7 @@ class Seeder {
         address_id: address.id,
       })
 
-      await placeModel.pictures()
-        .attach(pictures.map(p => p.id))
+      await placeModel.pictures().attach(pictures.map(p => p.id))
 
       return placeModel
     }))
@@ -64,11 +59,10 @@ class Seeder {
 
   createRealParties(users) {
     printProgress('creating real parties...')
-    return Promise.all(PARTIES.map(party =>
-      Party.make({
-        admin_id: (this.chance.pickone(users)).id,
-        ...party,
-      }),
+    return Promise.all(PARTIES.map(party => Party.make({
+      admin_id: (this.chance.pickone(users)).id,
+      ...party,
+    }),
     ))
   }
 
@@ -77,18 +71,22 @@ class Seeder {
 
     const promises = Array.from(new Array(20), async () => {
       const admin = this.chance.pickone(users)
-      const address = await Factory.model('App/Models/Address')
-        .create()
-      const party = await Factory.model('App/Models/Party')
-        .create({
-          admin,
-          address,
-          place: this.chance.pickone(places),
-        })
-      await party.users()
-        .attach([admin.id])
-      await party.users()
-        .attach(users.map(user => user.id))
+      const address = await Factory.model('App/Models/Address').create()
+      const party = await Factory.model('App/Models/Party').create({
+        admin,
+        address,
+        place: this.chance.pickone(places),
+      })
+
+      const pictures = await Picture.add([
+        '/images/summer.jpg',
+        '/images/solomun-ibiza-2015-destino.jpg',
+        '/images/ibiza.jpg',
+      ])
+
+      await party.pictures().attach(pictures.map(p => p.id))
+      await party.users().attach([admin.id])
+      await party.users().attach(users.map(user => user.id))
 
       return party
     })
@@ -97,10 +95,7 @@ class Seeder {
   }
 
   createFakeRating(user, place) {
-    return Factory.model('App/Models/PlaceRating').create({
-      user,
-      place
-    })
+    return Factory.model('App/Models/PlaceRating').create({ user, place })
   }
 
   createFakeRatings(users, places) {
