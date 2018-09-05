@@ -9,7 +9,7 @@ class SocialController {
     const userDetails = {
       name: req.name,
       email: req.email,
-      token: req.accessToken,
+      provider_token: req.accessToken,
       provider: 'facebook',
       avatar_url: req.picture.data.url,
     }
@@ -25,7 +25,7 @@ class SocialController {
     const userDetails = {
       name: req.profileObj.name,
       email: req.profileObj.email,
-      token: req.accessToken,
+      provider_token: req.accessToken,
       provider: 'google',
       avatar_url: req.profileObj.imageUrl
     }
