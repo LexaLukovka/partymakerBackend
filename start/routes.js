@@ -17,33 +17,23 @@ Route.get('/', () => 'Server is running')
 Route.post('login', 'AuthController.login').validator('Auth/Login')
 Route.post('register', 'AuthController.register').validator('Auth/Register')
 
-Route.get('get-login-redirect/:provider', 'SocialController.getRedirectUrl')
-
-Route.get('login/:provider', 'SocialController.redirect')
-Route.get('/authenticated/:provider/', 'SocialController.callback')
+Route.post('login/facebook', 'SocialController.facebook')
+Route.post('login/google', 'SocialController.google')
 /**
  *
  * User routes
  *
  * */
 Route.resource('user/:id', 'User/UserController')
-  .apiOnly()
-
 Route.resource('user/:id/parties', 'User/PartyController')
-  .apiOnly()
 /**
  *
  * Party routes
  *`
  * */
-Route.resource('party/:party_id/users', 'Party/UserController')
-  .apiOnly()
-  .middleware('auth')
-
-
+Route.resource('party/:party_id/users', 'Party/UserController').middleware('auth')
 Route.resource('party', 'Party/PartyController')
   .validator(new Map([['party.store', 'Party/Store']]))
-  .apiOnly()
   .middleware(SUD)
 
 /**
@@ -52,16 +42,9 @@ Route.resource('party', 'Party/PartyController')
  *
  * */
 
-Route.resource('places/:place_id/votes', 'Place/RatingController')
-  .apiOnly()
-  .middleware('auth')
+Route.resource('places/:place_id/votes', 'Place/RatingController').middleware('auth')
+Route.resource('places', 'Place/PlaceController').middleware(SUD)
 
-Route.resource('places', 'Place/PlaceController')
-  .apiOnly()
-  .middleware(SUD)
-
-
-Route.put('settings', 'SettingsController.update')
-  .middleware('auth')
+Route.put('settings', 'SettingsController.update').middleware('auth')
 
 Route.resource('upload', 'UploadController')

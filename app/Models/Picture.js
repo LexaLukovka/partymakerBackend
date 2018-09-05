@@ -22,6 +22,7 @@ class Picture extends Model {
   }
 
   getUrl(url) {
+    if (!url) return null
     if (url.includes('//')) return url
     return `${Env.get('APP_URL')}${url}`
   }

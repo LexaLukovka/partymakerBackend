@@ -1,37 +1,38 @@
-'use strict'
-
 const User = use('App/Models/User')
 
 class SocialController {
-  async redirect({ ally, params }) {
-    await ally.driver(params.provider).redirect()
+
+  async facebook({ auth, request }) {
+    const req = request.all()
+
+    // user details to be saved
+    const userDetails = {
+      name: req.name,
+      email: req.email,
+      token: req.accessToken,
+      provider: 'facebook',
+      avatar_url: req.picture.data.url,
+    }
+
+    // search for existing user
+    const user = await User.findOrCreate({ email: userDetails.email }, userDetails)
+    return auth.withRefreshToken().generate(user, true)
   }
 
-  async callback({ ally, auth, params }) {
-    try {
-      const fbUser = await ally.driver(params.provider)
-        .getUser()
-
-      // user details to be saved
-      const userDetails = {
-        name: fbUser.getName(),
-        email: fbUser.getEmail(),
-        token: fbUser.getAccessToken(),
-        provider: params.provider,
-        avatar_url: fbUser.getAvatar()
-      }
-
-      // search for existing user
-      const whereClause = {
-        email: fbUser.getEmail(),
-      }
-
-      const user = await User.findOrCreate(whereClause, userDetails)
-      return auth.withRefreshToken().generate(user, true)
-    } catch (error) {
-      console.error(error)
-      return 'Unable to authenticate. Try again later'
+  async google({ auth, request }) {
+    const req = request.all()
+    // user details to be saved
+    const userDetails = {
+      name: req.profileObj.name,
+      email: req.profileObj.email,
+      token: req.accessToken,
+      provider: 'google',
+      avatar_url: req.profileObj.imageUrl
     }
+
+    // search for existing user
+    const user = await User.findOrCreate({ email: userDetails.email }, userDetails)
+    return auth.withRefreshToken().generate(user, true)
   }
 }
 
