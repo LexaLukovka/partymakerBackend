@@ -2,3 +2,4 @@
 /node_modules
 /database/partymaker.sqlite
 .env
+/public/uploads/
