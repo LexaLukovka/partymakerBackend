@@ -4,7 +4,6 @@ const Hash = use('Hash')
 class SettingsController {
   // noinspection JSUnusedGlobalSymbols
   async update({ request, auth }) {
-
     const req = request.all()
 
     const updatePassword = async () => {
@@ -19,9 +18,9 @@ class SettingsController {
         name: req.name,
         email: req.email,
         phone: req.phone,
-        password: await updatePassword()
+        avatar_url: req.avatar_url,
+        password: await updatePassword(),
       })
-
 
     return auth.withRefreshToken()
       .generate(await User.find(auth.user.id), true)

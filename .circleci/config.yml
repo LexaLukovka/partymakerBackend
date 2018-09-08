@@ -1,0 +1,21 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+
+jobs:
+  build:
+    docker:
+    - image: circleci/node:10.6
+    working_directory: ~/repo
+    steps:
+    - add_ssh_keys:
+        fingerprints:
+        - "0c:70:9c:0c:c6:c1:06:98:a6:89:6b:56:7f:8b:40:3a"
+        - "d7:41:9f:bb:54:95:25:77:0d:fa:56:33:38:98:d7:61"
+        - "e3:88:19:c6:ff:e6:a4:c5:89:b6:3d:13:e4:df:49:ed"
+
+    - deploy:
+        name: digital-ocean
+        command: ssh -o "StrictHostKeyChecking no" dev@partymaker.zp.ua "cd ~/partymaker/backend; ./build.sh"
