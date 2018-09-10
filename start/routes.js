@@ -25,15 +25,15 @@ Route.post('login/google', 'SocialController.google')
  *
  * */
 Route.resource('user/:id', 'User/UserController')
-Route.resource('user/:id/parties', 'User/PartyController')
+Route.resource('user/:id/parties', 'User/GroupController')
 /**
  *
- * Party routes
+ * Group routes
  *`
  * */
-Route.resource('party/:party_id/users', 'Party/UserController').middleware('auth')
-Route.resource('party', 'Party/PartyController')
-  .validator(new Map([['party.store', 'Party/Store']]))
+Route.resource('group/:group_id/users', 'Group/UserController').middleware('auth')
+Route.resource('group', 'Group/GroupController')
+  .validator(new Map([['group.store', 'Group/Store']]))
   .middleware(SUD)
 
 /**

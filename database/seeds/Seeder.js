@@ -1,15 +1,24 @@
-/* eslint-disable no-console,function-paren-newline,import/newline-after-import */
+/*
+eslint-disable import/no-unresolved,
+import/no-extraneous-dependencies,
+import/newline-after-import,
+function-paren-newline,
+no-console,
+*/
+
 const USERS = require('./users')
 const Chance = require('chance')
 const PLACES = require('./places')
-const PARTIES = require('./parties')
+const GROUPS = require('./groups')
+const EVENTS = require('./events')
 const flatten = require('lodash/flattenDeep')
-const Party = use('App/Models/Party')
+const Group = use('App/Models/Group')
 const Picture = use('App/Models/Picture')
 const Place = use('App/Models/Place')
 const Address = use('App/Models/Address')
 const Factory = use('Factory')
 const User = use('App/Models/User')
+const Event = use('App/Models/Event')
 
 function printProgress(text) {
   console.log(text)
@@ -20,8 +29,8 @@ class Seeder {
 
   constructor() {
     this.chance = new Chance()
-    this.createRealParties = this.createRealParties.bind(this)
-    this.createFakeParties = this.createFakeParties.bind(this)
+    this.createRealGroups = this.createRealGroups.bind(this)
+    this.createFakeGroups = this.createFakeGroups.bind(this)
     this.createPlaces = this.createPlaces.bind(this)
     this.createUsers = this.createUsers.bind(this)
   }
@@ -29,8 +38,7 @@ class Seeder {
   async createUsers() {
     printProgress('creating users...')
     const defaultUsers = await Promise.all(USERS.map(user => User.create({ ...user })))
-    const randomUsers = await Factory.model('App/Models/User')
-      .createMany(5)
+    const randomUsers = await Factory.model('App/Models/User').createMany(5)
 
     return [...defaultUsers, ...randomUsers]
   }
@@ -44,8 +52,8 @@ class Seeder {
 
       const placeModel = await Place.create({
         title: place.title,
-        telegram_url: place.telegram_url,
-        type: place.type,
+        working_hours: place.working_hours,
+        price: place.price,
         description: place.description,
         admin_id: (this.chance.pickone(users)).id,
         address_id: address.id,
@@ -57,38 +65,56 @@ class Seeder {
     }))
   }
 
-  createRealParties(users) {
+  createEvents(users) {
+    printProgress('creating places...')
+    return Promise.all(EVENTS.map(async event => {
+      const address = await Address.create(event.address)
+
+      const pictures = await Picture.add(event.pictures.map(picture => picture))
+
+      const placeModel = await Event.create({
+        title: event.title,
+        starts_at: event.starts_at,
+        ends_at: event.ends_at,
+        price: event.price,
+        description: event.description,
+        admin_id: (this.chance.pickone(users)).id,
+        address_id: address.id,
+      })
+
+      await placeModel.pictures().attach(pictures.map(p => p.id))
+
+      return placeModel
+    }))
+  }
+
+  createRealGroups(users) {
     printProgress('creating real parties...')
-    return Promise.all(PARTIES.map(party => Party.make({
-      admin_id: (this.chance.pickone(users)).id,
-      ...party,
-    }),
+    return Promise.all(GROUPS.map(party =>
+      Group.make({
+        admin_id: (this.chance.pickone(users)).id,
+        ...party,
+      }),
     ))
   }
 
-  createFakeParties(users, places) {
+  createFakeGroups(users, places, events) {
     printProgress('creating fake parties...')
 
     const promises = Array.from(new Array(20), async () => {
       const admin = this.chance.pickone(users)
       const address = await Factory.model('App/Models/Address').create()
-      const party = await Factory.model('App/Models/Party').create({
+      const group = await Factory.model('App/Models/Group').create({
         admin,
         address,
         place: this.chance.pickone(places),
+        event: this.chance.pickone(events),
       })
 
-      const pictures = await Picture.add([
-        '/images/summer.jpg',
-        '/images/solomun-ibiza-2015-destino.jpg',
-        '/images/ibiza.jpg',
-      ])
+      await group.users().attach([admin.id])
+      await group.users().attach(users.map(user => user.id))
 
-      await party.pictures().attach(pictures.map(p => p.id))
-      await party.users().attach([admin.id])
-      await party.users().attach(users.map(user => user.id))
-
-      return party
+      return group
     })
 
     return Promise.all(flatten(promises))
@@ -108,8 +134,10 @@ class Seeder {
   async run() {
     const users = await this.createUsers()
     const places = await this.createPlaces(users)
-    await this.createRealParties(users)
-    await this.createFakeParties(users, places)
+    const events = await this.createEvents(users)
+
+    await this.createRealGroups(users)
+    await this.createFakeGroups(users, places, events)
     await this.createFakeRatings(users, places)
 
     return true

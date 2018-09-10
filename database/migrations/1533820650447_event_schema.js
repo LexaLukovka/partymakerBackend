@@ -3,7 +3,7 @@ const Schema = use('Schema')
 
 class PlaceSchema extends Schema {
   up() {
-    this.create('places', (table) => {
+    this.create('events', (table) => {
       table.increments()
       table.string('title')
       table.integer('admin_id').unsigned().references('id').inTable('users').notNullable()
@@ -11,6 +11,8 @@ class PlaceSchema extends Schema {
       table.string('working_hours')
       table.string('price')
       table.string('description')
+      table.dateTime('starts_at')
+      table.dateTime('ends_at')
       table.timestamps()
     })
   }

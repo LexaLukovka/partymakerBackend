@@ -27,18 +27,18 @@ class Picture extends Model {
     return `${Env.get('APP_URL')}${url}`
   }
 
-  static async upload(profilePics, party_id) {
+  static async upload(profilePics, group_id) {
     const uploads = Helpers.publicPath('uploads')
-    if (profilePics instanceof FileJar) { return await Picture._movePictures(profilePics, uploads, party_id) }
-    return await Picture._movePicture(profilePics, uploads, party_id)
+    if (profilePics instanceof FileJar) { return await Picture._movePictures(profilePics, uploads, group_id) }
+    return await Picture._movePicture(profilePics, uploads, group_id)
   }
 
-  static async _movePicture(profilePics, uploads, party_id) {
+  static async _movePicture(profilePics, uploads, group_id) {
     const name = generateName(profilePics.clientName, profilePics.subtype)
     await profilePics.move(uploads, { name })
 
     const picture = new Picture()
-    picture.party_id = party_id
+    picture.group_id = group_id
     picture.url = `/uploads/${name}`
     picture.save()
 
@@ -46,11 +46,11 @@ class Picture extends Model {
 
   }
 
-  static async _movePictures(profilePics, uploads, party_id) {
+  static async _movePictures(profilePics, uploads, group_id) {
     await profilePics.moveAll(uploads, (file) => {
       const name = generateName(file.clientName, file.subtype)
       const picture = new Picture()
-      picture.party_id = party_id
+      picture.group_id = group_id
       picture.url = `/uploads/${name}`
       picture.save()
       return ({ name })

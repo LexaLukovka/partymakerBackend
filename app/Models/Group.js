@@ -1,8 +1,7 @@
 const Model = use('Model')
 const Address = use('App/Models/Address')
-const Picture = use('App/Models/Picture')
 
-class Party extends Model {
+class Group extends Model {
   static get hidden() {
     return ['address_id', 'user_id', 'place_id']
   }
@@ -42,61 +41,38 @@ class Party extends Model {
   }
 
   static async make(data) {
-
-    const images = await Picture.add(data.pictures)
-
     const addressModel = await Address.create({
       address: data.address.address,
-      district: data.address.district,
       lng: data.address.lng,
       lat: data.address.lat,
       placeId: data.address.placeId,
     })
 
-    const party = await Party.create({
+    const group = await Group.create({
       title: data.title,
-      type: data.type,
-      status: 'сбор участников',
       admin_id: data.admin_id,
       address_id: addressModel.id,
-      telegram_url: data.telegram_url,
       start_time: data.start_time,
       description: data.description,
-      people_max: data.people_max,
-      people_min: data.people_min,
-      private_party: data.private_party,
     })
 
-    await party.users().attach([data.admin_id])
-    await party.pictures().attach(images.map(image => image.id))
+    await group.users().attach([data.admin_id])
   }
 
   static async makeUsingPlace(place, data) {
-
-    const images = await Picture.add(data.pictures)
-
-    const party = await Party.create({
+    const group = await Group.create({
       title: data.title,
-      type: data.type,
-      status: 'сбор участников',
       admin_id: data.admin_id,
       place_id: place.id,
-      telegram_url: data.telegram_url,
       start_time: data.start_time,
       description: data.description,
-      people_max: data.people_max,
-      people_min: data.people_min,
-      private_party: data.private_party,
     })
-
-    await party.users().attach([data.admin_id])
-    await party.pictures().attach(images.map(p => p.id))
+    await group.users().attach([data.admin_id])
   }
 
   static async update(id, values) {
-
-    return Party.query().where('id', id).update(values)
+    return Group.query().where('id', id).update(values)
   }
 }
 
-module.exports = Party
+module.exports = Group

@@ -2,18 +2,18 @@
 const difference = require('lodash/difference')
 const intersection = require('lodash/intersection')
 
-const Party = use('App/Models/Party')
+const Group = use('App/Models/Group')
 const Place = use('App/Models/Place')
 const Picture = use('App/Models/Picture')
 
-class PartyController {
+class GroupController {
   // noinspection JSUnusedGlobalSymbols
   async index({ request }) {
     const { cursor, ...params } = request.all()
 
-    const total = await Party.total() // count parties
+    const total = await Group.total() // count parties
 
-    const parties = await Party
+    const parties = await Group
       .query()
       .with('admin')
       .with('address')
@@ -39,31 +39,19 @@ class PartyController {
 
     if (req.place_id) {
       const place = await Place.find(req.place_id)
-      await Party.makeUsingPlace(place, {
+      await Group.makeUsingPlace(place, {
         admin_id: auth.user.id,
         title: req.title,
-        type: req.type,
-        pictures: req.pictures,
-        telegram_url: req.telegram_url,
         description: req.description,
         start_time: req.start_time,
-        people_max: req.people_max,
-        people_min: req.people_min,
-        private_party: req.private_party,
       })
     } else {
-      await Party.make({
+      await Group.make({
         admin_id: auth.user.id,
         address: req.address,
         title: req.title,
-        type: req.type,
-        pictures: req.pictures,
-        telegram_url: req.telegram_url,
         description: req.description,
         start_time: req.start_time,
-        people_max: req.people_max,
-        people_min: req.people_min,
-        private_party: req.private_party,
       })
     }
 
@@ -76,7 +64,7 @@ class PartyController {
 
   // noinspection JSUnusedGlobalSymbols
   async show({ request, auth, params }) {
-    const party = await Party
+    const group = await Group
       .query()
       .with('admin')
       .with('address')
@@ -87,7 +75,7 @@ class PartyController {
 
     return {
       status: 200,
-      data: party,
+      data: group,
     }
   }
 
@@ -96,23 +84,18 @@ class PartyController {
 
     const req = request.all()
 
-    await Party.update(params.id, {
+    await Group.update(params.id, {
       title: req.title,
-      type: req.type,
-      telegram_url: req.telegram_url,
       description: req.description,
-      people_max: req.people_max,
-      people_min: req.people_min,
       start_time: req.start_time,
-      private_party: req.private_party,
     })
 
-    const party = await Party.find(params.id)
+    const group = await Group.find(params.id)
 
-    if (req.address) await party.address().update(req.address)
+    if (req.address) await group.address().update(req.address)
 
     if (req.pictures) {
-      const oldPicturesModels = (await party.pictures().fetch()).toJSON()
+      const oldPicturesModels = (await group.pictures().fetch()).toJSON()
       const oldPictures = oldPicturesModels.map(picture => picture.url)
 
       const toAdd = difference(req.pictures, oldPictures)
@@ -121,28 +104,28 @@ class PartyController {
       const toRemoveModels = await Picture.remove(toRemove)
       const toAddModels = await Picture.add(toAdd)
 
-      await party.pictures().attach(toAddModels.map(p => p.id))
-      await party.pictures().detach(toRemoveModels.map(p => p.id))
+      await group.pictures().attach(toAddModels.map(p => p.id))
+      await group.pictures().detach(toRemoveModels.map(p => p.id))
 
       await Picture.clean()
     }
 
     return {
-      message: `Party ${party.title} updated `,
+      message: `Group ${group.title} updated `,
     }
   }
 
   // noinspection JSUnusedGlobalSymbols
   async destroy({ params }) {
-    const party = await Party.find(params.id)
+    const group = await Group.find(params.id)
 
-    party.delete()
+    group.delete()
 
     return {
-      message: `Party ${party.id} ${party.title} deleted`,
+      message: `Group ${group.id} ${group.title} deleted`,
     }
   }
 }
 
-module.exports = PartyController
+module.exports = GroupController
 

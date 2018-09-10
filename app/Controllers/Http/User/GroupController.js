@@ -1,8 +1,8 @@
-const Party = use('App/Models/Party')
+const Group = use('App/Models/Group')
 
-class PartyController {
+class GroupController {
   async index({ request, params }) {
-    const parties = await Party
+    const groups = await Group
       .query()
       .with('admin')
       .with('address')
@@ -13,9 +13,9 @@ class PartyController {
 
     return {
       status: 200,
-      data: parties
+      data: groups
     }
   }
 }
 
-module.exports = PartyController
+module.exports = GroupController

@@ -4,15 +4,15 @@ const Schema = use('Schema')
 
 class PartyUserSchema extends Schema {
   up() {
-    this.create('party_user', (table) => {
+    this.create('group_user', (table) => {
       table.increments()
-      table.integer('party_id').unsigned().references('id').inTable('parties').notNullable()
+      table.integer('group_id').unsigned().references('id').inTable('groups').notNullable()
       table.integer('user_id').unsigned().references('id').inTable('users').notNullable()
     })
   }
 
   down() {
-    this.drop('party_user')
+    this.drop('group_user')
   }
 }
 

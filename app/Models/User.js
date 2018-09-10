@@ -45,8 +45,8 @@ class User extends Model {
     return this.hasMany('App/Models/Token')
   }
 
-  parties() {
-    return this.hasMany('App/Models/Party', 'id', 'admin_id')
+  groups() {
+    return this.hasMany('App/Models/Group', 'id', 'admin_id')
   }
 }
 

@@ -20,26 +20,20 @@ Factory.blueprint('App/Models/User', (faker) => ({
   phone: faker.phone({ formatted: false }),
   password: 'qwerty123',
 }))
-Factory.blueprint('App/Models/Party', (faker, i, data) => {
+Factory.blueprint('App/Models/Group', (faker, i, data) => {
   const bool = faker.bool()
   return {
     admin_id: data.admin.id,
     address_id: bool ? data.address.id : null,
     place_id: bool ? null : data.place.id,
-    title: faker.pickone(['Шашлыки', 'Квартира', 'Дача', 'Пляж', 'На площади', 'Тематическая', 'Автомобили', 'Другое']),
-    type: faker.pickone(['apartment', 'beach', 'area', 'thematic', 'picnic', 'other']),
-    status: faker.pickone(['сбор участников', 'ожидание', 'проводится']),
-    private_party: faker.bool(),
+    event_id: bool ? null : data.event.id,
+    title: faker.pickone(['Идем шашлыки', 'Гуляем в квартире', 'Едем на дачу', 'Идем на пляж', 'На площади', 'Автомобили', 'Другое']),
     start_time: faker.date({ year: 2018 }),
-    people_max: faker.integer({ min: 10, max: 20 }),
-    people_min: faker.integer({ min: 5, max: 10 }),
-    telegram_url: 'https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ',
     description: faker.paragraph({ sentences: 1 }),
   }
 })
 
 Factory.blueprint('App/Models/Address', (faker) => ({
-  // address: faker.address(),
   address: faker.pickone([
     'вулиця Слобідська, Запоріжжя, Запорізька область, 69000',
     'Южный Південний Запорожье Запорожская область 69000',
@@ -52,7 +46,6 @@ Factory.blueprint('App/Models/Address', (faker) => ({
     '145V, проспект Соборний, 145В, Запорожье, Запорожская область, 69061',
     'Gleisser 1,, Запоріжжя, Запорізька область, 69000',
   ]),
-  district: faker.pickone(['Космос', 'Шевчик', 'Бабурка', 'Вознесеновский', 'Хортицкий', 'Коммунарский', 'Заводской']),
   lat: faker.latitude(),
   lng: faker.longitude(),
   placeId: null,
@@ -69,8 +62,8 @@ Factory.blueprint('App/Models/Place', (faker, i, data) => {
     admin_id: data.admin.id,
     title: faker.pickone(['Пески', 'Ждановский пляж', 'Карьер', 'На волне', 'Радуга', 'Дирижабль', 'Мост', 'Охота на облака', 'Каписталист', 'Дубовий Гай']),
     address_id: data.address.id,
-    telegram_url: 'https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ',
-    type: faker.pickone(['apartment', 'beach', 'area', 'thematic', 'picnic', 'other']),
+    working_hours: 'ПН-ПТ: 9:00 - 20:00',
+    price: 'Бесплатно',
     description: `
     Очень хорошее место что бы бесплатно отдохнуть на природе. 
     Пожарить шашлыков, весело провести время на майские праздники.
