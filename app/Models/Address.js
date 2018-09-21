@@ -21,6 +21,10 @@ class Address extends Model {
   group() {
     return this.hasOne('App/Models/Group')
   }
+
+  place() {
+    return this.hasOne('App/Models/Place')
+  }
 }
 
 module.exports = Address
