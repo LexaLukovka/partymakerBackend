@@ -18,7 +18,6 @@ class GroupController {
       .with('admin')
       .with('address')
       .with('place')
-      .with('pictures')
       .where('id', '>', parseInt(cursor) || 0)
       .where(params)
       .limit(10)
@@ -69,7 +68,6 @@ class GroupController {
       .with('admin')
       .with('address')
       .with('place')
-      .with('pictures')
       .where('id', params.id)
       .first()
 
