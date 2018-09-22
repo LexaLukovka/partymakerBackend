@@ -45,7 +45,6 @@ class PictureRepository {
 
   async addTo(model, pictures_urls) {
     const pictures = await this.add(pictures_urls)
-
     return model.pictures().attach(pictures.map(p => p.id))
   }
 

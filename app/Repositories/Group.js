@@ -50,7 +50,7 @@ class GroupRepository {
       description: data.description,
     })
 
-    await group.users().attach([data.admin_id])
+    await group.users().attach([data.admin.id])
 
     return group
   }

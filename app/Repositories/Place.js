@@ -33,7 +33,7 @@ class PlaceRepository {
   async create(place) {
     const addressModel = await this.address.create(place.address)
 
-    const placeModel = Place.create({
+    const placeModel = await Place.create({
       title: place.title,
       admin_id: place.admin.id,
       address_id: addressModel.id,
@@ -42,7 +42,8 @@ class PlaceRepository {
       description: place.description,
     })
 
-    await this.picture.addTo(place, place.pictures)
+
+    await this.picture.addTo(placeModel, place.pictures)
 
     return placeModel
   }

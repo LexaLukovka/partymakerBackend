@@ -1,7 +1,7 @@
 /* eslint-disable newline-per-chained-call */
 const Schema = use('Schema')
 
-class PlaceSchema extends Schema {
+class EventSchema extends Schema {
   up() {
     this.create('events', (table) => {
       table.increments()
@@ -10,16 +10,15 @@ class PlaceSchema extends Schema {
       table.integer('address_id').unsigned().references('id').inTable('address').notNullable()
       table.string('working_hours')
       table.string('price')
-      table.string('description')
-      table.dateTime('starts_at')
-      table.dateTime('ends_at')
+      table.string('description').notNullable()
+      table.dateTime('date').notNullable()
       table.timestamps()
     })
   }
 
   down() {
-    this.drop('places')
+    this.drop('events')
   }
 }
 
-module.exports = PlaceSchema
+module.exports = EventSchema
