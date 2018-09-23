@@ -28,7 +28,7 @@ Factory.blueprint('App/Models/Group', (faker, i, data) => {
     place_id: bool ? null : data.place.id,
     event_id: bool ? null : data.event.id,
     title: faker.pickone(['Идем шашлыки', 'Гуляем в квартире', 'Едем на дачу', 'Идем на пляж', 'На площади', 'Автомобили', 'Другое']),
-    start_time: faker.date({ year: 2018 }),
+    date: faker.date({ year: 2018 }),
     description: faker.paragraph({ sentences: 1 }),
   }
 })

@@ -1,3 +1,5 @@
+const isEmpty = require('lodash/isEmpty')
+
 const Model = use('Model')
 
 class Group extends Model {
@@ -29,13 +31,21 @@ class Group extends Model {
     return this.belongsTo('App/Models/Place')
   }
 
+  event() {
+    return this.belongsTo('App/Models/Event')
+  }
+
   pictures() {
     return this.belongsToMany('App/Models/Picture')
   }
 
-  async isOnParty(user_id) {
-    const users = await this.users().fetch()
-    return !!users.toJSON().find(user => user.id === user_id)
+  async isMember(user_id) {
+    const member = await this.users()
+      .pivotQuery()
+      .where({ user_id })
+      .first()
+
+    return !isEmpty(member)
   }
 
 }

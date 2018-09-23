@@ -7,7 +7,7 @@ module.exports = class Edit {
       email: 'string|email|unique:users,email',
       phone: 'string|unique:users,phone',
       password: 'string',
-      avatar_url: 'url',
+      avatar_url: 'string',
       provider_id: 'integer',
       provider: 'in:google,facebook',
       provider_token: 'string',
@@ -20,7 +20,7 @@ module.exports = class Edit {
       'email.email': 'Неправильный формат почты',
       'email.unique': 'Пользователь с такой почтой уже есть',
       'phone.unique': 'Пользователь с таким телефоном уже есть',
-      'avatar_url.url': 'фото пользователя должно быть в виде сслыки',
+      'avatar_url.string': 'фото пользователя должно быть в виде сслыки',
     }
   }
 

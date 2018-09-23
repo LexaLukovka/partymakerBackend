@@ -27,7 +27,10 @@ class UserController {
    * Create/save a new user.
    * POST users
    */
-  async store({ request }) {
+  async store({ request, auth, response }) {
+    if (auth.user.cannot('create', User)) {
+      return response.forbidden()
+    }
     return this.user.create(request.all())
   }
 
@@ -63,8 +66,9 @@ class UserController {
 
     const user = await User.find(params.id)
 
-    if (auth.user.cannot('delete', user)) return response.forbidden()
-
+    if (auth.user.cannot('delete', user)) {
+      return response.forbidden()
+    }
     await user.delete()
 
     return user

@@ -2,12 +2,7 @@
 module.exports = class Create {
   get rules() {
     return {
-      title: 'string|max:30',
-      date: 'date',
-      description: 'string',
-      place_id: 'integer',
-      event_id: 'integer',
-      address: 'object',
+      members: 'required|array',
     }
   }
 

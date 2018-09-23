@@ -39,13 +39,12 @@ Route.resource('places', 'PlaceController')
  * Group routes
  *`
  * */
-Route.resource('group/:group_id/users', 'Group/UserController').middleware('auth')
-Route.resource('group', 'GroupController')
-  .validator([['group.store', 'Group/Create'], ['group.update', 'Group/Edit']])
+Route.resource('groups/:group_id/members', 'Group/MemberController')
+  .validator([['groups/:group_id/members.store', 'Group/Member/Create']])
+  .middleware('auth')
+Route.resource('groups', 'GroupController')
+  .validator([['groups.store', 'Group/Create'], ['groups.update', 'Group/Edit']])
   .middleware(SUD)
-
-Route.resource('group/:group_id/users', 'Group/UserController').middleware('auth')
-
 
 /**
  *
