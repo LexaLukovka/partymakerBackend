@@ -42,7 +42,6 @@ class PlaceRepository {
       description: place.description,
     })
 
-
     await this.picture.addTo(placeModel, place.pictures)
 
     return placeModel

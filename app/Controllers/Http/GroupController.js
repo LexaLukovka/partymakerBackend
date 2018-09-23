@@ -62,9 +62,10 @@ class GroupController {
    */
   async update({ request, auth, response, params }) {
     const req = request.all()
-    const group = Group.find(params.id)
+    const group = await Group.find(params.id)
 
     if (!group) return response.notFound()
+
     if (auth.user.cannot('edit', group)) return response.forbidden()
 
     await this.group.edit(group, req)

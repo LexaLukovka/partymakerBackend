@@ -11,7 +11,7 @@ class GroupSchema extends Schema {
       table.integer('event_id').unsigned().references('id').inTable('events')
       table.integer('address_id').unsigned().references('id').inTable('address')
       table.string('description')
-      table.dateTime('start_time').notNullable()
+      table.dateTime('date').notNullable()
       table.timestamps()
     })
   }

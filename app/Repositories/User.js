@@ -9,11 +9,7 @@ class UserRepository {
       phone: user.phone,
       password: user.password,
       avatar_url: user.avatar_url,
-      provider_id: user.provider_id,
-      provider: user.provider,
-      provider_token: user.provider_token,
     }
-
   }
 
   paginate(params) {
@@ -28,7 +24,7 @@ class UserRepository {
     model.merge(this.userData(user))
     await model.save()
 
-    return model
+    return User.find(model.id)
   }
 }
 

@@ -57,16 +57,7 @@ class EventController {
 
     if (!eventModel) return response.notFound()
 
-    const rating = await eventModel.rating().avg('rating as rating')
-
-    const event = eventModel.toJSON()
-    if (rating[0] && rating[0].rating) {
-      event.rating = parseFloat(rating[0].rating.toFixed(1))
-    } else {
-      event.rating = null
-    }
-
-    return event
+    return eventModel
   }
 
   /**

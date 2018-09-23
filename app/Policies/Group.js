@@ -6,12 +6,12 @@ class Group {
     return user.admin
   }
 
-  static edit(user, place) {
-    return user.admin || user.id === place.admin_id
+  static edit(user, group) {
+    return user.admin || user.id === group.admin_id
   }
 
-  static delete(user, place) {
-    return user.admin || user.id === place.admin_id
+  static delete(user, group) {
+    return user.admin || user.id === group.admin_id
   }
 }
 

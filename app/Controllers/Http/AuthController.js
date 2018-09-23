@@ -24,8 +24,8 @@ class AuthController {
 
   }
 
-  async user({ request, params }) {
-    return User.find(params.id)
+  async user({ auth }) {
+    return auth.user
   }
 
   // noinspection JSUnusedGlobalSymbols
