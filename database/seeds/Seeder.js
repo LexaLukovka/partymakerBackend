@@ -6,19 +6,18 @@ function-paren-newline,
 no-console,
 */
 
-const USERS = require('./users')
 const Chance = require('chance')
+const flatten = require('lodash/flattenDeep')
+const USERS = require('./users')
 const PLACES = require('./places')
 const GROUPS = require('./groups')
 const EVENTS = require('./events')
-const flatten = require('lodash/flattenDeep')
-const Group = use('App/Models/Group')
-const Picture = use('App/Models/Picture')
-const Place = use('App/Models/Place')
-const Address = use('App/Models/Address')
 const Factory = use('Factory')
 const User = use('App/Models/User')
-const Event = use('App/Models/Event')
+
+const PlaceRepository = use('App/Repositories/Place')
+const EventRepository = use('App/Repositories/Event')
+const GroupRepository = use('App/Repositories/Group')
 
 function printProgress(text) {
   console.log(text)
@@ -29,6 +28,10 @@ class Seeder {
 
   constructor() {
     this.chance = new Chance()
+    this.placeRepo = new PlaceRepository()
+    this.eventRepo = new EventRepository()
+    this.groupRepo = new GroupRepository()
+
     this.createRealGroups = this.createRealGroups.bind(this)
     this.createFakeGroups = this.createFakeGroups.bind(this)
     this.createPlaces = this.createPlaces.bind(this)
@@ -45,61 +48,34 @@ class Seeder {
 
   createPlaces(users) {
     printProgress('creating places...')
-    return Promise.all(PLACES.map(async place => {
-      const address = await Address.create(place.address)
+    const placeModels = PLACES.map(place =>
+      this.placeRepo.create({ ...place, admin: this.chance.pickone(users) }),
+    )
 
-      const pictures = await Picture.add(place.pictures.map(picture => picture))
-
-      const placeModel = await Place.create({
-        title: place.title,
-        working_hours: place.working_hours,
-        price: place.price,
-        description: place.description,
-        admin_id: (this.chance.pickone(users)).id,
-        address_id: address.id,
-      })
-
-      await placeModel.pictures().attach(pictures.map(p => p.id))
-
-      return placeModel
-    }))
+    return Promise.all(placeModels)
   }
 
   createEvents(users) {
     printProgress('creating places...')
-    return Promise.all(EVENTS.map(async event => {
-      const address = await Address.create(event.address)
+    const eventModels = EVENTS.map(event =>
+      this.eventRepo.create({ ...event, admin: this.chance.pickone(users) }),
+    )
 
-      const pictures = await Picture.add(event.pictures.map(picture => picture))
-
-      const placeModel = await Event.create({
-        title: event.title,
-        starts_at: event.starts_at,
-        ends_at: event.ends_at,
-        price: event.price,
-        description: event.description,
-        admin_id: (this.chance.pickone(users)).id,
-        address_id: address.id,
-      })
-
-      await placeModel.pictures().attach(pictures.map(p => p.id))
-
-      return placeModel
-    }))
+    return Promise.all(eventModels)
   }
 
   createRealGroups(users) {
-    printProgress('creating real parties...')
-    return Promise.all(GROUPS.map(party =>
-      Group.make({
-        admin_id: (this.chance.pickone(users)).id,
-        ...party,
+    printProgress('creating real groups...')
+    return Promise.all(GROUPS.map(group =>
+      this.groupRepo.create({
+        admin: this.chance.pickone(users),
+        ...group,
       }),
     ))
   }
 
   createFakeGroups(users, places, events) {
-    printProgress('creating fake parties...')
+    printProgress('creating fake groups...')
 
     const promises = Array.from(new Array(20), async () => {
       const admin = this.chance.pickone(users)

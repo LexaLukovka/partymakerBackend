@@ -7,6 +7,10 @@ class Event extends Model {
     return 'events'
   }
 
+  static get policy() {
+    return 'App/Policies/Event'
+  }
+
   admin() {
     return this.belongsTo('App/Models/User', 'admin_id', 'id')
   }
@@ -23,10 +27,6 @@ class Event extends Model {
     return this.belongsToMany('App/Models/Picture')
   }
 
-  static async total() {
-    const { total } = (await this.query().count('* as total'))[0]
-    return total
-  }
 }
 
 module.exports = Event

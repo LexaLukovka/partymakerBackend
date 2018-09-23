@@ -4,7 +4,7 @@ module.exports = [
     pictures: [
       '/images/events/yarmarka.jpg',
     ],
-    starts_at: 'Sun, 09 Sep 2018 13:00:00 +0300',
+    date: 'Sun, 09 Sep 2018 13:00:00 +0300',
     ends_at: 'Sun, 09 Sep 2018 14:00:00 +0300',
     price: 'Бесплатно',
     address: {
@@ -23,7 +23,7 @@ module.exports = [
     pictures: [
       '/images/events/game-of-thrones.jpg',
     ],
-    starts_at: 'Sun, 11 Sep 2018 21:00:00 +0300',
+    date: 'Sun, 11 Sep 2018 21:00:00 +0300',
     ends_at: 'Sun, 11 Sep 2018 23:30:00 +0300',
     price: '60 грн. с человека',
     address: {
@@ -43,7 +43,7 @@ module.exports = [
     pictures: [
       '/images/events/​​RetroMotorFest.jpg',
     ],
-    starts_at: 'Sun, 13 Sep 2018 21:00:00 +0300',
+    date: 'Sun, 13 Sep 2018 21:00:00 +0300',
     ends_at: 'Sun, 14 Sep 2018 23:30:00 +0300',
     price: '80 грн. с человека',
     address: {
@@ -64,7 +64,7 @@ module.exports = [
     pictures: [
       '/images/events/​​RetroMotorFest.jpg',
     ],
-    starts_at: 'Sun, 6 Sep 2018 21:00:00 +0300',
+    date: 'Sun, 6 Sep 2018 21:00:00 +0300',
     ends_at: 'Sun, 6 Sep 2018 23:30:00 +0300',
     price: '50 грн',
     address: {
@@ -84,7 +84,7 @@ module.exports = [
     pictures: [
       '/images/events/​​RetroMotorFest.jpg',
     ],
-    starts_at: 'Sun, 6 Sep 2018 21:00:00 +0300',
+    date: 'Sun, 6 Sep 2018 21:00:00 +0300',
     ends_at: 'Sun, 6 Sep 2018 23:30:00 +0300',
     price: '450-5000 грн',
     address: {

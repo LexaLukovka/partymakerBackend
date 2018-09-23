@@ -2514,6 +2514,12 @@ locate-path@^2.0.0:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
 
+lodash-clean@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/lodash-clean/-/lodash-clean-2.0.1.tgz#b0e5954a1d7f4426c2146a56cbd67c13e655c0b0"
+  dependencies:
+    lodash "^4.17.4"
+
 lodash.includes@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.includes/-/lodash.includes-4.3.0.tgz#60bb98a87cb923c68ca1e51325483314849f553f"

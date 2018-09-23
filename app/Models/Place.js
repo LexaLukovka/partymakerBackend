@@ -6,7 +6,11 @@ class Place extends Model {
   static get table() {
     return 'places'
   }
-  
+
+  static get policy() {
+    return 'App/Policies/Place'
+  }
+
   admin() {
     return this.belongsTo('App/Models/User', 'admin_id', 'id')
   }
@@ -25,11 +29,6 @@ class Place extends Model {
 
   pictures() {
     return this.belongsToMany('App/Models/Picture')
-  }
-
-  static async total() {
-    const { total } = (await this.query().count('* as total'))[0]
-    return total
   }
 }
 
