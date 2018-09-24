@@ -63,7 +63,10 @@ Route.resource('events', 'EventController')
  *
  * */
 
-Route.resource('places/:place_id/votes', 'Place/RatingController').middleware('auth')
-Route.resource('places', 'Place/PlaceController').middleware(SUD)
+Route.resource('places/:place_id/votes', 'Place/RatingController')
+  .middleware('auth')
+
+Route.resource('places', 'Place/PlaceController')
+  .middleware(SUD)
 
 Route.resource('upload', 'UploadController')
