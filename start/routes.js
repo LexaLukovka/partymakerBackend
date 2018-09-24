@@ -10,7 +10,7 @@ const resource = (path, controller, middleware) => {
     .middleware(middleware)
 }
 
-Route.get('/', () => 'Server is running')
+resource('/', 'DocsController')
 
 /**
  *
