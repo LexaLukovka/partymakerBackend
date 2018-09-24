@@ -31,6 +31,13 @@
       "description": "CRUD for Events"
     }
   ],
+  "securityDefinitions": {
+    "bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization"
+    }
+  },
   "schemes": [
     "http",
     "https"
@@ -201,6 +208,11 @@
         "tags": [
           "users"
         ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "Create new user",
         "operationId": "user-create",
         "consumes": [
@@ -273,6 +285,11 @@
         "consumes": [
           "application/json"
         ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "produces": [
           "application/json"
         ],
@@ -314,6 +331,11 @@
         "operationId": "user-delete",
         "consumes": [
           "application/json"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ],
         "produces": [
           "application/json"
@@ -405,6 +427,11 @@
       "post": {
         "tags": [
           "places"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ],
         "summary": "Create new place",
         "operationId": "place-create",
@@ -511,6 +538,11 @@
         "tags": [
           "places"
         ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "Update place",
         "operationId": "place-update",
         "consumes": [
@@ -585,6 +617,11 @@
       "delete": {
         "tags": [
           "places"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ],
         "summary": "Delete place - admin only",
         "operationId": "place-delete",
@@ -684,6 +721,11 @@
       "post": {
         "tags": [
           "groups"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ],
         "summary": "Create new group",
         "operationId": "group-create",
@@ -788,6 +830,11 @@
         "tags": [
           "groups"
         ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "Update group",
         "operationId": "group-update",
         "consumes": [
@@ -860,6 +907,11 @@
       "delete": {
         "tags": [
           "groups"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ],
         "summary": "Delete group",
         "operationId": "group-delete",
@@ -959,6 +1011,11 @@
       "post": {
         "tags": [
           "events"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ],
         "summary": "Create new event",
         "operationId": "events-create",
@@ -1074,6 +1131,11 @@
         "tags": [
           "events"
         ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "Update event",
         "operationId": "event-update",
         "consumes": [
@@ -1165,6 +1227,11 @@
       "delete": {
         "tags": [
           "events"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ],
         "summary": "Delete event - admin only",
         "operationId": "event-delete",
@@ -1274,22 +1341,7 @@
       "description": "Access denied"
     }
   },
-  "securityDefinitions": {
-    "petstore_auth": {
-      "type": "oauth2",
-      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
-      "flow": "implicit",
-      "scopes": {
-        "write:pets": "modify pets in your account",
-        "read:pets": "read your pets"
-      }
-    },
-    "api_key": {
-      "type": "apiKey",
-      "name": "api_key",
-      "in": "header"
-    }
-  },
+
   "definitions": {
     "User": {
       "required": [
