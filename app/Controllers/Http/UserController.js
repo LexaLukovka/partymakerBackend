@@ -49,13 +49,16 @@ class UserController {
   async update({ params, request, auth, response }) {
     const req = request.all()
 
-    const user = await User.find(params.id)
+    let user = await User.find(params.id)
     if (!user) return response.notFound(user)
     if (auth.user.cannot('edit', user)) return response.forbidden()
 
-    const updatedUser = await this.user.edit(user, req)
+    await this.user.edit(user, req)
 
-    return { updated: !!updatedUser, user: updatedUser }
+    user = await User.find(params.id)
+
+    return auth.withRefreshToken()
+      .generate(user, true)
   }
 
   /**
