@@ -56,6 +56,7 @@ class GroupRepository {
       admin_id: data.admin.id,
       place_id: data.place_id,
       event_id: data.event_id,
+      invite_url: data.invite_url,
       address_id: data.address && addressModel.id,
       date: data.date,
       description: data.description,

@@ -10,6 +10,7 @@ class GroupSchema extends Schema {
       table.integer('place_id').unsigned().references('id').inTable('places')
       table.integer('event_id').unsigned().references('id').inTable('events')
       table.integer('address_id').unsigned().references('id').inTable('address')
+      table.string('invite_url')
       table.string('description')
       table.dateTime('date').notNullable()
       table.timestamps()
