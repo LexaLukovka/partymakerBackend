@@ -41,8 +41,8 @@ Route.resource('places', 'PlaceController')
  *`
  * */
 Route.resource('groups/:group_id/members', 'Group/MemberController')
-  .validator([['groups/:group_id/members.store', 'Group/Member/Create']])
   .middleware('auth')
+  // .validator([['groups/:group_id/members.store', 'Group/Member/Create']])
 
 Route.resource('groups', 'GroupController')
   .validator([['groups.store', 'Group/Create'], ['groups.update', 'Group/Edit']])
