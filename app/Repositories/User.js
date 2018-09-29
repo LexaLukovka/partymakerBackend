@@ -7,8 +7,10 @@ class UserRepository {
       name: user.name,
       email: user.email,
       phone: user.phone,
-      password: user.password,
       avatar_url: user.avatar_url,
+      instagram: user.instagram,
+      telegram: user.telegram,
+      password: user.password,
     }
   }
 

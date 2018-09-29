@@ -45,6 +45,8 @@ class AuthController {
         email: req.email,
         phone: req.phone,
         avatar_url: req.avatar_url,
+        instagram: req.instagram,
+        telegram: req.telegram,
         password: await updatePassword(),
       })
 
