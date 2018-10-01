@@ -50,6 +50,7 @@ class GroupController {
       .with('admin')
       .with('address')
       .with('place')
+      .with('event')
       .where('id', params.id)
       .first()
 

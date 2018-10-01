@@ -14,7 +14,9 @@ class MemberController {
     const group = await Group.find(params.group_id)
     if (!group) return response.notFound({ message: 'group not found!' })
 
-    return group.users().orderBy('id', 'desc').fetch()
+    return group.users()
+      .orderBy('id', 'desc')
+      .fetch()
   }
 
   /**
@@ -22,10 +24,10 @@ class MemberController {
    * POST users
    */
   async store({ params, auth, request, response }) {
-    const { members } = request.all()
     const group = await Group.find(params.group_id)
     if (!group) return response.notFound({ message: 'group not found!' })
-    await group.users().attach(members)
+    await group.users()
+      .attach(auth.user.id)
 
     return response.created({ message: 'users added to the group' })
   }
@@ -63,10 +65,12 @@ class MemberController {
       return response.forbidden({ message: `${user.name} is not member of ${group.title}` })
     }
 
-    if (group.admin_id !== params.id) {
-      return response.forbidden({ message: `Only admin of the ${group.title} can delete members` })
-    }
-    const res = await group.users().detach([params.id])
+    // if (group.admin_id !== params.id) {
+    //   return response.forbidden({ message: `Only admin of the ${group.title} can delete members` })
+    // }
+
+    const res = await group.users()
+      .detach([params.id])
 
     return {
       message: res,

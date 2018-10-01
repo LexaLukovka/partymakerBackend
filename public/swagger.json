@@ -31,18 +31,31 @@
       "description": "CRUD for Events"
     }
   ],
+  "securityDefinitions": {
+    "bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization"
+    }
+  },
   "schemes": [
-    "https",
-    "http"
+    "http",
+    "https"
   ],
   "paths": {
     "/login": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "summary": "Login user",
         "operationId": "login",
-        "consumes": ["application/x-www-form-urlencoded"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "formData",
@@ -76,18 +89,29 @@
     },
     "/register": {
       "post": {
-        "tags": ["auth"],
+        "tags": [
+          "auth"
+        ],
         "summary": "Register user",
         "operationId": "register",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
             "name": "body",
             "required": true,
             "schema": {
-              "required": ["name", "email", "password", "phone"],
+              "required": [
+                "name",
+                "email",
+                "password",
+                "phone"
+              ],
               "properties": {
                 "name": {
                   "type": "string",
@@ -124,11 +148,17 @@
     },
     "/users": {
       "get": {
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "summary": "List of all users",
         "operationId": "user-list",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -175,18 +205,28 @@
         }
       },
       "post": {
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "Create new user",
         "operationId": "user-create",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
             "name": "body",
             "required": true,
             "schema": {
-              "required": ["name", "email", "password", "phone"],
               "$ref": "#/definitions/User"
             }
           }
@@ -205,16 +245,58 @@
       }
     },
     "/users/{id}": {
-      "put": {
-        "tags": ["users"],
-        "summary": "Update user",
-        "operationId": "user-update",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Show user",
+        "operationId": "user-show",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
-            "name": "id",
             "in": "path",
+            "name": "id",
+            "description": "ID of user",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Update user",
+        "operationId": "user-update",
+        "consumes": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
             "description": "ID of user",
             "required": true,
             "type": "integer",
@@ -242,11 +324,22 @@
         }
       },
       "delete": {
-        "tags": ["users"],
+        "tags": [
+          "users"
+        ],
         "summary": "Delete user - admin only",
         "operationId": "user-delete",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -272,11 +365,17 @@
     },
     "/places": {
       "get": {
-        "tags": ["places"],
+        "tags": [
+          "places"
+        ],
         "summary": "List of all places",
         "operationId": "place-list",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "query",
@@ -319,23 +418,71 @@
                 }
               }
             }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
           }
         }
       },
       "post": {
-        "tags": ["places"],
+        "tags": [
+          "places"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "Create new place",
         "operationId": "place-create",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "in": "body",
             "name": "body",
             "required": true,
             "schema": {
-              "required": ["name", "email", "password", "phone"],
-              "$ref": "#/definitions/Place"
+              "required": [
+                "title",
+                "working_hours",
+                "price",
+                "description",
+                "address",
+                "pictures"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Вознесеновский пляж"
+                },
+                "working_hours": {
+                  "type": "string",
+                  "example": "ПН-ПТ: 9:00 - 20:00"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "Бесплатно"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
+                },
+                "address": {
+                  "$ref": "#/definitions/Address"
+                },
+                "pictures": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": "http://192.168.0.103:3333/images/places/voznesenovsky.png"
+                  }
+                }
+              }
             }
           }
         ],
@@ -353,12 +500,57 @@
       }
     },
     "/places/{id}": {
+      "get": {
+        "tags": [
+          "places"
+        ],
+        "summary": "Show place",
+        "operationId": "place-show",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of place",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Place"
+            }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
       "put": {
-        "tags": ["places"],
+        "tags": [
+          "places"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "Update place",
         "operationId": "place-update",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -373,7 +565,34 @@
             "name": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Place"
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Вознесеновский пляж"
+                },
+                "working_hours": {
+                  "type": "string",
+                  "example": "ПН-ПТ: 9:00 - 20:00"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "Бесплатно"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
+                },
+                "address": {
+                  "$ref": "#/definitions/Address"
+                },
+                "pictures": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": "http://192.168.0.103:3333/images/places/voznesenovsky.png"
+                  }
+                }
+              }
             }
           }
         ],
@@ -384,17 +603,34 @@
               "$ref": "#/definitions/Place"
             }
           },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
           "403": {
             "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
           }
         }
       },
       "delete": {
-        "tags": ["places"],
+        "tags": [
+          "places"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "Delete place - admin only",
         "operationId": "place-delete",
-        "consumes": ["application/json"],
-        "produces": ["application/json"],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -414,6 +650,619 @@
           },
           "403": {
             "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/groups": {
+      "get": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "List of all groups",
+        "operationId": "group-list",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "number",
+                  "example": 23
+                },
+                "perPage": {
+                  "type": "number",
+                  "example": 10
+                },
+                "page": {
+                  "type": "number",
+                  "example": 1
+                },
+                "lastPage": {
+                  "type": "number",
+                  "example": 3
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Group"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "groups"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create new group",
+        "operationId": "group-create",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "required": [
+                "title",
+                "date",
+                "place_id",
+                "event_id",
+                "description",
+                "address"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Вознесеновский пляж"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2018-09-23 19:29:38"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
+                },
+                "place_id": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "event_id": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "address": {
+                  "$ref": "#/definitions/Address"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/groups/{id}": {
+      "get": {
+        "tags": [
+          "groups"
+        ],
+        "summary": "Show group",
+        "operationId": "group-show",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of group",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "groups"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update group",
+        "operationId": "group-update",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of group",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Вознесеновский пляж"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2018-09-23 19:29:38"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
+                },
+                "place_id": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "event_id": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "address": {
+                  "$ref": "#/definitions/Address"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "groups"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete group",
+        "operationId": "group-delete",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of group",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "tags": [
+          "events"
+        ],
+        "summary": "List of all events",
+        "operationId": "events-list",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "number",
+                  "example": 23
+                },
+                "perPage": {
+                  "type": "number",
+                  "example": 10
+                },
+                "page": {
+                  "type": "number",
+                  "example": 1
+                },
+                "lastPage": {
+                  "type": "number",
+                  "example": 3
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Event"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "events"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create new event",
+        "operationId": "events-create",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "required": [
+                "title",
+                "working_hours",
+                "price",
+                "description",
+                "address",
+                "pictures"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Уютная ярмарка"
+                },
+                "working_hours": {
+                  "type": "string",
+                  "example": "ПН-ПТ: 9:00 - 20:00"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "Бесплатно"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
+                },
+                "place_id": {
+                  "type": "integer",
+                  "example": 2
+                },
+                "address": {
+                  "$ref": "#/definitions/Address"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2018-09-23 19:29:38"
+                },
+                "pictures": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": "http://192.168.0.103:3333/images/places/voznesenovsky.png"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/events/{id}": {
+      "get": {
+        "tags": [
+          "events"
+        ],
+        "summary": "Show event",
+        "operationId": "event-show",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "events"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Update event",
+        "operationId": "event-update",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "required": [
+                "title",
+                "working_hours",
+                "price",
+                "description",
+                "address",
+                "pictures"
+              ],
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Уютная ярмарка"
+                },
+                "working_hours": {
+                  "type": "string",
+                  "example": "ПН-ПТ: 9:00 - 20:00"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "Бесплатно"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
+                },
+                "place_id": {
+                  "type": "integer",
+                  "example": 2
+                },
+                "address": {
+                  "$ref": "#/definitions/Address"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2018-09-23 19:29:38"
+                },
+                "pictures": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": "http://192.168.0.103:3333/images/places/voznesenovsky.png"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "events"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Delete event - admin only",
+        "operationId": "event-delete",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
           }
         }
       }
@@ -423,18 +1272,21 @@
     "ValidationError": {
       "schema": {
         "type": "array",
-        "properties": {
-          "messsage": {
-            "type": "string",
-            "example": "required validation failed"
-          },
-          "field": {
-            "type": "string",
-            "example": "email"
-          },
-          "validation": {
-            "type": "string",
-            "example": "required"
+        "items": {
+          "type": "object",
+          "properties": {
+            "messsage": {
+              "type": "string",
+              "example": "required validation failed"
+            },
+            "field": {
+              "type": "string",
+              "example": "email"
+            },
+            "validation": {
+              "type": "string",
+              "example": "required"
+            }
           }
         }
       },
@@ -462,7 +1314,7 @@
           }
         }
       },
-      "description": "Access denied"
+      "description": "Not Found"
     },
     "Forbidden": {
       "schema": {
@@ -489,25 +1341,15 @@
       "description": "Access denied"
     }
   },
-  "securityDefinitions": {
-    "petstore_auth": {
-      "type": "oauth2",
-      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
-      "flow": "implicit",
-      "scopes": {
-        "write:pets": "modify pets in your account",
-        "read:pets": "read your pets"
-      }
-    },
-    "api_key": {
-      "type": "apiKey",
-      "name": "api_key",
-      "in": "header"
-    }
-  },
+
   "definitions": {
     "User": {
-      "required": ["name", "email", "password", "phone"],
+      "required": [
+        "name",
+        "email",
+        "password",
+        "phone"
+      ],
       "type": "object",
       "properties": {
         "id": {
@@ -621,6 +1463,123 @@
         "rating": {
           "type": "string",
           "example": 3.5
+        }
+      }
+    },
+    "Group": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 3
+        },
+        "title": {
+          "type": "string",
+          "example": "Вознесеновский пляж"
+        },
+        "admin_id": {
+          "type": "integer",
+          "example": 1
+        },
+        "event_id": {
+          "type": "integer",
+          "example": 3
+        },
+        "place_id": {
+          "type": "integer",
+          "example": 2
+        },
+        "description": {
+          "type": "string",
+          "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-09-23 19:29:38"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-09-23 19:29:38"
+        },
+        "admin": {
+          "$ref": "#/definitions/User"
+        },
+        "address": {
+          "$ref": "#/definitions/Address"
+        },
+        "place": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Place"
+          }
+        },
+        "event": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Event"
+          }
+        }
+      }
+    },
+    "Event": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 3
+        },
+        "title": {
+          "type": "string",
+          "example": "Уютная ярмарка"
+        },
+        "admin_id": {
+          "type": "integer",
+          "example": 1
+        },
+        "address_id": {
+          "type": "integer",
+          "example": 1
+        },
+        "working_hours": {
+          "type": "string",
+          "example": "ПН-ПТ: 9:00 - 20:00"
+        },
+        "price": {
+          "type": "string",
+          "example": "Бесплатно"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-09-23 19:29:38"
+        },
+        "description": {
+          "type": "string",
+          "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-09-23 19:29:38"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-09-23 19:29:38"
+        },
+        "admin": {
+          "$ref": "#/definitions/User"
+        },
+        "address": {
+          "$ref": "#/definitions/Address"
+        },
+        "pictures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Picture"
+          }
         }
       }
     }

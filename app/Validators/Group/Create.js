@@ -9,6 +9,7 @@ module.exports = class Create {
       event_id: 'integer',
       district: 'string',
       address: 'object',
+      invite_url: 'string',
     }
   }
 
