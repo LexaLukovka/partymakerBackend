@@ -19,3 +19,12 @@ jobs:
     - deploy:
         name: digital-ocean
         command: ssh -o "StrictHostKeyChecking no" dev@partymaker.zp.ua "cd ~/partymaker/backend; ./build.sh"
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+    - build:
+        filters:
+          branches:
+            only: master

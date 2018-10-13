@@ -15,7 +15,7 @@ class UploadController {
     })
 
     const name = generateName(profilePics.subtype)
-    await profilePics.move(Helpers.publicPath('uploads'), { name })
+    await profilePics.moveAll(Helpers.publicPath('uploads'), { name })
 
     if (!profilePics.moved()) return [profilePics.error()]
 

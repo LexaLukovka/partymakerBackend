@@ -1366,7 +1366,7 @@ eslint-module-utils@^2.2.0:
     debug "^2.6.8"
     pkg-dir "^1.0.0"
 
-eslint-plugin-import@^2.14.0:
+eslint-plugin-import@^2.12.0:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.14.0.tgz#6b17626d2e3e6ad52cfce8807a845d15e22111a8"
   dependencies:
@@ -2513,6 +2513,12 @@ locate-path@^2.0.0:
   dependencies:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
+
+lodash-clean@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/lodash-clean/-/lodash-clean-2.0.1.tgz#b0e5954a1d7f4426c2146a56cbd67c13e655c0b0"
+  dependencies:
+    lodash "^4.17.4"
 
 lodash.includes@^4.3.0:
   version "4.3.0"

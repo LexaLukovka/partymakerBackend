@@ -9,9 +9,12 @@ class UserSchema extends Schema {
       table.string('phone', 60).nullable().unique()
       table.string('password', 60).nullable()
       table.string('avatar_url', 254)
+      table.string('instagram', 60).nullable()
+      table.string('telegram', 60).nullable()
       table.string('provider_id').nullable()
       table.string('provider').nullable()
       table.string('provider_token').nullable()
+      table.bool('admin').default(false)
       table.timestamps()
     })
   }

@@ -5,7 +5,6 @@ class LocationSchema extends Schema {
     this.create('address', (table) => {
       table.increments()
       table.string('address').notNullable()
-      table.string('district')
       table.double('lng').notNullable()
       table.double('lat').notNullable()
       table.string('placeId')

@@ -1,7 +1,6 @@
 module.exports = [
   {
     title: 'Пляж на Павло-Кичкасе',
-    telegram_url: 'https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ',
     pictures: [
       '/images/places/kichkas_beach.jpg',
       '/images/places/kichkas_beach2.jpg',
@@ -16,9 +15,9 @@ module.exports = [
       address: 'Лейтенанта Шмидта, 185, Запорожье, Запорожская область, 69000',
       lat: -60.07511,
       lng: 0.42462,
-      district: 'Кичкас',
     },
-    type: 'beach',
+    working_hours: 'ПН-ПТ: 9:00 - 20:00',
+    price: 'Бесплатно',
     description: `
     Жителям Заводского района также не нужно далеко ехать и занимать места на полянах с 7 утра.
     Желающие отметить майские праздники без проблем найдут для себя местечко на главном пляже района.
@@ -29,7 +28,6 @@ module.exports = [
   },
   {
     title: 'Балка на Бабурке',
-    telegram_url: 'https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ',
     type: 'picnic',
     pictures: [
       '/images/places/baburka.jpg',
@@ -38,8 +36,9 @@ module.exports = [
       address: 'Лейтенанта Шмидта, 185, Запорожье, Запорожская область, 69000',
       lat: -60.07511,
       lng: 0.42462,
-      district: 'Бабурка',
     },
+    working_hours: 'ПН-ПТ: 9:00 - 20:00',
+    price: 'Бесплатно',
     description: `
     У жителей Хортицкого района есть собственная посадка, где можно приятно провести время.
     Речь идет о балке, куда можно попасть доехав до конечной остановки 55-го и 87-го маршрута.
@@ -50,8 +49,6 @@ module.exports = [
   },
   {
     title: 'Вознесеновский пляж',
-    telegram_url: 'https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ',
-    type: 'beach',
     pictures: [
       '/images/places/voznesenovsky.png',
     ],
@@ -59,8 +56,9 @@ module.exports = [
       address: 'Вознесенівський пляж',
       lat: -60.07511,
       lng: 0.42462,
-      district: 'Вознесенский',
     },
+    working_hours: 'ПН-ПТ: 9:00 - 20:00',
+    price: 'Бесплатно',
     description: `
     Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное.
     К вашим услугам большой песчаный берег, посадка и несколько сотен метров прибрежной зоны. 
@@ -76,8 +74,6 @@ module.exports = [
   },
   {
     title: 'Парк “Дубовая роща”',
-    telegram_url: 'https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ',
-    type: 'park',
     pictures: [
       '/images/places/dukovka.jpg',
     ],
@@ -85,8 +81,9 @@ module.exports = [
       address: 'Дубовый Гай, ул. Глисерна, 22, Запорожская область, Запорожская область, 69061',
       lat: -60.07511,
       lng: 0.42462,
-      district: 'Вознесенский',
     },
+    working_hours: 'ПН-ПТ: 9:00 - 20:00',
+    price: 'Бесплатно',
     description: `
     Несмотря на то, что в самом парке запрещено разжигать костры, администрацией парка выделена специальная территория,
     где можно без проблем пожарить шашлык. В парке можно арендовать стол, стулья и мангал. 
@@ -101,8 +98,6 @@ module.exports = [
   },
   {
     title: 'Гребной канал на Песках',
-    telegram_url: 'https://t.me/joinchat/FzgsKUzTAHNJTGm6FfAWXQ',
-    type: 'beach',
     pictures: [
       '/images/places/mushroom_beach.jpg',
     ],
@@ -110,8 +105,9 @@ module.exports = [
       address: 'ул. 40-летия Победы, Запорожье, Запорожская область, Украина, 69000',
       lat: -60.07511,
       lng: 0.42462,
-      district: 'Пески',
     },
+    working_hours: 'ПН-ПТ: 9:00 - 20:00',
+    price: 'Бесплатно',
     description: `
     Спросите у жителей Коммунарского района где лучшее место для отдыха с друзьями и семьей? 
     “Конечно Гребной канал” - услышите в ответ. И действительно: на территории посадки не запрещено жечь костры, 

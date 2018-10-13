@@ -2,13 +2,13 @@
 
 const Model = use('Model')
 
-class Place extends Model {
+class Event extends Model {
   static get table() {
-    return 'places'
+    return 'events'
   }
 
   static get policy() {
-    return 'App/Policies/Place'
+    return 'App/Policies/Event'
   }
 
   admin() {
@@ -23,13 +23,10 @@ class Place extends Model {
     return this.belongsToMany('App/Models/User')
   }
 
-  rating() {
-    return this.hasMany('App/Models/PlaceRating')
-  }
-
   pictures() {
     return this.belongsToMany('App/Models/Picture')
   }
+
 }
 
-module.exports = Place
+module.exports = Event
