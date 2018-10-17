@@ -1,12 +1,14 @@
 const Place = use('App/Models/Place')
 const AddressRepository = use('App/Repositories/Address')
 const PictureRepository = use('App/Repositories/Picture')
+const VideoRepository = use('App/Repositories/Video')
 
 class PlaceRepository {
 
   constructor() {
     this.address = new AddressRepository()
     this.picture = new PictureRepository()
+    this.video = new VideoRepository()
 
     this.create = this.create.bind(this)
   }
@@ -16,6 +18,7 @@ class PlaceRepository {
       .with('admin')
       .with('address')
       .with('pictures')
+      .with('videos')
       .orderBy('updated_at', 'DESC')
       .paginate(options.page, options.limit)
   }
@@ -26,6 +29,7 @@ class PlaceRepository {
       .with('admin')
       .with('address')
       .with('pictures')
+      .with('videos')
       .where('id', id)
       .first()
   }
@@ -43,6 +47,7 @@ class PlaceRepository {
     })
 
     await this.picture.addTo(placeModel, place.pictures)
+    await this.video.addTo(placeModel, place.videos)
 
     return placeModel
   }

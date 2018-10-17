@@ -30,6 +30,10 @@ class Place extends Model {
   pictures() {
     return this.belongsToMany('App/Models/Picture')
   }
+
+  videos() {
+    return this.belongsToMany('App/Models/Video')
+  }
 }
 
 module.exports = Place
