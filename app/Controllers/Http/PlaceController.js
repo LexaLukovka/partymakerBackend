@@ -89,11 +89,12 @@ class PlaceController {
     const place = await Place.find(params.id)
 
     if (!place) return response.notFound()
-    if (auth.user.cannot('delete', place)) return response.forbidden()
+
+    const title = `Place ${place.title} deleted`
 
     await place.delete()
 
-    return place
+    return { title }
   }
 }
 
