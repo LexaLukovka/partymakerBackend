@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 const Place = use('App/Models/Place')
 const AddressRepository = use('App/Repositories/Address')
 const PictureRepository = use('App/Repositories/Picture')
@@ -41,13 +42,13 @@ class PlaceRepository {
       title: place.title,
       admin_id: place.admin.id,
       address_id: addressModel.id,
+      working_day: place.working_day,
       working_hours: place.working_hours,
-      price: place.price,
       description: place.description,
     })
 
-    await this.picture.addTo(placeModel, place.pictures)
-    await this.video.addTo(placeModel, place.videos)
+    place.pictures && await this.picture.addTo(placeModel, place.pictures)
+    place.videos && await this.video.addTo(placeModel, place.videos)
 
     return placeModel
   }
@@ -61,8 +62,8 @@ class PlaceRepository {
       title: place.title,
       admin_id: place.admin.id,
       address_id: addressModel && addressModel.id,
+      working_day: place.working_day,
       working_hours: place.working_hours,
-      price: place.price,
       description: place.description,
     })
     await placeModel.save()

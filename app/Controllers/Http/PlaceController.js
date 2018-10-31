@@ -38,10 +38,6 @@ class PlaceController {
   async store({ request, response, auth }) {
     const req = request.all()
 
-    if (auth.user.cannot('create', Place)) {
-      return response.forbidden()
-    }
-
     const place = this.place.create({ ...req, admin: auth.user })
 
     return response.created({ created: !!place, place })
