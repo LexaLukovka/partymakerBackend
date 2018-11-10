@@ -1,4 +1,6 @@
 /* eslint-disable no-unused-expressions */
+const isEmpty = use('lodash/isEmpty')
+
 const Place = use('App/Models/Place')
 const AddressRepository = use('App/Repositories/Address')
 const PictureRepository = use('App/Repositories/Picture')
@@ -9,7 +11,7 @@ class PlaceRepository {
   constructor() {
     this.address = new AddressRepository()
     this.picture = new PictureRepository()
-    this.video = new VideoRepository()
+    this.videos = new VideoRepository()
 
     this.create = this.create.bind(this)
   }
@@ -47,8 +49,8 @@ class PlaceRepository {
       description: place.description,
     })
 
-    place.pictures && await this.picture.addTo(placeModel, place.pictures)
-    place.videos && await this.video.addTo(placeModel, place.videos)
+    !isEmpty(place.pictures) && await this.picture.addTo(placeModel, place.pictures)
+    !isEmpty(place.videos) && await this.videos.addTo(placeModel, place.videos)
 
     return placeModel
   }
@@ -68,9 +70,11 @@ class PlaceRepository {
     })
     await placeModel.save()
 
-    if (place.pictures) {
-      await this.picture.update(place.pictures)
-    }
+    console.log(1, place.videos)
+
+    !isEmpty(place.pictures) && await this.picture.update(placeModel, place.pictures)
+    !isEmpty(place.videos) && await this.videos.update(placeModel, place.videos)
+
 
     return placeModel
   }
