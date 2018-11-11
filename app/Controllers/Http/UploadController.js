@@ -20,7 +20,7 @@ class UploadController {
 
     if (!profilePics.move()) return [profilePics.error()]
 
-    return { url: `/uploads/${name}` }
+    return { url: `http://localhost:3333/uploads/${name}` }
   }
 }
 
