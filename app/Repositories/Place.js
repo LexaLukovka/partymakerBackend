@@ -70,8 +70,6 @@ class PlaceRepository {
     })
     await placeModel.save()
 
-    console.log(1, place.videos)
-
     !isEmpty(place.pictures) && await this.picture.update(placeModel, place.pictures)
     !isEmpty(place.videos) && await this.videos.update(placeModel, place.videos)
 
