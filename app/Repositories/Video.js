@@ -1,4 +1,6 @@
 /* eslint-disable consistent-return */
+const difference = require('lodash/difference')
+const intersection = require('lodash/intersection')
 
 const Video = use('App/Models/Video')
 
@@ -7,11 +9,11 @@ class VideoRepository {
     this.add = this.add.bind(this)
     this.remove = this.remove.bind(this)
     this.addTo = this.addTo.bind(this)
-
+    this.update = this.update.bind(this)
   }
 
   add(urls) {
-    const videoPromises = urls.map(url => Video.create({ url: url.split('=')[1].split('?')[0].split('&')[0] }))
+    const videoPromises = urls.map(url => Video.create({ url }))
 
     return Promise.all(videoPromises)
   }
@@ -31,6 +33,24 @@ class VideoRepository {
 
     return model.videos()
       .attach(videos.map(video => video.id))
+  }
+
+  async update(model, videos_urls) {
+    const oldVideosModels = (await model.videos().fetch()).toJSON()
+    const oldVideos = oldVideosModels.map(picture => picture.url)
+
+    const toAdd = difference(videos_urls, oldVideos)
+    const toRemove = difference(oldVideos, intersection(videos_urls, oldVideos))
+
+    const toRemoveModels = await this.remove(toRemove)
+    const toAddModels = await this.add(toAdd)
+
+    await model.videos().attach(toAddModels.map(p => p.id))
+    await model.videos().detach(toRemoveModels.map(p => p.id))
+
+    // await this.clean()
+
+    return model.videos()
   }
 }
 

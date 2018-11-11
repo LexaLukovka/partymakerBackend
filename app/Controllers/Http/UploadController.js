@@ -15,11 +15,12 @@ class UploadController {
     })
 
     const name = generateName(profilePics.subtype)
-    await profilePics.moveAll(Helpers.publicPath('uploads'), { name })
 
-    if (!profilePics.moved()) return [profilePics.error()]
+    await profilePics.move(Helpers.publicPath('uploads'), { name })
 
-    return { url: `/uploads/${name}` }
+    if (!profilePics.move()) return [profilePics.error()]
+
+    return { url: `http://localhost:3333/uploads/${name}` }
   }
 }
 
