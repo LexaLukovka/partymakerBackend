@@ -12,7 +12,7 @@ module.exports = [
       '/images/places/kichkas_beach8.jpg',
     ],
     videos: [
-      'https://www.youtube.com/watch?v=9KVGYO2MEGo',
+      '9KVGYO2MEGo',
     ],
     address: {
       address: 'Лейтенанта Шмидта, 185, Запорожье, Запорожская область, 69000',
@@ -36,7 +36,7 @@ module.exports = [
       '/images/places/baburka.jpg',
     ],
     videos: [
-      'https://www.youtube.com/watch?v=M7fco-IsUy0',
+      'M7fco-IsUy0',
     ],
     address: {
       address: 'Лейтенанта Шмидта, 185, Запорожье, Запорожская область, 69000',
@@ -59,7 +59,7 @@ module.exports = [
       '/images/places/voznesenovsky.png',
     ],
     videos: [
-      'https://www.youtube.com/watch?v=BbecZpWux0U',
+      'BbecZpWux0U',
     ],
     address: {
       address: 'Вознесенівський пляж',
@@ -87,7 +87,7 @@ module.exports = [
       '/images/places/dukovka.jpg',
     ],
     videos: [
-      'https://www.youtube.com/watch?v=ag419WJMuZQ',
+      'ag419WJMuZQ',
     ],
     address: {
       address: 'Дубовый Гай, ул. Глисерна, 22, Запорожская область, Запорожская область, 69061',
@@ -114,7 +114,7 @@ module.exports = [
       '/images/places/mushroom_beach.jpg',
     ],
     videos: [
-      'https://www.youtube.com/watch?v=_gKI-MkwTaQ',
+      '_gKI-MkwTaQ',
     ],
     address: {
       address: 'ул. 40-летия Победы, Запорожье, Запорожская область, Украина, 69000',
@@ -147,8 +147,8 @@ module.exports = [
       '/images/places/thumb.jpg',
     ],
     videos: [
-      'https://www.youtube.com/watch?v=uXR-34Ao-PU',
-      'https://www.youtube.com/watch?v=nTZORhJo1Ag',
+      'uXR-34Ao-PU',
+      'nTZORhJo1Ag',
     ],
     address: {
       address: 'Хортица, Запорожье, Запорожская область, 69000',
