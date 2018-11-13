@@ -1,12 +1,17 @@
+/* eslint-disable no-unused-expressions */
+const isEmpty = use('lodash/isEmpty')
+
 const Place = use('App/Models/Place')
 const AddressRepository = use('App/Repositories/Address')
 const PictureRepository = use('App/Repositories/Picture')
+const VideoRepository = use('App/Repositories/Video')
 
 class PlaceRepository {
 
   constructor() {
     this.address = new AddressRepository()
     this.picture = new PictureRepository()
+    this.videos = new VideoRepository()
 
     this.create = this.create.bind(this)
   }
@@ -16,6 +21,7 @@ class PlaceRepository {
       .with('admin')
       .with('address')
       .with('pictures')
+      .with('videos')
       .orderBy('updated_at', 'DESC')
       .paginate(options.page, options.limit)
   }
@@ -26,6 +32,7 @@ class PlaceRepository {
       .with('admin')
       .with('address')
       .with('pictures')
+      .with('videos')
       .where('id', id)
       .first()
   }
@@ -37,12 +44,13 @@ class PlaceRepository {
       title: place.title,
       admin_id: place.admin.id,
       address_id: addressModel.id,
+      working_day: place.working_day,
       working_hours: place.working_hours,
-      price: place.price,
       description: place.description,
     })
 
-    await this.picture.addTo(placeModel, place.pictures)
+    !isEmpty(place.pictures) && await this.picture.addTo(placeModel, place.pictures)
+    !isEmpty(place.videos) && await this.videos.addTo(placeModel, place.videos)
 
     return placeModel
   }
@@ -56,15 +64,15 @@ class PlaceRepository {
       title: place.title,
       admin_id: place.admin.id,
       address_id: addressModel && addressModel.id,
+      working_day: place.working_day,
       working_hours: place.working_hours,
-      price: place.price,
       description: place.description,
     })
     await placeModel.save()
 
-    if (place.pictures) {
-      await this.picture.update(place.pictures)
-    }
+    !isEmpty(place.pictures) && await this.picture.update(placeModel, place.pictures)
+    !isEmpty(place.videos) && await this.videos.update(placeModel, place.videos)
+
 
     return placeModel
   }

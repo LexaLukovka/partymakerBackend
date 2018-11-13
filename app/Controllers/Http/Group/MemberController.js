@@ -65,9 +65,9 @@ class MemberController {
       return response.forbidden({ message: `${user.name} is not member of ${group.title}` })
     }
 
-    // if (group.admin_id !== params.id) {
-    //   return response.forbidden({ message: `Only admin of the ${group.title} can delete members` })
-    // }
+    if (group.admin_id !== params.id) {
+      return response.forbidden({ message: `Only admin of the ${group.title} can delete members` })
+    }
 
     const res = await group.users()
       .detach([params.id])

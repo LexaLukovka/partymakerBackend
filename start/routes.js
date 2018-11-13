@@ -13,6 +13,7 @@ Route.post('login', 'AuthController.login').validator('Auth/Login')
 Route.post('register', 'AuthController.register').validator('Auth/Register')
 Route.post('login/facebook', 'AuthController.facebook')
 Route.post('login/google', 'AuthController.google')
+
 Route.get('user', 'AuthController.user').middleware('auth')
 
 /**
@@ -66,7 +67,7 @@ Route.resource('events', 'EventController')
 Route.resource('places/:place_id/votes', 'Place/RatingController')
   .middleware('auth')
 
-Route.resource('places', 'Place/PlaceController')
-  .middleware(SUD)
+// Route.resource('places', 'Place/PlaceController')
+//   .middleware(SUD)
 
 Route.resource('upload', 'UploadController')
