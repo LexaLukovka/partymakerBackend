@@ -40,7 +40,10 @@ class PlaceController {
 
     const place = this.place.create({ ...req, admin: auth.user })
 
-    return response.created({ created: !!place, place })
+    return response.created({
+      created: !!place,
+      place: await this.place.find(place.id)
+    })
   }
 
   /**
@@ -77,7 +80,10 @@ class PlaceController {
 
     const updatedPlace = await this.place.edit(place, { ...req, admin: auth.user })
 
-    return { updated: !!updatedPlace, updatedPlace }
+    return {
+      updated: !!updatedPlace,
+      place: await this.place.find(updatedPlace.id)
+    }
   }
 
   /**
