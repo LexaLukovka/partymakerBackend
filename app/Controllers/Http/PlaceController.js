@@ -38,7 +38,7 @@ class PlaceController {
   async store({ request, response, auth }) {
     const req = request.all()
 
-    const place = this.place.create({ ...req, admin: auth.user })
+    const place = await this.place.create({ ...req, admin: auth.user })
 
     return response.created({
       created: !!place,
