@@ -10,7 +10,7 @@ class EventSchema extends Schema {
       table.integer('address_id').unsigned().references('id').inTable('address').notNullable()
       table.string('working_hours')
       table.string('price')
-      table.string('description').notNullable()
+      table.text('description').notNullable()
       table.dateTime('date').notNullable()
       table.timestamps()
     })

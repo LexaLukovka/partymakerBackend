@@ -45,6 +45,7 @@
     "lodash-clean": "^2.0.1",
     "moment": "^2.22.2",
     "mysql": "^2.16.0",
+    "mysql2": "^1.6.4",
     "sqlite3": "^4.0.0",
     "url-parse": "^1.4.3"
   },

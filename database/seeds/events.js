@@ -4,8 +4,8 @@ module.exports = [
     pictures: [
       '/images/events/yarmarka.jpg',
     ],
-    date: 'Sun, 09 Sep 2018 13:00:00 +0300',
-    ends_at: 'Sun, 09 Sep 2018 14:00:00 +0300',
+    date: '2018-01-01 00:00:01',
+    ends_at: '2018-01-01 00:00:01',
     price: 'Бесплатно',
     address: {
       address: 'CITY MALL. Запорожская, 1В',
@@ -23,8 +23,8 @@ module.exports = [
     pictures: [
       '/images/events/game-of-thrones.jpg',
     ],
-    date: 'Sun, 11 Sep 2018 21:00:00 +0300',
-    ends_at: 'Sun, 11 Sep 2018 23:30:00 +0300',
+    date: '2018-01-01 00:00:01',
+    ends_at: '2018-01-01 00:00:01',
     price: '60 грн. с человека',
     address: {
       address: 'Развлекательный центр «Капиталист». Проспект Соборный, 92',
@@ -43,8 +43,8 @@ module.exports = [
     pictures: [
       '/images/events/​​RetroMotorFest.jpg',
     ],
-    date: 'Sun, 13 Sep 2018 21:00:00 +0300',
-    ends_at: 'Sun, 14 Sep 2018 23:30:00 +0300',
+    date: '2018-01-01 00:00:01',
+    ends_at: '2018-01-01 00:00:01',
     price: '80 грн. с человека',
     address: {
       address: 'Славутич-Арена',
@@ -64,8 +64,8 @@ module.exports = [
     pictures: [
       '/images/events/​​RetroMotorFest.jpg',
     ],
-    date: 'Sun, 6 Sep 2018 21:00:00 +0300',
-    ends_at: 'Sun, 6 Sep 2018 23:30:00 +0300',
+    date: '2018-01-01 00:00:01',
+    ends_at: '2018-01-01 00:00:01',
     price: '50 грн',
     address: {
       address: 'ПРК «Африка». пр. Маяковского, 21 (Набережная магистраль)',
@@ -84,8 +84,8 @@ module.exports = [
     pictures: [
       '/images/events/​​RetroMotorFest.jpg',
     ],
-    date: 'Sun, 6 Sep 2018 21:00:00 +0300',
-    ends_at: 'Sun, 6 Sep 2018 23:30:00 +0300',
+    date: '2018-01-01 00:00:01',
+    ends_at: '2018-01-01 00:00:01',
     price: '450-5000 грн',
     address: {
       address: 'Дворец Спорта "Юность". Победы, 66',
