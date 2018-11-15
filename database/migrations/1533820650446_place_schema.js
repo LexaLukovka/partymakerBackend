@@ -8,8 +8,6 @@ class PlaceSchema extends Schema {
       table.string('title')
       table.integer('admin_id').unsigned().references('id').inTable('users').notNullable()
       table.integer('address_id').unsigned().references('id').inTable('address').notNullable()
-      table.string('working_day')
-      table.string('working_hours')
       table.text('description')
       table.timestamps()
     })

@@ -316,6 +316,11 @@ acorn@^5.0.0, acorn@^5.5.0, acorn@^5.7.1:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.1.tgz#f095829297706a7c9776958c0afc8930a9b9d9d8"
 
+adonis-lucid-update-or-create@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/adonis-lucid-update-or-create/-/adonis-lucid-update-or-create-1.0.2.tgz#a33c82add65b715e284be72a03f0bf449b63ad2f"
+  integrity sha512-wlxfnAVGL4+MV640BtH1VVgCjrHylvXWAiJl4ZCViCWF4Ovn6Q9d5VcMYtsXoyLXVaNLVWYsc35PSM1snN8RWQ==
+
 ajv-keywords@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-2.1.1.tgz#617997fc5f60576894c435f940d819e135b80762"
@@ -659,6 +664,11 @@ asynckit@^0.4.0:
 atob@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.1.tgz#ae2d5a729477f289d60dd7f96a6314a22dd6c22a"
+
+auto-bind@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/auto-bind/-/auto-bind-1.2.1.tgz#807f7910b0210db9eefe133f3492c28e89698b96"
+  integrity sha512-/W9yj1yKmBLwpexwAujeD9YHwYmRuWFGV8HWE7smQab797VeHa4/cnE2NFeDhA+E+5e/OGBI8763EhLjfZ/MXA==
 
 aws-sign2@~0.7.0:
   version "0.7.0"

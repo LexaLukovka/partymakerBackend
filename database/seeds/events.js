@@ -5,8 +5,12 @@ module.exports = [
       '/images/events/yarmarka.jpg',
     ],
     date: '2018-01-01 00:00:01',
-    ends_at: '2018-01-01 00:00:01',
-    price: 'Бесплатно',
+    details: [
+      {
+        label: 'Цена',
+        value: 'Бесплатно'
+      },
+    ],
     address: {
       address: 'CITY MALL. Запорожская, 1В',
       lat: -60.07511,
@@ -24,8 +28,12 @@ module.exports = [
       '/images/events/game-of-thrones.jpg',
     ],
     date: '2018-01-01 00:00:01',
-    ends_at: '2018-01-01 00:00:01',
-    price: '60 грн. с человека',
+    details: [
+      {
+        label: 'Цена',
+        value: '60 грн. с человека'
+      },
+    ],
     address: {
       address: 'Развлекательный центр «Капиталист». Проспект Соборный, 92',
       lat: -60.07511,
@@ -44,8 +52,12 @@ module.exports = [
       '/images/events/​​RetroMotorFest.jpg',
     ],
     date: '2018-01-01 00:00:01',
-    ends_at: '2018-01-01 00:00:01',
-    price: '80 грн. с человека',
+    details: [
+      {
+        label: 'Цена',
+        value: '80 грн. с человека'
+      },
+    ],
     address: {
       address: 'Славутич-Арена',
       lat: -60.07511,
@@ -65,8 +77,12 @@ module.exports = [
       '/images/events/​​RetroMotorFest.jpg',
     ],
     date: '2018-01-01 00:00:01',
-    ends_at: '2018-01-01 00:00:01',
-    price: '50 грн',
+    details: [
+      {
+        label: 'Цена',
+        value: '80 грн. с человека'
+      },
+    ],
     address: {
       address: 'ПРК «Африка». пр. Маяковского, 21 (Набережная магистраль)',
       lat: -60.07511,
@@ -85,8 +101,12 @@ module.exports = [
       '/images/events/​​RetroMotorFest.jpg',
     ],
     date: '2018-01-01 00:00:01',
-    ends_at: '2018-01-01 00:00:01',
-    price: '450-5000 грн',
+    details: [
+      {
+        label: 'Цена',
+        value: '80 грн. с человека'
+      },
+    ],
     address: {
       address: 'Дворец Спорта "Юность". Победы, 66',
       lat: -60.07511,

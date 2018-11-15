@@ -1,3 +1,4 @@
+const autoBind = require('auto-bind')
 const Event = use('App/Models/Event')
 const AddressRepository = use('App/Repositories/Address')
 const PictureRepository = use('App/Repositories/Picture')
@@ -8,7 +9,7 @@ class EventRepository {
     this.address = new AddressRepository()
     this.picture = new PictureRepository()
 
-    this.create = this.create.bind(this)
+    autoBind(this)
   }
 
   paginate(options) {
@@ -37,9 +38,7 @@ class EventRepository {
       title: event.title,
       admin_id: event.admin.id,
       address_id: addressModel.id,
-      working_hours: event.working_hours,
       date: event.date,
-      price: event.price,
       description: event.description,
     })
 
@@ -57,9 +56,7 @@ class EventRepository {
       title: event.title,
       admin_id: event.admin.id,
       address_id: addressModel && addressModel.id,
-      working_hours: event.working_hours,
       date: event.date,
-      price: event.price,
       description: event.description,
     })
     await eventModel.save()

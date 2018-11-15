@@ -449,8 +449,6 @@
             "schema": {
               "required": [
                 "title",
-                "working_hours",
-                "price",
                 "description",
                 "address",
                 "pictures"
@@ -459,18 +457,6 @@
                 "title": {
                   "type": "string",
                   "example": "Вознесеновский пляж"
-                },
-                "working_hours": {
-                  "type": "string",
-                  "example": "ПН-ПТ: 9:00 - 20:00"
-                },
-                "price": {
-                  "type": "string",
-                  "example": "Бесплатно"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
                 },
                 "address": {
                   "$ref": "#/definitions/Address"
@@ -481,6 +467,33 @@
                     "type": "string",
                     "example": "http://192.168.0.103:3333/images/places/voznesenovsky.png"
                   }
+                },
+                "videos": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": "SFkVT8Q0fLQ"
+                  }
+                },
+                "details": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string",
+                        "example": "Время работы"
+                      },
+                      "value": {
+                        "type": "string",
+                        "example": "ПН-ПТ: 9:00 - 20:00"
+                      }
+                    }
+                  }
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
                 }
               }
             }
@@ -573,10 +586,6 @@
                 "working_hours": {
                   "type": "string",
                   "example": "ПН-ПТ: 9:00 - 20:00"
-                },
-                "price": {
-                  "type": "string",
-                  "example": "Бесплатно"
                 },
                 "description": {
                   "type": "string",
@@ -1034,7 +1043,6 @@
               "required": [
                 "title",
                 "working_hours",
-                "price",
                 "description",
                 "address",
                 "pictures"
@@ -1043,14 +1051,6 @@
                 "title": {
                   "type": "string",
                   "example": "Уютная ярмарка"
-                },
-                "working_hours": {
-                  "type": "string",
-                  "example": "ПН-ПТ: 9:00 - 20:00"
-                },
-                "price": {
-                  "type": "string",
-                  "example": "Бесплатно"
                 },
                 "description": {
                   "type": "string",
@@ -1073,6 +1073,13 @@
                   "items": {
                     "type": "string",
                     "example": "http://192.168.0.103:3333/images/places/voznesenovsky.png"
+                  }
+                },
+                "videos": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": "312AD2d213a"
                   }
                 }
               }
@@ -1160,8 +1167,6 @@
             "schema": {
               "required": [
                 "title",
-                "working_hours",
-                "price",
                 "description",
                 "address",
                 "pictures"
@@ -1170,14 +1175,6 @@
                 "title": {
                   "type": "string",
                   "example": "Уютная ярмарка"
-                },
-                "working_hours": {
-                  "type": "string",
-                  "example": "ПН-ПТ: 9:00 - 20:00"
-                },
-                "price": {
-                  "type": "string",
-                  "example": "Бесплатно"
                 },
                 "description": {
                   "type": "string",
@@ -1341,7 +1338,6 @@
       "description": "Access denied"
     }
   },
-
   "definitions": {
     "User": {
       "required": [
@@ -1426,13 +1422,21 @@
           "type": "integer",
           "example": 1
         },
-        "working_hours": {
-          "type": "string",
-          "example": "ПН-ПТ: 9:00 - 20:00"
-        },
-        "price": {
-          "type": "string",
-          "example": "Бесплатно"
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "example": "Время работы"
+              },
+              "value": {
+                "type": "string",
+                "example": "Понедельник-Пятница"
+              }
+            }
+          }
         },
         "description": {
           "type": "string",
@@ -1541,14 +1545,6 @@
         "address_id": {
           "type": "integer",
           "example": 1
-        },
-        "working_hours": {
-          "type": "string",
-          "example": "ПН-ПТ: 9:00 - 20:00"
-        },
-        "price": {
-          "type": "string",
-          "example": "Бесплатно"
         },
         "date": {
           "type": "string",

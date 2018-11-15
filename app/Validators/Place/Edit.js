@@ -4,8 +4,6 @@ module.exports = class Create {
     return {
       title: 'string',
       address: 'object',
-      working_day: 'string',
-      working_hours: 'string',
       description: 'string',
     }
   }

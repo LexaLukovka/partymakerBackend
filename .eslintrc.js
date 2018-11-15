@@ -7,6 +7,7 @@ module.exports = {
   'rules': {
     'no-trailing-spaces': 0,
     'max-len': [2, 120],
+    'import/newline-after-import': 0,
     'camelcase': 0,
     'linebreak-style': 0,
     'no-extra-semi': 2,
@@ -14,6 +15,7 @@ module.exports = {
     'padded-blocks': 0,
     'no-param-reassign': ['error', { 'props': false }],
     'semi': [2, 'never'],
+    'newline-per-chained-call': 0,
     'class-methods-use-this': 0,
     'object-curly-newline': 0,
     'no-unused-vars': 0,
