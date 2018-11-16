@@ -72,11 +72,11 @@ class PlaceRepository {
       description: place.description,
     })
 
+    await placeModel.save()
+
     place.details.forEach(detail => {
       this.detail.set({ ...detail, place_id: placeModel.id })
     })
-
-    await placeModel.save()
 
     !isEmpty(place.pictures) && await this.picture.update(placeModel, place.pictures)
     !isEmpty(place.videos) && await this.videos.update(placeModel, place.videos)

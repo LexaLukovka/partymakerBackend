@@ -8,6 +8,7 @@ RUN npm install
 COPY . /opt/app
 
 RUN npm i -g @adonisjs/cli
+RUN npm i -g nodemon
 
 CMD node server.js
 
