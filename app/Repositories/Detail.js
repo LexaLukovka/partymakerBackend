@@ -27,11 +27,11 @@ class DetailRepository {
   async update(model, details) {
     const oldDetails = (await model.details().fetch()).toJSON()
 
-    const toSet = differenceBy(details, oldDetails, 'label')
+    await this.set(details, model)
+
     const toRemove = differenceBy(oldDetails, intersectionBy(details, oldDetails, 'label'), 'label')
 
     await this.remove(toRemove, model)
-    await this.set(toSet, model)
 
     return model.details()
   }
