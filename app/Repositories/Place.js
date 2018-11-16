@@ -50,9 +50,7 @@ class PlaceRepository {
       description: place.description,
     })
 
-    place.details.forEach(async detail => {
-      this.detail.set({ ...detail, place_id: placeModel.id })
-    })
+    this.detail.set(place.details, placeModel)
 
     !isEmpty(place.pictures) && await this.picture.addTo(placeModel, place.pictures)
     !isEmpty(place.videos) && await this.videos.addTo(placeModel, place.videos)
@@ -74,10 +72,7 @@ class PlaceRepository {
 
     await placeModel.save()
 
-    place.details.forEach(detail => {
-      this.detail.set({ ...detail, place_id: placeModel.id })
-    })
-
+    !isEmpty(place.details) && await this.detail.update(placeModel, place.details)
     !isEmpty(place.pictures) && await this.picture.update(placeModel, place.pictures)
     !isEmpty(place.videos) && await this.videos.update(placeModel, place.videos)
 

@@ -1,5 +1,8 @@
+/* eslint-disable consistent-return */
 const autoBind = require('auto-bind')
 const Detail = use('App/Models/Detail')
+const differenceBy = require('lodash/differenceBy')
+const intersectionBy = require('lodash/intersectionBy')
 
 class DetailRepository {
 
@@ -7,16 +10,32 @@ class DetailRepository {
     autoBind(this)
   }
 
-  get({ label, place_id }) {
-    return Detail.query()
-      .where('label', label)
-      .where('place_id', place_id)
-      .first()
+  set(details, model) {
+    const pa = details.map(({ label, value }) =>
+      Detail.updateOrCreate({ label, place_id: model.id }, { label, value, place_id: model.id }))
+
+    return Promise.all(pa)
   }
 
-  set({ label, value, place_id }) {
-    return Detail.updateOrCreate({ label, place_id }, { label, value })
+  remove(details, model) {
+    const promiseArray = details.map(detail =>
+      Detail.query().where({ label: detail.label, place_id: model.id }).delete())
+
+    return Promise.all(promiseArray)
   }
+
+  async update(model, details) {
+    const oldDetails = (await model.details().fetch()).toJSON()
+
+    const toSet = differenceBy(details, oldDetails, 'label')
+    const toRemove = differenceBy(oldDetails, intersectionBy(details, oldDetails, 'label'), 'label')
+
+    await this.remove(toRemove, model)
+    await this.set(toSet, model)
+
+    return model.details()
+  }
+
 }
 
 module.exports = DetailRepository
