@@ -50,8 +50,7 @@ class PlaceRepository {
       description: place.description,
     })
 
-    this.detail.set(place.details, placeModel)
-
+    !isEmpty(place.details) && await this.detail.update(placeModel, place.details)
     !isEmpty(place.pictures) && await this.picture.addTo(placeModel, place.pictures)
     !isEmpty(place.videos) && await this.videos.addTo(placeModel, place.videos)
 
