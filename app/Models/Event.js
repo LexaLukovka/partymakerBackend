@@ -27,6 +27,10 @@ class Event extends Model {
     return this.belongsToMany('App/Models/Picture')
   }
 
+  details() {
+    return this.hasMany('App/Model/Detail')
+  }
+
 }
 
 module.exports = Event
