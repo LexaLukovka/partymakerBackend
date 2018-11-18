@@ -19,7 +19,7 @@ class AuthController {
     user.email = email
     user.phone = phone
     user.password = password
-    await user.save()
+    await user._save()
     return auth.withRefreshToken().generate(user, true)
 
   }

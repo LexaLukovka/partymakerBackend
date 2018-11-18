@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-expressions */
-const isEmpty = use('lodash/isEmpty')
+const isEmpty = require('lodash/isEmpty')
 const autoBind = require('auto-bind')
+const Backup = use('Backup')
 const Place = use('App/Models/Place')
 const AddressRepository = use('App/Repositories/Address')
 const PictureRepository = use('App/Repositories/Picture')
@@ -50,6 +51,8 @@ class PlaceRepository {
       description: place.description,
     })
 
+    Backup.set(place, placeModel.id)
+
     !isEmpty(place.details) && await this.detail.update(placeModel, place.details)
     !isEmpty(place.pictures) && await this.picture.addTo(placeModel, place.pictures)
     !isEmpty(place.videos) && await this.videos.addTo(placeModel, place.videos)
@@ -60,6 +63,8 @@ class PlaceRepository {
   async edit(placeModel, place) {
     let addressModel
 
+    Backup.set(place, placeModel.id)
+
     if (place.address) addressModel = await this.address.create(place.address)
 
     placeModel.merge({
@@ -69,7 +74,7 @@ class PlaceRepository {
       description: place.description,
     })
 
-    await placeModel.save()
+    await placeModel._save()
 
     !isEmpty(place.details) && await this.detail.update(placeModel, place.details)
     !isEmpty(place.pictures) && await this.picture.update(placeModel, place.pictures)

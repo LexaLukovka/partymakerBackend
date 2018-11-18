@@ -13,6 +13,7 @@ module.exports = {
     'no-extra-semi': 2,
     'arrow-parens': 0,
     'padded-blocks': 0,
+    'no-underscore-dangle': 0,
     'no-param-reassign': ['error', { 'props': false }],
     'semi': [2, 'never'],
     'newline-per-chained-call': 0,

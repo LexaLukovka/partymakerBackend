@@ -59,7 +59,7 @@ class EventRepository {
       date: event.date,
       description: event.description,
     })
-    await eventModel.save()
+    await eventModel._save()
 
     if (event.pictures) {
       await this.picture.update(event.pictures)

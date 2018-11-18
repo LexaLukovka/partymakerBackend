@@ -24,7 +24,7 @@ class UserRepository {
 
   async edit(model, user) {
     model.merge(this.userData(user))
-    await model.save()
+    await model._save()
 
     return User.find(model.id)
   }

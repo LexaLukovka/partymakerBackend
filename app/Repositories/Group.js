@@ -80,7 +80,7 @@ class GroupRepository {
       date: data.date,
       description: data.description,
     })
-    await group.save()
+    await group._save()
 
     if (data.pictures) {
       await this.picture.update(data.pictures)

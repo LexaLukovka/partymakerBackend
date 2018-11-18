@@ -1,5 +1,4 @@
-'use strict'
-
+const myProvider = require('../utils/myProvider')
 /*
 |--------------------------------------------------------------------------
 | Providers
@@ -10,6 +9,7 @@
 | provider here.
 |
 */
+
 const providers = [
   '@adonisjs/framework/providers/AppProvider',
   '@adonisjs/framework/providers/ViewProvider',
@@ -21,7 +21,8 @@ const providers = [
   '@adonisjs/session/providers/SessionProvider',
   '@adonisjs/auth/providers/AuthProvider',
   '@adonisjs/validator/providers/ValidatorProvider',
-  'adonis-lucid-update-or-create/providers/UpdateOrCreateProvider'
+  'adonis-lucid-update-or-create/providers/UpdateOrCreateProvider',
+  myProvider('Backup/providers/BackupProvider'),
 ]
 
 /*
@@ -50,7 +51,9 @@ const aceProviders = [
 |   { Route: 'Adonis/Src/Route' }
 |
 */
-const aliases = {}
+const aliases = {
+  Backup: 'Providers/Backup'
+}
 
 /*
 |--------------------------------------------------------------------------
