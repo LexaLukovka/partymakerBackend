@@ -51,7 +51,7 @@ class PlaceRepository {
       description: place.description,
     })
 
-    Backup.set(place, placeModel.id)
+    Backup.table('place').set(place, placeModel.id)
 
     !isEmpty(place.details) && await this.detail.update(placeModel, place.details)
     !isEmpty(place.pictures) && await this.picture.addTo(placeModel, place.pictures)
@@ -63,7 +63,7 @@ class PlaceRepository {
   async edit(placeModel, place) {
     let addressModel
 
-    Backup.set(place, placeModel.id)
+    Backup.table('place').set(place, placeModel.id)
 
     if (place.address) addressModel = await this.address.create(place.address)
 

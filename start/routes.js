@@ -38,12 +38,22 @@ Route.resource('places', 'PlaceController')
 
 /**
  *
+ * Ideas routes
+ *
+ * */
+
+Route.resource('ideas', 'IdeaController')
+  .validator([['ideas.store', 'Idea/Create'], ['ideas.update', 'Idea/Edit']])
+  .middleware(SUD)
+
+/**
+ *
  * Group routes
  *`
  * */
 Route.resource('groups/:group_id/members', 'Group/MemberController')
   .middleware('auth')
-  // .validator([['groups/:group_id/members.store', 'Group/Member/Create']])
+// .validator([['groups/:group_id/members.store', 'Group/Member/Create']])
 
 Route.resource('groups', 'GroupController')
   .validator([['groups.store', 'Group/Create'], ['groups.update', 'Group/Edit']])

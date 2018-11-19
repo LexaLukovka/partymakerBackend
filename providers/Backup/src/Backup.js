@@ -2,31 +2,41 @@
 const autoBind = require('auto-bind')
 const NE = require('node-exceptions')
 const fs = require('fs')
-const { promisify } = require('util')
 const uniqid = require('uniqid')
 
-const writeFile = promisify(fs.writeFile)
-
 class Backup {
-
   constructor(Config) {
     autoBind(this)
+    this.json = {}
     this.path = Config.get('backup.json.path')
-    this._readFile()
+    this.currentTable = null
   }
 
-  _readFile() {
-    this.json = JSON.parse(fs.readFileSync(this.path))
+  _readFile(name) {
+    const file = `${this.path}/${name}.json`
+
+    if (fs.existsSync(file)) {
+      this.json = JSON.parse(fs.readFileSync(file))
+    }
+  }
+
+  table(name) {
+    this._readFile(name)
+    this.currentTable = name
+    return this
   }
 
   set(data, key = uniqid()) {
-    this.json[key] = data
+    this.json = {
+      ...this.json,
+      [key]: data
+    }
     this._save()
     return key
   }
 
   get(key) {
-    return this.json[key]
+    return this.json[this.currentTable][key]
   }
 
   remove(key) {
@@ -35,7 +45,11 @@ class Backup {
   }
 
   _save() {
-    return writeFile(this.path, JSON.stringify(this.json), 'utf8')
+    if (!this.currentTable) {
+      throw NE.RuntimeException('currentTable is empty. Please set table() value before using set() or get()')
+    }
+    const file = `${this.path}/${this.currentTable}.json`
+    return fs.writeFileSync(file, JSON.stringify(this.json), 'utf8')
   }
 
 }

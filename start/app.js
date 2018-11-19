@@ -29,7 +29,7 @@ const providers = [
 |--------------------------------------------------------------------------
 | Ace Providers
 |--------------------------------------------------------------------------
-|
+|const Response = use('Adonis/Src/Response')
 | Ace providers are required only when running ace commands. For example
 | Providers for migrations, tests etc.
 |

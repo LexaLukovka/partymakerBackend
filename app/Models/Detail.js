@@ -13,6 +13,10 @@ class Detail extends Model {
     return this.belongsTo('App/Models/Place')
   }
 
+  ideas() {
+    return this.belongsTo('App/Models/Idea')
+  }
+
   events() {
     return this.belongsTo('App/Models/Events')
   }

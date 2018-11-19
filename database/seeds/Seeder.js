@@ -7,9 +7,11 @@ no-console,
 */
 
 const Chance = require('chance')
+const autoBind = require('auto-bind')
 const flatten = require('lodash/flattenDeep')
 const USERS = require('./users')
 const PLACES = require('./places')
+const IDEAS = require('./ideas')
 const GROUPS = require('./groups')
 const EVENTS = require('./events')
 const Factory = use('Factory')
@@ -17,6 +19,7 @@ const User = use('App/Models/User')
 
 const PlaceRepository = use('App/Repositories/Place')
 const EventRepository = use('App/Repositories/Event')
+const IdeaRepository = use('App/Repositories/Idea')
 const GroupRepository = use('App/Repositories/Group')
 
 function printProgress(text) {
@@ -29,13 +32,10 @@ class Seeder {
   constructor() {
     this.chance = new Chance()
     this.placeRepo = new PlaceRepository()
+    this.ideaRepo = new IdeaRepository()
     this.eventRepo = new EventRepository()
     this.groupRepo = new GroupRepository()
-
-    this.createRealGroups = this.createRealGroups.bind(this)
-    this.createFakeGroups = this.createFakeGroups.bind(this)
-    this.createPlaces = this.createPlaces.bind(this)
-    this.createUsers = this.createUsers.bind(this)
+    autoBind(this)
   }
 
   async createUsers() {
@@ -53,6 +53,15 @@ class Seeder {
     )
 
     return Promise.all(placeModels)
+  }
+
+  createIdeas(users) {
+    printProgress('creating ideas...')
+    const ideaModels = IDEAS.map(place =>
+      this.ideaRepo.create({ ...place, admin: this.chance.pickone(users) }),
+    )
+
+    return Promise.all(ideaModels)
   }
 
   createEvents(users) {
@@ -110,6 +119,7 @@ class Seeder {
   async run() {
     const users = await this.createUsers()
     const places = await this.createPlaces(users)
+    const ideas = await this.createIdeas(users)
     const events = await this.createEvents(users)
 
     await this.createRealGroups(users)
