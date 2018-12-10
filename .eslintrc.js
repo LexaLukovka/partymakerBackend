@@ -11,6 +11,7 @@ module.exports = {
     'camelcase': 0,
     'linebreak-style': 0,
     'no-extra-semi': 2,
+    'no-underscore-dangle': 0,
     'arrow-parens': 0,
     'padded-blocks': 0,
     'no-param-reassign': ['error', { 'props': false }],

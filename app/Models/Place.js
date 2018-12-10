@@ -38,6 +38,10 @@ class Place extends Model {
   details() {
     return this.hasMany('App/Models/Detail')
   }
+
+  labels() {
+    return this.belongsToMany('App/Models/Label')
+  }
 }
 
 module.exports = Place

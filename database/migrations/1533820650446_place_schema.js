@@ -6,9 +6,9 @@ class PlaceSchema extends Schema {
     this.create('places', (table) => {
       table.increments()
       table.string('title')
+      table.text('description')
       table.integer('admin_id').unsigned().references('id').inTable('users').notNullable()
       table.integer('address_id').unsigned().references('id').inTable('address').notNullable()
-      table.text('description')
       table.timestamps()
     })
   }

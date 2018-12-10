@@ -39,7 +39,7 @@
     "https"
   ],
   "paths": {
-    "/login": {
+    "/auth/login": {
       "post": {
         "tags": [
           "auth"
@@ -83,7 +83,7 @@
         }
       }
     },
-    "/register": {
+    "/auth/register": {
       "post": {
         "tags": [
           "auth"
@@ -138,6 +138,35 @@
           },
           "400": {
             "$ref": "#/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/auth/user": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "current user",
+        "operationId": "auth",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/User"
+            }
           }
         }
       }
@@ -476,7 +505,7 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "label": {
+                      "labels": {
                         "type": "string",
                         "example": "Время работы"
                       },
@@ -485,6 +514,13 @@
                         "example": "ПН-ПТ: 9:00 - 20:00"
                       }
                     }
+                  }
+                },
+                "labels": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "example": "Отдых на свежем воздухе"
                   }
                 },
                 "description": {
@@ -1101,22 +1137,6 @@
           "type": "integer",
           "example": 1
         },
-        "details": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "label": {
-                "type": "string",
-                "example": "Время работы"
-              },
-              "value": {
-                "type": "string",
-                "example": "Понедельник-Пятница"
-              }
-            }
-          }
-        },
         "description": {
           "type": "string",
           "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
@@ -1143,9 +1163,28 @@
             "$ref": "#/definitions/Picture"
           }
         },
-        "rating": {
-          "type": "string",
-          "example": 3.5
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "labels": {
+                "type": "string",
+                "example": "Время работы"
+              },
+              "value": {
+                "type": "string",
+                "example": "Понедельник-Пятница"
+              }
+            }
+          }
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "Отдых на свежем воздухе"
+          }
         }
       }
     },

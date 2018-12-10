@@ -46,7 +46,7 @@ class Seeder {
   createPlaces(users) {
     printProgress('creating places...')
     const placeModels = PLACES.map(place =>
-      this.placeRepo.create({ ...place, admin: this.chance.pickone(users) }),
+      this.placeRepo.create({ ...place, admin: this.chance.pickone(users).toObject() }),
     )
 
     return Promise.all(placeModels)
@@ -83,9 +83,9 @@ class Seeder {
     return Promise.all(flatten(promises))
   }
 
-
   async run() {
     const users = await this.createUsers()
+    await this.createPlaces(users)
     await this.createRealGroups(users)
 
     return true

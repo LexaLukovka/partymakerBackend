@@ -5,6 +5,7 @@ const fs = require('fs')
 const difference = require('lodash/difference')
 const intersection = require('lodash/intersection')
 const path = require('path')
+const autoBind = require('auto-bind')
 
 const removeFile = Helpers.promisify(fs.unlink)
 const readDir = Helpers.promisify(fs.readdir)
@@ -12,12 +13,7 @@ const readDir = Helpers.promisify(fs.readdir)
 class PictureRepository {
 
   constructor() {
-    this.add = this.add.bind(this)
-    this.remove = this.remove.bind(this)
-    this.clean = this.clean.bind(this)
-    this.addTo = this.addTo.bind(this)
-    this.update = this.update.bind(this)
-
+    autoBind(this)
   }
 
   add(urls) {

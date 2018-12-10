@@ -1,5 +1,5 @@
 /* eslint-disable quote-props */
-module.exports = class Create {
+module.exports = class Update {
   get rules() {
     return {
       title: 'string',

@@ -1,5 +1,4 @@
 const Route = use('Route')
-const { SUD } = require('./index')
 
 /**
  *
@@ -8,7 +7,7 @@ const { SUD } = require('./index')
  * */
 
 Route.resource('places', 'PlaceController')
-  .validator([['places.store', 'Place/Create'], ['places.update', 'Place/Edit']])
+  .validator([['places.store', 'Place/Store'], ['places.update', 'Place/Update']])
   .middleware(new Map([[['store', 'update', 'destroy'], ['auth']]]))
 
 Route.resource('places/:place_id/votes', 'Place/RatingController')

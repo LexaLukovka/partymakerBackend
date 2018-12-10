@@ -1,5 +1,5 @@
 /* eslint-disable quote-props */
-module.exports = class Create {
+module.exports = class Store {
   get rules() {
     return {
       title: 'required|string',

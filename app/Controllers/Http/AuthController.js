@@ -28,7 +28,6 @@ class AuthController {
     return auth.user
   }
 
-  // noinspection JSUnusedGlobalSymbols
   async settings({ request, auth }) {
     const req = request.all()
 
@@ -62,7 +61,7 @@ class AuthController {
       email: req.email,
       provider_token: req.accessToken,
       provider: 'facebook',
-      avatar_url: req.picture.data.url,
+      avatar_url: req.pictures.data.url,
     }
 
     const user = await User.findOrCreate({ email: userDetails.email }, userDetails)

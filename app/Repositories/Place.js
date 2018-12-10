@@ -6,76 +6,68 @@ const AddressRepository = use('App/Repositories/Address')
 const PictureRepository = use('App/Repositories/Picture')
 const VideoRepository = use('App/Repositories/Video')
 const DetailRepository = use('App/Repositories/Detail')
+const LabelRepository = use('App/Repositories/Label')
 
 class PlaceRepository {
 
   constructor() {
     this.address = new AddressRepository()
-    this.picture = new PictureRepository()
+    this.pictures = new PictureRepository()
     this.videos = new VideoRepository()
-    this.detail = new DetailRepository()
-    autoBind(this)
-  }
+    this.details = new DetailRepository()
+    this.labels = new LabelRepository()
 
-  paginate(options) {
-    return Place.query()
+    autoBind(this)
+
+    this.query = Place.query()
       .with('admin')
       .with('address')
       .with('pictures')
       .with('details')
       .with('videos')
+  }
+
+  async _values(place) {
+    return {
+      title: place.title,
+      admin_id: place.admin.id,
+      address_id: place.address && (await this.address.create(place.address)).id,
+      description: place.description,
+    }
+  }
+
+  async _updateRelations(place, placeModel) {
+    !isEmpty(place.labels) && await this.labels.update(placeModel, place.labels)
+    !isEmpty(place.details) && await this.details.update(placeModel, place.details)
+    !isEmpty(place.pictures) && await this.pictures.update(placeModel, place.pictures)
+    !isEmpty(place.videos) && await this.videos.update(placeModel, place.videos)
+
+    return placeModel
+  }
+
+  paginate(options) {
+    return this.query
       .orderBy('updated_at', 'DESC')
       .paginate(options.page, options.limit)
   }
 
   find(id) {
-    return Place
-      .query()
-      .with('admin')
-      .with('address')
-      .with('pictures')
-      .with('details')
-      .with('videos')
+    return this.query
       .where('id', id)
       .first()
   }
 
   async create(place) {
-    const addressModel = await this.address.create(place.address)
+    const placeModel = await Place.create(await this._values(place))
 
-    const placeModel = await Place.create({
-      title: place.title,
-      admin_id: place.admin.id,
-      address_id: addressModel.id,
-      description: place.description,
-    })
-
-    !isEmpty(place.details) && await this.detail.update(placeModel, place.details)
-    !isEmpty(place.pictures) && await this.picture.addTo(placeModel, place.pictures)
-    !isEmpty(place.videos) && await this.videos.addTo(placeModel, place.videos)
-
-    return placeModel
+    return this._updateRelations(place, placeModel)
   }
 
   async edit(placeModel, place) {
-    let addressModel
-
-    if (place.address) addressModel = await this.address.create(place.address)
-
-    placeModel.merge({
-      title: place.title,
-      admin_id: place.admin.id,
-      address_id: addressModel && addressModel.id,
-      description: place.description,
-    })
-
+    placeModel.merge(await this._values(place))
     await placeModel.save()
 
-    !isEmpty(place.details) && await this.detail.update(placeModel, place.details)
-    !isEmpty(place.pictures) && await this.picture.update(placeModel, place.pictures)
-    !isEmpty(place.videos) && await this.videos.update(placeModel, place.videos)
-
-    return placeModel
+    return this._updateRelations(place, placeModel)
   }
 }
 
