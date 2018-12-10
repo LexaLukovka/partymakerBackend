@@ -6,11 +6,11 @@ const readFile = Helpers.promisify(fs.readFile)
 /**
  * Resourceful controller for interacting with users
  */
-class DocsController {
+class IndexController {
 
-  async index({ response }) {
+  async index() {
     return await readFile(Helpers.publicPath('index.html'))
   }
 }
 
-module.exports = DocsController
+module.exports = IndexController
