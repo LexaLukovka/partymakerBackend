@@ -61,10 +61,7 @@ class PlaceController {
       admin: auth.user
     })
 
-    return response.accepted({
-      updated: !!updatedPlace,
-      place: await this.place.find(updatedPlace.id)
-    })
+    return response.accepted(await this.place.find(updatedPlace.id))
   }
 
   /**
