@@ -25,7 +25,7 @@ class PlaceController {
 
     const places = await this.place.paginate({
       page: page || 1,
-      limit: limit || 10,
+      limit: limit || 9,
     })
 
     return places
