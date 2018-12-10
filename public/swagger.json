@@ -226,6 +226,15 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
           }
         }
       },
@@ -257,14 +266,20 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/User"
             }
           },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
           "403": {
             "$ref": "#/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
           }
         }
       }
@@ -337,7 +352,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "202": {
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/User"
@@ -345,6 +360,12 @@
           },
           "403": {
             "$ref": "#/responses/Forbidden"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
           }
         }
       },
@@ -532,14 +553,20 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/Place"
             }
           },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
           "403": {
             "$ref": "#/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
           }
         }
       }
@@ -638,7 +665,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "202": {
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/Place"
@@ -683,7 +710,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/Place"
@@ -694,6 +721,12 @@
           },
           "404": {
             "$ref": "#/responses/NotFound"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
           }
         }
       }
@@ -815,7 +848,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/Group"
@@ -1051,6 +1084,59 @@
         }
       },
       "description": "Access denied"
+    },
+    "Unauthorized": {
+      "schema": {
+        "type": "object",
+        "description": "Forbidden",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "number",
+                "example": 401,
+                "default": true
+              },
+              "name": {
+                "type": "string",
+                "example": "Unauthorized",
+                "default": true
+              },
+              "message": {
+                "type": "string",
+                "example": "E_INVALID_JWT_TOKEN: jwt must be provided",
+                "default": true
+              }
+            }
+          }
+        }
+      },
+      "description": "Unauthorized"
+    },
+    "InternalServerError": {
+      "schema": {
+        "type": "object",
+        "description": "Forbidden",
+        "properties": {
+          "status": {
+            "type": "number",
+            "example": 500,
+            "default": true
+          },
+          "error": {
+            "type": "string",
+            "example": "Server error",
+            "default": true
+          },
+          "message": {
+            "type": "string",
+            "example": "Server error",
+            "default": true
+          }
+        }
+      },
+      "description": "Internal Server Error"
     }
   },
   "definitions": {
