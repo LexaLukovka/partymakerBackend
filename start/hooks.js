@@ -27,4 +27,12 @@ hooks.after.providersRegistered(() => {
     this.status(201).json(data)
   })
 
+  Response.macro('accepted', function (data) {
+    this.status(202).json(data)
+  })
+
+  Response.macro('deleted', function (data) {
+    this.status(204).json(data)
+  })
+
 })

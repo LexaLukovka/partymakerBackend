@@ -1,4 +1,5 @@
 /* eslint-disable radix,no-empty-function */
+const autoBind = require('auto-bind')
 const Place = use('App/Models/Place')
 const PlaceRepository = use('App/Repositories/Place')
 
@@ -9,11 +10,7 @@ class PlaceController {
 
   constructor() {
     this.place = new PlaceRepository()
-    this.index = this.index.bind(this)
-    this.store = this.store.bind(this)
-    this.show = this.show.bind(this)
-    this.update = this.update.bind(this)
-    this.destroy = this.destroy.bind(this)
+    autoBind(this)
   }
 
   /**
@@ -21,14 +18,7 @@ class PlaceController {
    * GET places
    */
   async index({ request }) {
-    const { page, limit } = request.all()
-
-    const places = await this.place.paginate({
-      page: page || 1,
-      limit: limit || 9,
-    })
-
-    return places
+    return this.place.paginate(request.all())
   }
 
   /**
@@ -40,10 +30,7 @@ class PlaceController {
 
     const place = await this.place.create({ ...req, admin: auth.user })
 
-    return response.created({
-      created: !!place,
-      place: await this.place.find(place.id)
-    })
+    return response.created(await this.place.find(place.id))
   }
 
   /**
@@ -52,18 +39,9 @@ class PlaceController {
    */
   async show({ request, auth, params, response }) {
 
-    const placeModel = await this.place.find(params.id)
+    const place = await this.place.find(params.id)
 
-    if (!placeModel) return response.notFound()
-
-    const rating = await placeModel.rating().avg('rating as rating')
-
-    const place = placeModel.toJSON()
-    if (rating[0] && rating[0].rating) {
-      place.rating = parseFloat(rating[0].rating.toFixed(1))
-    } else {
-      place.rating = null
-    }
+    if (!place) return response.notFound()
 
     return place
   }
@@ -78,12 +56,15 @@ class PlaceController {
 
     if (!place) return response.notFound()
 
-    const updatedPlace = await this.place.edit(place, { ...req, admin: auth.user })
+    const updatedPlace = await this.place.update(place, {
+      ...req,
+      admin: auth.user
+    })
 
-    return {
+    return response.accepted({
       updated: !!updatedPlace,
       place: await this.place.find(updatedPlace.id)
-    }
+    })
   }
 
   /**
@@ -99,7 +80,7 @@ class PlaceController {
 
     await place.delete()
 
-    return { title }
+    return response.deleted({ title })
   }
 }
 

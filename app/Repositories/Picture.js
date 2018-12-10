@@ -39,10 +39,6 @@ class PictureRepository {
     return Promise.all(toRemove.map(file => removeFile(`${uploads}/${file}`)))
   }
 
-  async addTo(model, pictures_urls) {
-    const pictures = await this.add(pictures_urls)
-    return model.pictures().attach(pictures.map(p => p.id))
-  }
 
   async update(model, pictures_urls) {
     const oldPicturesModels = (await model.pictures().fetch()).toJSON()

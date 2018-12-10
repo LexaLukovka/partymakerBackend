@@ -48,7 +48,7 @@ class PlaceRepository {
   paginate(options) {
     return this.query
       .orderBy('updated_at', 'DESC')
-      .paginate(options.page, options.limit)
+      .paginate(options.page || 1, options.limit || 9)
   }
 
   find(id) {
@@ -63,7 +63,7 @@ class PlaceRepository {
     return this._updateRelations(place, placeModel)
   }
 
-  async edit(placeModel, place) {
+  async update(placeModel, place) {
     placeModel.merge(await this._values(place))
     await placeModel.save()
 
