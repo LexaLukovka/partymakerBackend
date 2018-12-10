@@ -49,14 +49,6 @@ Route.resource('groups', 'GroupController')
   .validator([['groups.store', 'Group/Create'], ['groups.update', 'Group/Edit']])
   .middleware(SUD)
 
-/**
- *
- * Events routes
- *`
- * */
-Route.resource('events', 'EventController')
-  .validator([['events.store', 'Event/Create']])
-  .middleware(SUD)
 
 /**
  *

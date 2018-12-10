@@ -44,17 +44,14 @@ class GroupController {
    * Display a single group.
    * GET groups/:id
    */
-  async show({ request, auth, params }) {
-    const group = await Group
+  show({ request, auth, params }) {
+    return Group
       .query()
       .with('admin')
       .with('address')
       .with('place')
-      .with('event')
       .where('id', params.id)
       .first()
-
-    return group
   }
 
   /**

@@ -31,10 +31,6 @@ class Group extends Model {
     return this.belongsTo('App/Models/Place')
   }
 
-  event() {
-    return this.belongsTo('App/Models/Event')
-  }
-
   pictures() {
     return this.belongsToMany('App/Models/Picture')
   }

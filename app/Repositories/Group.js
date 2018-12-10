@@ -1,5 +1,3 @@
-const isEmpty = require('lodash/isEmpty')
-
 const Group = use('App/Models/Group')
 const AddressRepository = use('App/Repositories/Address')
 const PictureRepository = use('App/Repositories/Picture')
@@ -21,7 +19,6 @@ class GroupRepository {
       .with('admin')
       .with('address')
       .with('place')
-      .with('event')
       .where(params)
       .orderBy('updated_at', 'DESC')
       .paginate(page, limit)
@@ -32,7 +29,6 @@ class GroupRepository {
       .query()
       .with('admin')
       .with('address')
-      .with('event')
       .with('place')
       .where('id', id)
       .first()
@@ -45,17 +41,16 @@ class GroupRepository {
       addressModel = await this.address.create(data.address)
     }
 
-    const isValid = [data.place_id, data.event_id, data.address].filter(v => isEmpty(v)).length > 1
+    const isValid = data.place_id || data.address
 
     if (!isValid) {
-      throw new Error('you should choose between place_id,event_id or address and leave only one')
+      throw new Error('you should choose between place_id or address and leave only one')
     }
 
     const group = await Group.create({
       title: data.title,
       admin_id: data.admin.id,
       place_id: data.place_id,
-      event_id: data.event_id,
       invite_url: data.invite_url,
       address_id: data.address && addressModel.id,
       date: data.date,
@@ -75,7 +70,6 @@ class GroupRepository {
     group.merge({
       title: data.title,
       place_id: data.place_id,
-      event_id: data.event_id,
       address_id: data.address && addressModel.id,
       date: data.date,
       description: data.description,

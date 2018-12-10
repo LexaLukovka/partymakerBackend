@@ -13,10 +13,6 @@ class Detail extends Model {
     return this.belongsTo('App/Models/Place')
   }
 
-  events() {
-    return this.belongsTo('App/Models/Events')
-  }
-
 }
 
 module.exports = Detail

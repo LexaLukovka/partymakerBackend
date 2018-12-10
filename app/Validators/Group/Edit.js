@@ -6,7 +6,6 @@ module.exports = class Create {
       date: 'date',
       description: 'string',
       place_id: 'integer',
-      event_id: 'integer',
       address: 'object',
     }
   }

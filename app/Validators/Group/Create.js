@@ -6,7 +6,6 @@ module.exports = class Create {
       date: 'required|date',
       description: 'required|string',
       place_id: 'integer',
-      event_id: 'integer',
       district: 'string',
       address: 'object',
       invite_url: 'string',

@@ -12,7 +12,9 @@
     "seed": "adonis seed",
     "inspect": "nodemon --inspect server.js",
     "test": "adonis test",
-    "boot": "npm run migrate && npm run seed"
+    "boot": "npm run migrate && npm run seed",
+    "boot:inspect": "npm run migrate && node --inspect-brk `which adonis` seed"
+
   },
   "keywords": [
     "partymaker"

@@ -11,12 +11,10 @@ const flatten = require('lodash/flattenDeep')
 const USERS = require('./users')
 const PLACES = require('./places')
 const GROUPS = require('./groups')
-const EVENTS = require('./events')
 const Factory = use('Factory')
 const User = use('App/Models/User')
 
 const PlaceRepository = use('App/Repositories/Place')
-const EventRepository = use('App/Repositories/Event')
 const GroupRepository = use('App/Repositories/Group')
 
 function printProgress(text) {
@@ -29,7 +27,6 @@ class Seeder {
   constructor() {
     this.chance = new Chance()
     this.placeRepo = new PlaceRepository()
-    this.eventRepo = new EventRepository()
     this.groupRepo = new GroupRepository()
 
     this.createRealGroups = this.createRealGroups.bind(this)
@@ -55,15 +52,6 @@ class Seeder {
     return Promise.all(placeModels)
   }
 
-  createEvents(users) {
-    printProgress('creating places...')
-    const eventModels = EVENTS.map(event =>
-      this.eventRepo.create({ ...event, admin: this.chance.pickone(users) }),
-    )
-
-    return Promise.all(eventModels)
-  }
-
   createRealGroups(users) {
     printProgress('creating real groups...')
     return Promise.all(GROUPS.map(group =>
@@ -74,7 +62,7 @@ class Seeder {
     ))
   }
 
-  createFakeGroups(users, places, events) {
+  createFakeGroups(users, places) {
     printProgress('creating fake groups...')
 
     const promises = Array.from(new Array(20), async () => {
@@ -84,7 +72,6 @@ class Seeder {
         admin,
         address,
         place: this.chance.pickone(places),
-        event: this.chance.pickone(events),
       })
 
       await group.users().attach([admin.id])
@@ -96,25 +83,10 @@ class Seeder {
     return Promise.all(flatten(promises))
   }
 
-  createFakeRating(user, place) {
-    return Factory.model('App/Models/PlaceRating').create({ user, place })
-  }
-
-  createFakeRatings(users, places) {
-    printProgress('creating fake ratings...')
-    const promises = users.map(user => places.map(place => this.createFakeRating(user, place)))
-
-    return Promise.all(flatten(promises))
-  }
 
   async run() {
     const users = await this.createUsers()
-    const places = await this.createPlaces(users)
-    const events = await this.createEvents(users)
-
     await this.createRealGroups(users)
-    await this.createFakeGroups(users, places, events)
-    await this.createFakeRatings(users, places)
 
     return true
   }
