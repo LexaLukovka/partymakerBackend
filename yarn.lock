@@ -922,6 +922,11 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
+clean-object@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/clean-object/-/clean-object-1.0.2.tgz#6160217ef9584597f2d81d54b6eefe9f07063eb3"
+  integrity sha1-YWAhfvlYRZfy2B1Utu7+nwcGPrM=
+
 cli-cursor@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/cli-cursor/-/cli-cursor-2.1.0.tgz#b35dac376479facc3e94747d41d0d0f5238ffcb5"

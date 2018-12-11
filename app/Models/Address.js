@@ -15,7 +15,7 @@ class Address extends Model {
   }
 
   static get hidden() {
-    return ['created_at', 'updated_at', 'id']
+    return ['created_at', 'updated_at', 'placeId', 'id']
   }
 
   event() {

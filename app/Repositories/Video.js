@@ -36,8 +36,7 @@ class VideoRepository {
   }
 
   async update(model, videos_urls) {
-    const oldVideosModels = (await model.videos().fetch()).toJSON()
-    const oldVideos = oldVideosModels.map(picture => picture.url)
+    const oldVideos = (await model.videos().fetch()).toJSON()
 
     const toAdd = difference(videos_urls, oldVideos)
     const toRemove = difference(oldVideos, intersection(videos_urls, oldVideos))

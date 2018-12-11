@@ -32,17 +32,15 @@ class PictureRepository {
 
   async clean() {
     const uploads = Helpers.publicPath('uploads')
-    const allPictures = (await Picture.all()).toJSON().map(picture => path.basename(picture.url))
+    const allPictures = (await Picture.all()).toJSON().map(picture => path.basename(picture))
     const files = await readDir(uploads)
     const toRemove = difference(files, intersection(allPictures, files))
 
     return Promise.all(toRemove.map(file => removeFile(`${uploads}/${file}`)))
   }
 
-
   async update(model, pictures_urls) {
-    const oldPicturesModels = (await model.pictures().fetch()).toJSON()
-    const oldPictures = oldPicturesModels.map(picture => picture.url)
+    const oldPictures = (await model.pictures().fetch()).toJSON()
 
     const toAdd = difference(pictures_urls, oldPictures)
     const toRemove = difference(oldPictures, intersection(pictures_urls, oldPictures))

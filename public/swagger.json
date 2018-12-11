@@ -16,15 +16,19 @@
     },
     {
       "name": "users",
-      "description": "CRUD for Users"
+      "description": "Users"
     },
     {
       "name": "places",
-      "description": "CRUD for Places"
+      "description": "Places"
     },
     {
       "name": "events",
-      "description": "CRUD for Events"
+      "description": "Events"
+    },
+    {
+      "name": "event services",
+      "description": "Event services"
     }
   ],
   "securityDefinitions": {
@@ -526,7 +530,7 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "labels": {
+                      "label": {
                         "type": "string",
                         "example": "Время работы"
                       },
@@ -815,33 +819,10 @@
             "name": "body",
             "required": true,
             "schema": {
-              "required": [
-                "title",
-                "date",
-                "place_id",
-                "description",
-                "address"
-              ],
               "properties": {
-                "title": {
-                  "type": "string",
-                  "example": "Вознесеновский пляж"
-                },
-                "date": {
-                  "type": "string",
-                  "format": "date-time",
-                  "example": "2018-09-23 19:29:38"
-                },
-                "description": {
-                  "type": "string",
-                  "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
-                },
-                "place_id": {
+                "id": {
                   "type": "integer",
-                  "example": 1
-                },
-                "address": {
-                  "$ref": "#/definitions/Address"
+                  "example": 12
                 }
               }
             }
@@ -853,6 +834,9 @@
             "schema": {
               "$ref": "#/definitions/Event"
             }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
           },
           "403": {
             "$ref": "#/responses/Forbidden"
@@ -888,6 +872,12 @@
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/Event"
+            }
+          },
+          "401": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Unauthorized"
             }
           },
           "404": {
@@ -943,16 +933,13 @@
                 "place_id": {
                   "type": "integer",
                   "example": 1
-                },
-                "address": {
-                  "$ref": "#/definitions/Address"
                 }
               }
             }
           }
         ],
         "responses": {
-          "200": {
+          "202": {
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/Event"
@@ -960,6 +947,9 @@
           },
           "400": {
             "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
           },
           "403": {
             "$ref": "#/responses/Forbidden"
@@ -997,11 +987,828 @@
           }
         ],
         "responses": {
+          "204": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/events/{id}/services": {
+      "get": {
+        "tags": [
+          "event services"
+        ],
+        "summary": "List of all event services",
+        "operationId": "event-services-list",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "number"
+          }
+        ],
+        "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Event"
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "number",
+                  "example": 23
+                },
+                "perPage": {
+                  "type": "number",
+                  "example": 10
+                },
+                "page": {
+                  "type": "number",
+                  "example": 1
+                },
+                "lastPage": {
+                  "type": "number",
+                  "example": 3
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Service"
+                  }
+                }
+              }
             }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "event services"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "properties": {
+                "ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "summary": "Attach service to event",
+        "operationId": "event-service-attach",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/Service"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/events/{id}/services/{id}": {
+      "get": {
+        "tags": [
+          "event services"
+        ],
+        "summary": "Show service",
+        "operationId": "event-services-show",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of service",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Service"
+            }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "event services"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Detach service from event",
+        "operationId": "event-service-delete",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "service_id",
+            "in": "path",
+            "description": "ID of service",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/events/{id}/guests": {
+      "get": {
+        "tags": [
+          "event guests"
+        ],
+        "summary": "List of all event guests",
+        "operationId": "event-guests-list",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "number",
+                  "example": 23
+                },
+                "perPage": {
+                  "type": "number",
+                  "example": 10
+                },
+                "page": {
+                  "type": "number",
+                  "example": 1
+                },
+                "lastPage": {
+                  "type": "number",
+                  "example": 3
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/User"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "event guests"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "properties": {
+                "ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "summary": "Add guests to event",
+        "operationId": "event-guests-attach",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/events/{id}/guests/{id}": {
+      "get": {
+        "tags": [
+          "event guests"
+        ],
+        "summary": "Show guest",
+        "operationId": "event-guests-show",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of guest",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "event guests"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Detach guest from event",
+        "operationId": "event-guest-delete",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "guest_id",
+            "in": "path",
+            "description": "ID of guest",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/events/{id}/badges": {
+      "get": {
+        "tags": [
+          "event badges"
+        ],
+        "summary": "List of all event badges",
+        "operationId": "event-badges-list",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "number",
+                  "example": 23
+                },
+                "perPage": {
+                  "type": "number",
+                  "example": 10
+                },
+                "page": {
+                  "type": "number",
+                  "example": 1
+                },
+                "lastPage": {
+                  "type": "number",
+                  "example": 3
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/User"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "event badges"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "properties": {
+                "ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "summary": "Add badges to event",
+        "operationId": "event-badges-attach",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/events/{id}/badges/{id}": {
+      "get": {
+        "tags": [
+          "event badges"
+        ],
+        "summary": "Show badge",
+        "operationId": "event-badges-show",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of badge",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "event badges"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Detach badge from event",
+        "operationId": "event-badge-delete",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "badge_id",
+            "in": "path",
+            "description": "ID of badge",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/events/{id}/place": {
+      "get": {
+        "tags": [
+          "event place"
+        ],
+        "summary": "Show event place",
+        "operationId": "event-place-show",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Place"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "event place"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Add place to event",
+        "operationId": "event-place-attach",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Place"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "event place"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Detach place from event",
+        "operationId": "event-place-delete",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
           },
           "403": {
             "$ref": "#/responses/Forbidden"
@@ -1199,14 +2006,9 @@
         }
       }
     },
-    "Picture": {
-      "type": "object",
-      "properties": {
-        "url": {
-          "type": "string",
-          "example": "http://192.168.0.103:3333/images/places/voznesenovsky.png"
-        }
-      }
+    "Video": {
+      "type": "string",
+      "example": "asdq23441234as"
     },
     "Place": {
       "type": "object",
@@ -1236,7 +2038,15 @@
         "pictures": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Picture"
+            "type": "string",
+            "example": "http://192.168.0.103:3333/images/places/voznesenovsky.png"
+          }
+        },
+        "videos": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "ASFzAxER"
           }
         },
         "details": {
@@ -1244,7 +2054,7 @@
           "items": {
             "type": "object",
             "properties": {
-              "labels": {
+              "label": {
                 "type": "string",
                 "example": "Время работы"
               },
@@ -1285,14 +2095,6 @@
           "type": "string",
           "example": "Вознесеновский пляж"
         },
-        "admin_id": {
-          "type": "integer",
-          "example": 1
-        },
-        "place_id": {
-          "type": "integer",
-          "example": 2
-        },
         "description": {
           "type": "string",
           "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
@@ -1318,6 +2120,66 @@
           "items": {
             "$ref": "#/definitions/Place"
           }
+        }
+      }
+    },
+    "Service": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 3
+        },
+        "title": {
+          "type": "string",
+          "example": "Тамада"
+        },
+        "pictures": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "http://192.168.0.103:3333/images/places/voznesenovsky.png"
+          }
+        },
+        "videos": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "ASFzAxER"
+          }
+        },
+        "description": {
+          "type": "string",
+          "example": "Я самая крутая"
+        },
+        "admin": {
+          "$ref": "#/definitions/User"
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "example": "email"
+              },
+              "value": {
+                "type": "string",
+                "example": "kostyuk_pavel.09@gmail.com"
+              }
+            }
+          }
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-09-23 19:29:38"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-09-23 19:29:38"
         }
       }
     }

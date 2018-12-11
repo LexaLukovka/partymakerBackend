@@ -25,6 +25,7 @@ class PlaceRepository {
       .with('pictures')
       .with('details')
       .with('videos')
+      .with('labels')
   }
 
   async _values(place) {
