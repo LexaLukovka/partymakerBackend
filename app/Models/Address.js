@@ -18,8 +18,8 @@ class Address extends Model {
     return ['created_at', 'updated_at', 'id']
   }
 
-  group() {
-    return this.hasOne('App/Models/Group')
+  event() {
+    return this.hasOne('App/Models/Event')
   }
 
   place() {

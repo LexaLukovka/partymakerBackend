@@ -5,17 +5,17 @@ import/newline-after-import,
 function-paren-newline,
 no-console,
 */
-
+const autoBind = require('auto-bind')
 const Chance = require('chance')
 const flatten = require('lodash/flattenDeep')
 const USERS = require('./users')
 const PLACES = require('./places')
-const GROUPS = require('./groups')
+const EVENTS = require('./events')
 const Factory = use('Factory')
 const User = use('App/Models/User')
 
 const PlaceRepository = use('App/Repositories/Place')
-const GroupRepository = use('App/Repositories/Group')
+const EventRepository = use('App/Repositories/Event')
 
 function printProgress(text) {
   console.log(text)
@@ -27,12 +27,8 @@ class Seeder {
   constructor() {
     this.chance = new Chance()
     this.placeRepo = new PlaceRepository()
-    this.groupRepo = new GroupRepository()
-
-    this.createRealGroups = this.createRealGroups.bind(this)
-    this.createFakeGroups = this.createFakeGroups.bind(this)
-    this.createPlaces = this.createPlaces.bind(this)
-    this.createUsers = this.createUsers.bind(this)
+    this.eventRepo = new EventRepository()
+    autoBind(this)
   }
 
   async createUsers() {
@@ -52,32 +48,32 @@ class Seeder {
     return Promise.all(placeModels)
   }
 
-  createRealGroups(users) {
-    printProgress('creating real groups...')
-    return Promise.all(GROUPS.map(group =>
-      this.groupRepo.create({
+  createRealEvents(users) {
+    printProgress('creating real events...')
+    return Promise.all(EVENTS.map(event =>
+      this.eventRepo.create({
         admin: this.chance.pickone(users),
-        ...group,
+        ...event,
       }),
     ))
   }
 
-  createFakeGroups(users, places) {
-    printProgress('creating fake groups...')
+  createFakeEvents(users, places) {
+    printProgress('creating fake events...')
 
     const promises = Array.from(new Array(20), async () => {
       const admin = this.chance.pickone(users)
       const address = await Factory.model('App/Models/Address').create()
-      const group = await Factory.model('App/Models/Group').create({
+      const event = await Factory.model('App/Models/Event').create({
         admin,
         address,
         place: this.chance.pickone(places),
       })
 
-      await group.users().attach([admin.id])
-      await group.users().attach(users.map(user => user.id))
+      await event.users().attach([admin.id])
+      await event.users().attach(users.map(user => user.id))
 
-      return group
+      return event
     })
 
     return Promise.all(flatten(promises))
@@ -86,7 +82,7 @@ class Seeder {
   async run() {
     const users = await this.createUsers()
     await this.createPlaces(users)
-    await this.createRealGroups(users)
+    await this.createRealEvents(users)
 
     return true
   }

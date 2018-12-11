@@ -1,14 +1,12 @@
-const isEmpty = require('lodash/isEmpty')
-
 const Model = use('Model')
 
-class Group extends Model {
+class Event extends Model {
   static get hidden() {
     return ['address_id', 'user_id', 'place_id']
   }
 
   static get policy() {
-    return 'App/Policies/Group'
+    return 'App/Policies/Event'
   }
 
   getStartTime(value) {
@@ -34,16 +32,6 @@ class Group extends Model {
   pictures() {
     return this.belongsToMany('App/Models/Picture')
   }
-
-  async isMember(user_id) {
-    const member = await this.users()
-      .pivotQuery()
-      .where({ user_id })
-      .first()
-
-    return !isEmpty(member)
-  }
-
 }
 
-module.exports = Group
+module.exports = Event

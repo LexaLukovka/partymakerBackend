@@ -30,10 +30,10 @@ require('./places')
 
 /**
  *
- * Group routes
+ * Event routes
  *`
  * */
-require('./groups')
+require('./events')
 
 /**
  *

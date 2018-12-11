@@ -4,7 +4,7 @@ const postPartyResponse = require('./response.post.party')
 
 const User = use('App/Models/User')
 
-const { test, trait } = use('Test/Suite')('group')
+const { test, trait } = use('Test/Suite')('event')
 
 trait('Test/ApiClient')
 trait('Auth/Client')
@@ -12,7 +12,7 @@ trait('Auth/Client')
 test('create party', async ({ client, assert }) => {
   const user = await User.find(1)
 
-  const response = await client.post('/group')
+  const response = await client.post('/event')
     .loginVia(user, 'jwt')
     .type('json')
     .accept('json')

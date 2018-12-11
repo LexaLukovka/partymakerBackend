@@ -1,9 +1,9 @@
 /* eslint-disable newline-per-chained-call */
 const Schema = use('Schema')
 
-class GroupSchema extends Schema {
+class EventSchema extends Schema {
   up() {
-    this.create('groups', (table) => {
+    this.create('events', (table) => {
       table.increments()
       table.string('title')
       table.integer('admin_id').unsigned().references('id').inTable('users').notNullable()
@@ -17,8 +17,8 @@ class GroupSchema extends Schema {
   }
 
   down() {
-    this.drop('groups')
+    this.drop('events')
   }
 }
 
-module.exports = GroupSchema
+module.exports = EventSchema

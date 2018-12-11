@@ -23,8 +23,8 @@
       "description": "CRUD for Places"
     },
     {
-      "name": "groups",
-      "description": "CRUD for Groups"
+      "name": "events",
+      "description": "CRUD for Events"
     }
   ],
   "securityDefinitions": {
@@ -731,13 +731,13 @@
         }
       }
     },
-    "/groups": {
+    "/events": {
       "get": {
         "tags": [
-          "groups"
+          "events"
         ],
-        "summary": "List of all groups",
-        "operationId": "group-list",
+        "summary": "List of all events",
+        "operationId": "event-list",
         "consumes": [
           "application/json"
         ],
@@ -781,7 +781,7 @@
                 "data": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/Group"
+                    "$ref": "#/definitions/Event"
                   }
                 }
               }
@@ -794,15 +794,15 @@
       },
       "post": {
         "tags": [
-          "groups"
+          "events"
         ],
         "security": [
           {
             "bearer": []
           }
         ],
-        "summary": "Create new group",
-        "operationId": "group-create",
+        "summary": "Create new event",
+        "operationId": "event-create",
         "consumes": [
           "application/json"
         ],
@@ -851,7 +851,7 @@
           "201": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Group"
+              "$ref": "#/definitions/Event"
             }
           },
           "403": {
@@ -860,13 +860,13 @@
         }
       }
     },
-    "/groups/{id}": {
+    "/events/{id}": {
       "get": {
         "tags": [
-          "groups"
+          "events"
         ],
-        "summary": "Show group",
-        "operationId": "group-show",
+        "summary": "Show event",
+        "operationId": "event-show",
         "consumes": [
           "application/json"
         ],
@@ -877,7 +877,7 @@
           {
             "in": "path",
             "name": "id",
-            "description": "ID of group",
+            "description": "ID of event",
             "required": true,
             "type": "integer",
             "format": "int64"
@@ -887,7 +887,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Group"
+              "$ref": "#/definitions/Event"
             }
           },
           "404": {
@@ -897,15 +897,15 @@
       },
       "put": {
         "tags": [
-          "groups"
+          "events"
         ],
         "security": [
           {
             "bearer": []
           }
         ],
-        "summary": "Update group",
-        "operationId": "group-update",
+        "summary": "Update event",
+        "operationId": "event-update",
         "consumes": [
           "application/json"
         ],
@@ -916,7 +916,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "ID of group",
+            "description": "ID of event",
             "required": true,
             "type": "integer",
             "format": "int64"
@@ -955,7 +955,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Group"
+              "$ref": "#/definitions/Event"
             }
           },
           "400": {
@@ -971,15 +971,15 @@
       },
       "delete": {
         "tags": [
-          "groups"
+          "events"
         ],
         "security": [
           {
             "bearer": []
           }
         ],
-        "summary": "Delete group",
-        "operationId": "group-delete",
+        "summary": "Delete event",
+        "operationId": "event-delete",
         "consumes": [
           "application/json"
         ],
@@ -990,7 +990,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "ID of group",
+            "description": "ID of event",
             "required": true,
             "type": "integer",
             "format": "int64"
@@ -1000,7 +1000,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Group"
+              "$ref": "#/definitions/Event"
             }
           },
           "403": {
@@ -1227,16 +1227,6 @@
           "type": "string",
           "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
         },
-        "created_at": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2018-09-23 19:29:38"
-        },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2018-09-23 19:29:38"
-        },
         "admin": {
           "$ref": "#/definitions/User"
         },
@@ -1271,10 +1261,20 @@
             "type": "string",
             "example": "Отдых на свежем воздухе"
           }
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-09-23 19:29:38"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-09-23 19:29:38"
         }
       }
     },
-    "Group": {
+    "Event": {
       "type": "object",
       "properties": {
         "id": {

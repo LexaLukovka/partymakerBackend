@@ -1,21 +1,18 @@
-const Group = use('App/Models/Group')
+const Event = use('App/Models/Event')
 const AddressRepository = use('App/Repositories/Address')
 const PictureRepository = use('App/Repositories/Picture')
+const autoBind = require('auto-bind')
 
-class GroupRepository {
+class EventRepository {
 
   constructor() {
     this.address = new AddressRepository()
     this.picture = new PictureRepository()
-
-    this.paginate = this.paginate.bind(this)
-    this.find = this.find.bind(this)
-    this.create = this.create.bind(this)
-    this.edit = this.edit.bind(this)
+    autoBind(this)
   }
 
   paginate({ page, limit, params }) {
-    return Group.query()
+    return Event.query()
       .with('admin')
       .with('address')
       .with('place')
@@ -25,7 +22,7 @@ class GroupRepository {
   }
 
   find(id) {
-    return Group
+    return Event
       .query()
       .with('admin')
       .with('address')
@@ -47,7 +44,7 @@ class GroupRepository {
       throw new Error('you should choose between place_id or address and leave only one')
     }
 
-    const group = await Group.create({
+    const event = await Event.create({
       title: data.title,
       admin_id: data.admin.id,
       place_id: data.place_id,
@@ -57,31 +54,31 @@ class GroupRepository {
       description: data.description,
     })
 
-    await group.users().attach([data.admin.id])
+    await event.users().attach([data.admin.id])
 
-    return this.find(group.id)
+    return this.find(event.id)
   }
 
-  async edit(group, data) {
+  async edit(event, data) {
     let addressModel
 
     if (data.address) addressModel = await this.address.create(data.address)
 
-    group.merge({
+    event.merge({
       title: data.title,
       place_id: data.place_id,
       address_id: data.address && addressModel.id,
       date: data.date,
       description: data.description,
     })
-    await group.save()
+    await event.save()
 
     if (data.pictures) {
       await this.picture.update(data.pictures)
     }
 
-    return this.find(group.id)
+    return this.find(event.id)
   }
 }
 
-module.exports = GroupRepository
+module.exports = EventRepository

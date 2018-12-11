@@ -19,7 +19,7 @@ Factory.blueprint('App/Models/User', (faker) => ({
   phone: faker.phone({ formatted: false }),
   password: 'qwerty123',
 }))
-Factory.blueprint('App/Models/Group', (faker, i, data) => {
+Factory.blueprint('App/Models/Event', (faker, i, data) => {
   const bool = faker.bool()
   return {
     admin_id: data.admin.id,
