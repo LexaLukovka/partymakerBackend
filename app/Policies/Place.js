@@ -3,15 +3,15 @@
 class Place {
 
   static create(user) {
-    return user.admin
+    return user.superadmin
   }
 
   static edit(user, place) {
-    return user.admin || user.id === place.admin_id
+    return user.superadmin || user.id === place.admin_id
   }
 
   static delete(user, place) {
-    return user.admin || user.id === place.admin_id
+    return user.superadmin || user.id === place.admin_id
   }
 }
 

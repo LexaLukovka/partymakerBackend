@@ -14,7 +14,7 @@ class UserSchema extends Schema {
       table.string('provider_id').nullable()
       table.string('provider').nullable()
       table.string('provider_token').nullable()
-      table.bool('admin').default(false)
+      table.bool('superadmin').default(false)
       table.timestamps()
     })
   }

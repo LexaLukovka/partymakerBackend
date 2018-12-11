@@ -8,7 +8,6 @@ class DetailSchema extends Schema {
       table.increments()
       table.string('label')
       table.string('value')
-      table.integer('place_id').unsigned().references('id').inTable('places')
       table.timestamps()
     })
   }

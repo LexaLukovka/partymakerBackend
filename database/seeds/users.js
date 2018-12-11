@@ -5,6 +5,7 @@ module.exports = [
     phone: '+380683188524',
     password: 'qwerty123',
     avatar_url: '/images/dummy/pavliha.jpg',
+    superadmin: true,
   },
   {
     name: 'Aleksey Lukovka',
@@ -12,5 +13,6 @@ module.exports = [
     phone: '+380990848975',
     password: '123123',
     avatar_url: '/images/dummy/aleksey.jpeg',
+    superadmin: true,
   },
 ]

@@ -71,6 +71,8 @@ class PlaceController {
   async destroy({ params, request, auth, response }) {
     const place = await Place.find(params.id)
 
+    if (auth.user.cannot('delete', place)) return response.forbidden()
+
     if (!place) return response.notFound()
 
     const title = `Place ${place.title} deleted`

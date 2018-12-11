@@ -9,73 +9,46 @@ class EventRepository {
     this.address = new AddressRepository()
     this.picture = new PictureRepository()
     autoBind(this)
-  }
 
-  paginate({ page, limit, params }) {
-    return Event.query()
+    this._query = Event.query()
       .with('admin')
       .with('address')
       .with('place')
+  }
+
+  _values(request) {
+    return {
+      title: request.title,
+      admin_id: request.admin.id,
+      place_id: request.place_id,
+      invite_url: request.invite_url,
+      date: request.date,
+      description: request.description,
+    }
+  }
+
+  paginate({ page, limit, params }) {
+    return this._query
       .where(params)
       .orderBy('updated_at', 'DESC')
       .paginate(page, limit)
   }
 
   find(id) {
-    return Event
-      .query()
-      .with('admin')
-      .with('address')
-      .with('place')
-      .where('id', id)
-      .first()
+    return this._query.where('id', id).first()
   }
 
-  async create(data) {
-    let addressModel
-
-    if (data.address) {
-      addressModel = await this.address.create(data.address)
-    }
-
-    const isValid = data.place_id || data.address
-
-    if (!isValid) {
-      throw new Error('you should choose between place_id or address and leave only one')
-    }
-
-    const event = await Event.create({
-      title: data.title,
-      admin_id: data.admin.id,
-      place_id: data.place_id,
-      invite_url: data.invite_url,
-      address_id: data.address && addressModel.id,
-      date: data.date,
-      description: data.description,
-    })
-
-    await event.users().attach([data.admin.id])
+  async create(request) {
+    const event = await Event.create(this._values(request))
+    await event.users().attach([request.admin.id])
 
     return this.find(event.id)
   }
 
-  async edit(event, data) {
-    let addressModel
-
-    if (data.address) addressModel = await this.address.create(data.address)
-
-    event.merge({
-      title: data.title,
-      place_id: data.place_id,
-      address_id: data.address && addressModel.id,
-      date: data.date,
-      description: data.description,
-    })
+  async edit(event, request) {
+    event.merge(this._values(request))
     await event.save()
-
-    if (data.pictures) {
-      await this.picture.update(data.pictures)
-    }
+    if (request.pictures) await this.picture.update(request.pictures)
 
     return this.find(event.id)
   }

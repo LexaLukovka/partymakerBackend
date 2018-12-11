@@ -63,11 +63,8 @@ class Seeder {
 
     const promises = Array.from(new Array(20), async () => {
       const admin = this.chance.pickone(users)
-      const address = await Factory.model('App/Models/Address').create()
       const event = await Factory.model('App/Models/Event').create({
-        admin,
-        address,
-        place: this.chance.pickone(places),
+        admin, place: this.chance.pickone(places),
       })
 
       await event.users().attach([admin.id])

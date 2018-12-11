@@ -19,12 +19,12 @@ Factory.blueprint('App/Models/User', (faker) => ({
   phone: faker.phone({ formatted: false }),
   password: 'qwerty123',
 }))
+
 Factory.blueprint('App/Models/Event', (faker, i, data) => {
   const bool = faker.bool()
   return {
     admin_id: data.admin.id,
-    address_id: bool ? data.address.id : null,
-    place_id: bool ? null : data.place.id,
+    place_id: data.place.id,
     title: faker.pickone(['Идем шашлыки', 'Гуляем в квартире', 'Едем на дачу', 'Идем на пляж', 'На площади', 'Автомобили', 'Другое']),
     date: faker.date({ year: 2018 }),
     description: faker.paragraph({ sentences: 1 }),
@@ -48,7 +48,6 @@ Factory.blueprint('App/Models/Address', (faker) => ({
   lng: faker.longitude(),
   placeId: null,
 }))
-
 
 Factory.blueprint('App/Models/Place', (faker, i, data) => {
   return {

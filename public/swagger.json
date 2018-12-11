@@ -377,7 +377,7 @@
         "tags": [
           "users"
         ],
-        "summary": "Delete user - admin only",
+        "summary": "Delete user - superadmin only",
         "operationId": "user-delete",
         "consumes": [
           "application/json"
@@ -695,7 +695,7 @@
             "bearer": []
           }
         ],
-        "summary": "Delete place - admin only",
+        "summary": "Delete place - superadmin only",
         "operationId": "place-delete",
         "consumes": [
           "application/json"
@@ -1982,10 +1982,6 @@
             "facebook",
             "google"
           ]
-        },
-        "admin": {
-          "type": "integer",
-          "example": 0
         }
       }
     },
