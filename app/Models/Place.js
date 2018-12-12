@@ -1,6 +1,8 @@
 'use strict'
 
 const Model = use('Model')
+const difference = require('lodash/difference')
+const intersection = require('lodash/intersection')
 
 class Place extends Model {
   static get table() {
@@ -9,6 +11,39 @@ class Place extends Model {
 
   static get policy() {
     return 'App/Policies/Place'
+  }
+
+  async sync(relations) {
+    Object.entries(relations).forEach(async ([key, values]) => {
+      const oldValues = await this[key]()
+      const toAdd = difference(values, oldValues)
+      const toRemove = difference(oldValues, intersection(values, oldValues))
+
+      const toRemoveModels = await Promise.all(toRemove.map((value) => {
+        const model = this
+
+        if (key === 'pictures' || key === 'videos') {
+          this.where('url', value).delete()
+        }
+
+        if (key === 'labels') {
+          this.where('title', value).delete()
+        }
+
+        if (key === 'details') {
+          this.where('label', value).delete()
+        }
+
+        return model
+      }))
+
+      const toAddModels = await this[key]().createMany(toAdd)
+      debugger
+      await this[key].attach(toAddModels.map(p => p.id))
+      await this[key].detach(toRemoveModels.map(p => p.id))
+
+      return this[key]
+    })
   }
 
   admin() {

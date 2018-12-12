@@ -10,24 +10,16 @@ class DetailRepository {
     autoBind(this)
   }
 
-  set(details, model) {
-    const pa = details.map(({ label, value }) =>
-      Detail.updateOrCreate({ label, place_id: model.id }, { label, value, place_id: model.id }))
-
-    return Promise.all(pa)
-  }
-
   remove(details, model) {
-    const promiseArray = details.map(detail =>
-      Detail.query().where({ label: detail.label, place_id: model.id }).delete())
-
-    return Promise.all(promiseArray)
+    return Promise.all(details.map(async url => ({
+      id: await model.query().where('label', details).delete(),
+    })))
   }
 
   async update(model, details) {
     const oldDetails = (await model.details().fetch()).toJSON()
 
-    await this.set(details, model)
+    model.details().createMany(details)
 
     const toRemove = differenceBy(oldDetails, intersectionBy(details, oldDetails, 'label'), 'label')
 

@@ -6,10 +6,8 @@ class DetailPlaceSchema extends Schema {
   up() {
     this.create('detail_place', (table) => {
       table.increments()
-      table.increments()
-      table.integer('detail_id').unsigned().references('id').inTable('details')
-      table.integer('place_id').unsigned().references('id').inTable('places')
-      table.timestamps()
+      table.integer('detail_id').unsigned().references('id').inTable('details').notNullable()
+      table.integer('place_id').unsigned().references('id').inTable('places').notNullable()
     })
   }
 

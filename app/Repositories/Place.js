@@ -2,6 +2,7 @@
 const isEmpty = use('lodash/isEmpty')
 const autoBind = require('auto-bind')
 const Place = use('App/Models/Place')
+
 const AddressRepository = use('App/Repositories/Address')
 const PictureRepository = use('App/Repositories/Picture')
 const VideoRepository = use('App/Repositories/Video')
@@ -38,10 +39,12 @@ class PlaceRepository {
   }
 
   async _updateRelations(place, placeModel) {
-    !isEmpty(place.labels) && await this.labels.update(placeModel, place.labels)
-    !isEmpty(place.details) && await this.details.update(placeModel, place.details)
-    !isEmpty(place.pictures) && await this.pictures.update(placeModel, place.pictures)
-    !isEmpty(place.videos) && await this.videos.update(placeModel, place.videos)
+    placeModel.sync({
+      details: place.details,
+      labels: place.labels,
+      pictures: place.pictures,
+      videos: place.videos,
+    })
 
     return placeModel
   }
