@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-expressions */
-const isEmpty = use('lodash/isEmpty')
 const autoBind = require('auto-bind')
 const Place = use('App/Models/Place')
 
@@ -38,8 +37,9 @@ class PlaceRepository {
     }
   }
 
-  async _updateRelations(place, placeModel) {
-    placeModel.sync({
+  async _sync(place, placeModel) {
+
+    await placeModel.sync({
       details: place.details,
       labels: place.labels,
       pictures: place.pictures,
@@ -64,14 +64,14 @@ class PlaceRepository {
   async create(place) {
     const placeModel = await Place.create(await this._values(place))
 
-    return this._updateRelations(place, placeModel)
+    return this._sync(place, placeModel)
   }
 
   async update(placeModel, place) {
     placeModel.merge(await this._values(place))
     await placeModel.save()
 
-    return this._updateRelations(place, placeModel)
+    return this._sync(place, placeModel)
   }
 }
 

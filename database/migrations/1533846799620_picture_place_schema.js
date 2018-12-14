@@ -6,8 +6,8 @@ class PlacePictureSchema extends Schema {
   up() {
     this.create('picture_place', (table) => {
       table.increments()
-      table.integer('place_id').unsigned().references('id').inTable('places').notNullable()
-      table.integer('picture_id').unsigned().references('id').inTable('pictures').notNullable()
+      table.integer('place_id').unsigned().references('id').inTable('places').notNullable().onDelete('CASCADE')
+      table.integer('picture_id').unsigned().references('id').inTable('pictures').notNullable().onDelete('CASCADE')
     })
   }
 

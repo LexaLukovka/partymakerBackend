@@ -6,8 +6,8 @@ class EventSchema extends Schema {
     this.create('events', (table) => {
       table.increments()
       table.string('title')
-      table.integer('admin_id').unsigned().references('id').inTable('users').notNullable()
-      table.integer('place_id').unsigned().references('id').inTable('places').notNullable()
+      table.integer('admin_id').unsigned().references('id').inTable('users').notNullable().onDelete('CASCADE')
+      table.integer('place_id').unsigned().references('id').inTable('places').notNullable().onDelete('CASCADE')
       table.string('invite_url')
       table.string('description')
       table.dateTime('date').notNullable()

@@ -2,7 +2,7 @@
 
 const Model = use('Model')
 const difference = require('lodash/difference')
-const intersection = require('lodash/intersection')
+const differenceBy = require('lodash/differenceBy')
 
 class Place extends Model {
   static get table() {
@@ -14,6 +14,36 @@ class Place extends Model {
   }
 
   async sync(relations) {
+
+    if (relations.pictures) {
+      const oldPictures = await this.pictures()
+      const toAdd = difference(relations.pictures, oldPictures)
+      const toAddModels = await this.pictures().createMany(toAdd.map(url => ({ url })))
+      await this.pictures().attach(toAddModels.map(p => p.id))
+    }
+
+    if (relations.videos) {
+      const oldVideos = await this.videos()
+      const toAdd = difference(relations.videos, oldVideos)
+      const toAddModels = await this.videos().createMany(toAdd.map(url => ({ url })))
+      await this.videos().attach(toAddModels.map(p => p.id))
+    }
+
+    if (relations.labels) {
+      const oldLabels = await this.labels()
+      const toAdd = difference(relations.labels, oldLabels)
+      const toAddModels = await this.labels().createMany(toAdd.map(title => ({ title })))
+      await this.labels().attach(toAddModels.map(p => p.id))
+    }
+
+    if (relations.details) {
+      const oldDetails = await this.details().wherePivot('place_id', this.id).fetch()
+      const toAdd = differenceBy(relations.details, oldDetails, 'label')
+      const toAddModels = await this.details().createMany(toAdd)
+      await this.details().attach(toAddModels.map(p => p.id))
+    }
+
+    /*
     Object.entries(relations).forEach(async ([key, values]) => {
       const oldValues = await this[key]()
       const toAdd = difference(values, oldValues)
@@ -44,6 +74,7 @@ class Place extends Model {
 
       return this[key]
     })
+    */
   }
 
   admin() {
@@ -58,10 +89,6 @@ class Place extends Model {
     return this.belongsToMany('App/Models/User')
   }
 
-  rating() {
-    return this.hasMany('App/Models/PlaceRating')
-  }
-
   pictures() {
     return this.belongsToMany('App/Models/Picture')
   }
@@ -71,7 +98,7 @@ class Place extends Model {
   }
 
   details() {
-    return this.hasMany('App/Models/Detail')
+    return this.belongsToMany('App/Models/Detail')
   }
 
   labels() {
