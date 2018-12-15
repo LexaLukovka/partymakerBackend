@@ -63,7 +63,7 @@
             "required": true,
             "type": "string",
             "format": "email",
-            "default": "pavliha@mailinator.com"
+            "default": "regular@mailinator.com"
           },
           {
             "in": "formData",
@@ -401,11 +401,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
+          "204": {
+            "description": "OK"
           },
           "403": {
             "$ref": "#/responses/Forbidden"
@@ -830,7 +827,7 @@
         ],
         "responses": {
           "201": {
-            "description": "OK",
+            "description": "Created",
             "schema": {
               "$ref": "#/definitions/Event"
             }
@@ -930,9 +927,9 @@
                   "type": "string",
                   "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
                 },
-                "place_id": {
-                  "type": "integer",
-                  "example": 1
+                "private": {
+                  "type": "boolean",
+                  "example": false
                 }
               }
             }
@@ -1451,7 +1448,7 @@
         }
       }
     },
-    "/events/{id}/badges": {
+    "/events/{id}/details": {
       "get": {
         "tags": [
           "event badges"
@@ -1586,7 +1583,7 @@
         }
       }
     },
-    "/events/{id}/badges/{id}": {
+    "/events/{id}/details/{id}": {
       "get": {
         "tags": [
           "event badges"
@@ -2095,6 +2092,45 @@
           "type": "string",
           "example": "Не самое популярное место среди горожан для празднований, но от этого не менее живописное и удобное..."
         },
+        "admin": {
+          "$ref": "#/definitions/User"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "example": "Время работы"
+              },
+              "value": {
+                "type": "string",
+                "example": "Понедельник-Пятница"
+              }
+            }
+          }
+        },
+        "place": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Place"
+          }
+        },
+        "pictures": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "http://192.168.0.103:3333/images/places/voznesenovsky.png"
+          }
+        },
+        "videos": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "example": "ASFzAxER"
+          }
+        },
         "created_at": {
           "type": "string",
           "format": "date-time",
@@ -2104,18 +2140,6 @@
           "type": "string",
           "format": "date-time",
           "example": "2018-09-23 19:29:38"
-        },
-        "admin": {
-          "$ref": "#/definitions/User"
-        },
-        "address": {
-          "$ref": "#/definitions/Address"
-        },
-        "place": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Place"
-          }
         }
       }
     },

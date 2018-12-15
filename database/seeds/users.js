@@ -1,7 +1,7 @@
 module.exports = [
   {
-    name: 'Pavel Kostyuk',
-    email: 'pavliha@mailinator.com',
+    name: 'Павел Костюк',
+    email: 'kostyk.pavel.09@gmail.com',
     phone: '+380683188524',
     password: 'qwerty123',
     avatar_url: '/images/dummy/pavliha.jpg',
@@ -14,5 +14,29 @@ module.exports = [
     password: '123123',
     avatar_url: '/images/dummy/aleksey.jpeg',
     superadmin: true,
+  },
+  {
+    name: 'Аня Форостьюянова',
+    email: 'aforostanova@gmail.com',
+    phone: '+380971766908',
+    password: 'qwerty123',
+    avatar_url: '/images/dummy/anya.jpg',
+    superadmin: true,
+  },
+  {
+    name: 'Regular User',
+    email: 'regular@mailinator.com',
+    phone: '+380000000001',
+    password: 'qwerty123',
+    avatar_url: '/images/dummy/regular.png',
+    superadmin: false,
+  },
+  {
+    name: 'New User',
+    email: 'new@mailinator.com',
+    phone: '+380000000002',
+    password: 'qwerty123',
+    avatar_url: '/images/dummy/regular.png',
+    superadmin: false,
   },
 ]

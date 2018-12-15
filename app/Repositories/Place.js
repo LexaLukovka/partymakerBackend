@@ -18,38 +18,35 @@ class PlaceRepository {
   async _values(place) {
     return {
       title: place.title,
-      admin_id: place.admin.id,
+      admin_id: place.admin_id,
       address_id: place.address && (await Address.create(place.address)).id,
       description: place.description,
     }
   }
 
-  async _sync(place, placeModel) {
-
-    await placeModel.sync({
-      details: place.details,
-      labels: place.labels,
-      pictures: place.pictures,
-      videos: place.videos,
+  async _sync(request, place) {
+    await place.sync({
+      details: request.details,
+      labels: request.labels,
+      pictures: request.pictures,
+      videos: request.videos,
     })
 
-    return placeModel
+    return place
   }
 
   paginate(options) {
-    return this.query
-      .orderBy('updated_at', 'DESC')
-      .paginate(options.page || 1, options.limit || 9)
+    return this.query.orderBy('updated_at', 'DESC').paginate(options)
   }
 
   find(id) {
-    return this.query
-      .where('id', id)
-      .first()
+    return this.query.where('id', id).first()
   }
 
-  async create(place) {
-    const placeModel = await Place.create(await this._values(place))
+  async create(place, admin) {
+    const placeModel = await Place.create(await this._values({
+      ...place, admin_id: admin.id
+    }))
 
     return this._sync(place, placeModel)
   }

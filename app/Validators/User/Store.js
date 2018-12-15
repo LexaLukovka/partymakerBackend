@@ -1,6 +1,5 @@
 module.exports = class Create {
 
-  // noinspection JSUnusedGlobalSymbols
   get rules() {
     return {
       name: 'required',
@@ -14,7 +13,6 @@ module.exports = class Create {
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
   get messages() {
     return {
       'name.required': 'Имя и Фамилия пользователя обязательны',
@@ -28,7 +26,6 @@ module.exports = class Create {
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
   get validateAll() {
     return true
   }

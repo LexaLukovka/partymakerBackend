@@ -1,18 +1,13 @@
-/* eslint-disable quote-props */
-module.exports = class Create {
+module.exports = class Store {
   get rules() {
     return {
-      title: 'required|string|max:30',
-      date: 'required|date',
-      description: 'required|string',
-      place_id: 'integer',
-      district: 'string',
-      address: 'object',
-      invite_url: 'string',
+      title: 'string|max:30',
+      date: 'date',
+      private: 'boolean',
+      description: 'string',
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
   get validateAll() {
     return true
   }

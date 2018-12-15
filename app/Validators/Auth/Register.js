@@ -1,6 +1,5 @@
 module.exports = class Register {
 
-  // noinspection JSUnusedGlobalSymbols
   get rules() {
     return {
       name: 'required',
@@ -10,7 +9,6 @@ module.exports = class Register {
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
   get messages() {
     return {
       'phone.unique': 'Пользователь с таким телефоном уже есть',
@@ -18,7 +16,6 @@ module.exports = class Register {
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
   get validateAll() {
     return true
   }

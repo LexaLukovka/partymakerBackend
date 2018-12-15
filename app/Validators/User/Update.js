@@ -1,6 +1,6 @@
 module.exports = class Edit {
 
-  // noinspection JSUnusedGlobalSymbols
+
   get rules() {
     return {
       name: 'string',
@@ -14,7 +14,7 @@ module.exports = class Edit {
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
+
   get messages() {
     return {
       'email.email': 'Неправильный формат почты',
@@ -24,7 +24,7 @@ module.exports = class Edit {
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
+
   get validateAll() {
     return true
   }

@@ -1,4 +1,3 @@
-/* eslint-disable quote-props */
 module.exports = class Update {
   get rules() {
     return {
@@ -8,7 +7,6 @@ module.exports = class Update {
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
   get validateAll() {
     return true
   }

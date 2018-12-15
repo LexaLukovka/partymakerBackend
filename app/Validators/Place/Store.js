@@ -8,7 +8,6 @@ module.exports = class Store {
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
   get messages() {
     return {
       'title.required': 'Имя места обязательно для заполнения',
@@ -17,7 +16,6 @@ module.exports = class Store {
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
   get validateAll() {
     return true
   }

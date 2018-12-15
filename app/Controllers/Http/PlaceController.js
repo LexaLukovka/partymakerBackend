@@ -18,17 +18,20 @@ class PlaceController {
    * GET places
    */
   async index({ request }) {
-    return this.place.paginate(request.all())
+    const { page, limit } = request.all()
+    return this.place.paginate({
+      page: page || 1,
+      limit: limit || 9,
+    })
   }
+
 
   /**
    * Create/save a new place.
    * POST places
    */
   async store({ request, response, auth }) {
-    const req = request.all()
-
-    const place = await this.place.create({ ...req, admin: auth.user })
+    const place = await this.place.create(request.all(), auth.user)
 
     return response.created(await this.place.find(place.id))
   }
@@ -51,15 +54,11 @@ class PlaceController {
    * PUT or PATCH places/:id
    */
   async update({ params, request, auth, response }) {
-    const req = request.all()
     const place = await Place.find(params.id)
 
     if (!place) return response.notFound()
 
-    const updatedPlace = await this.place.update(place, {
-      ...req,
-      admin: auth.user
-    })
+    const updatedPlace = await this.place.update(place, request.all())
 
     return response.accepted(await this.place.find(updatedPlace.id))
   }
@@ -71,7 +70,9 @@ class PlaceController {
   async destroy({ params, request, auth, response }) {
     const place = await Place.find(params.id)
 
-    if (auth.user.cannot('delete', place)) return response.forbidden()
+    if (auth.user.cannot('delete', place)) {
+      return response.forbidden()
+    }
 
     if (!place) return response.notFound()
 

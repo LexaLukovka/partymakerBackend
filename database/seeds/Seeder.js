@@ -26,14 +26,14 @@ class Seeder {
 
   constructor() {
     this.chance = new Chance()
-    this.placeRepo = new PlaceRepository()
-    this.eventRepo = new EventRepository()
+    this.place = new PlaceRepository()
+    this.event = new EventRepository()
     autoBind(this)
   }
 
   async createUsers() {
     printProgress('creating users...')
-    const defaultUsers = await Promise.all(USERS.map(user => User.create({ ...user })))
+    const defaultUsers = await Promise.all(USERS.map(user => User.create(user)))
     const randomUsers = await Factory.model('App/Models/User').createMany(5)
 
     return [...defaultUsers, ...randomUsers]
@@ -41,21 +41,18 @@ class Seeder {
 
   createPlaces(users) {
     printProgress('creating places...')
-    const placeModels = PLACES.map(place =>
-      this.placeRepo.create({ ...place, admin: this.chance.pickone(users).toObject() }),
-    )
+    const admin = this.chance.pickone(users.filter(u => u.superadmin))
+    const places = PLACES.map(place => this.place.create(place, admin))
 
-    return Promise.all(placeModels)
+    return Promise.all(places)
   }
 
   createRealEvents(users) {
     printProgress('creating real events...')
-    return Promise.all(EVENTS.map(event =>
-      this.eventRepo.create({
-        admin: this.chance.pickone(users),
-        ...event,
-      }),
-    ))
+    const admin = this.chance.pickone(users.filter(u => !u.superadmin))
+    const events = EVENTS.map(event => this.event.create(event, admin))
+
+    return Promise.all(events)
   }
 
   createFakeEvents(users, places) {

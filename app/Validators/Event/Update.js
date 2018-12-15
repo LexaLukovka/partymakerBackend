@@ -1,16 +1,13 @@
-/* eslint-disable quote-props */
-module.exports = class Create {
+module.exports = class Update {
   get rules() {
     return {
       title: 'string|max:30',
       date: 'date',
+      private: 'boolean',
       description: 'string',
-      place_id: 'integer',
-      address: 'object',
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
   get validateAll() {
     return true
   }

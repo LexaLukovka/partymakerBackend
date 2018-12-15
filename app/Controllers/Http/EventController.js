@@ -29,10 +29,7 @@ class EventController {
    * POST events
    */
   async store({ request, auth, response }) {
-    const req = request.all()
-    const data = { admin: auth.user, ...req }
-
-    const event = await this.event.create(data)
+    const event = await this.event.create(request.all(), auth.user)
 
     return response.created(event)
   }
@@ -42,13 +39,7 @@ class EventController {
    * GET events/:id
    */
   show({ request, auth, params }) {
-    return Event
-      .query()
-      .with('admin')
-      .with('address')
-      .with('place')
-      .where('id', params.id)
-      .first()
+    return this.event.find(params.id)
   }
 
   /**
@@ -56,16 +47,17 @@ class EventController {
    * PUT or PATCH events/:id
    */
   async update({ request, auth, response, params }) {
-    const req = request.all()
     const event = await Event.find(params.id)
 
     if (!event) return response.notFound()
 
-    if (auth.user.cannot('edit', event)) return response.forbidden()
+    if (auth.user.cannot('edit', event)) {
+      return response.forbidden()
+    }
 
-    await this.event.edit(event, req)
+    await this.event.edit(event, request.all())
 
-    return event
+    return response.accepted(event)
   }
 
   /**
@@ -76,11 +68,14 @@ class EventController {
     const event = await Event.find(params.id)
 
     if (!event) return response.notFound()
-    if (auth.user.cannot('delete', event)) return response.forbidden()
+
+    if (auth.user.cannot('delete', event)) {
+      return response.forbidden()
+    }
 
     event.delete()
 
-    return event
+    return response.deleted(event)
   }
 }
 

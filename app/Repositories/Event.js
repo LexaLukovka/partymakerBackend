@@ -1,54 +1,60 @@
 const Event = use('App/Models/Event')
-const PictureRepository = use('App/Repositories/Picture')
 const autoBind = require('auto-bind')
 
 class EventRepository {
 
   constructor() {
-    this.picture = new PictureRepository()
     autoBind(this)
 
-    this._query = Event.query()
+    this.query = Event.query()
       .with('admin')
-      .with('address')
       .with('place')
+      .with('guests')
   }
 
   _values(request) {
     return {
       title: request.title,
-      admin_id: request.admin.id,
-      place_id: request.place_id,
-      invite_url: request.invite_url,
       date: request.date,
       description: request.description,
+      admin_id: request.admin_id,
+      private: request.private,
     }
   }
 
-  paginate({ page, limit, params }) {
-    return this._query
-      .where(params)
-      .orderBy('updated_at', 'DESC')
-      .paginate(page, limit)
+  async _sync(event, request) {
+    await event.sync({
+      details: request.details,
+      pictures: request.pictures,
+      videos: request.videos,
+    })
+
+    return event
+  }
+
+  paginate({ page, limit }) {
+    return this.query.paginate(page, limit)
   }
 
   find(id) {
-    return this._query.where('id', id).first()
+    return this.query.where('id', id).first()
   }
 
-  async create(request) {
-    const event = await Event.create(this._values(request))
-    await event.users().attach([request.admin.id])
+  async create(request, admin) {
+    const event = await Event.create(this._values({
+      ...request, admin_id: admin.id,
+    }))
 
-    return this.find(event.id)
+    await event.guests().attach([admin.id])
+
+    return this._sync(event, request)
   }
 
   async edit(event, request) {
     event.merge(this._values(request))
     await event.save()
-    if (request.pictures) await this.picture.update(request.pictures)
 
-    return this.find(event.id)
+    return this._sync(event, request)
   }
 }
 

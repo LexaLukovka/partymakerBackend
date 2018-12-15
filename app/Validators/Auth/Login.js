@@ -1,6 +1,5 @@
 module.exports = class Login {
 
-  // noinspection JSUnusedGlobalSymbols
   get rules() {
     return {
       email: 'required|email ',
@@ -8,7 +7,6 @@ module.exports = class Login {
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
   get validateAll() {
     return true
   }
