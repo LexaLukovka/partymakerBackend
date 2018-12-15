@@ -1,12 +1,14 @@
-'use strict'
-
+const Env = use('Env')
 const Model = use('Model')
 const difference = require('lodash/difference')
 const intersection = require('lodash/intersection')
 const differenceBy = require('lodash/differenceBy')
 const intersectionBy = require('lodash/intersectionBy')
+const uniq = require('lodash/uniq')
+const isString = require('lodash/isString')
 
 class Place extends Model {
+
   static get table() {
     return 'places'
   }
@@ -15,98 +17,68 @@ class Place extends Model {
     return 'App/Policies/Place'
   }
 
-  // це пиздец но по другому хз как сделать
-  _removeMany(toRemove, relation, key, valueKey) {
-    return Promise.all(toRemove.map(value => {
-      if (valueKey) {
-        return relation.where(key, value[valueKey]).delete()
-      }
-
-      return relation.where(key, value).delete()
-    }))
+  /**
+   * Returns fields in simple format and also removes base from urls
+   *
+   * @param  {BelongsToMany} relation of current model
+   * @return {GeneralSerializer}
+   */
+  async _getJSON(relation) {
+    return (await relation.fetch()).toJSON().map(p => (isString(p) ? p.replace(Env.get('APP_URL'), '') : p))
   }
 
-  async sync(relations) {
+  /**
+   * sync request data to the table relations
+   *
+   * @param  {Object} data from request
+   * @param  {Object} relation of current model
+   * @param  {String} field name in table
+   * @return {void}
+   */
+  async _diff({ data, relation, field }) {
+    const oldValues = await this._getJSON(relation)
+    const toAdd = difference(data, oldValues)
+    const addedModels = await relation.createMany(toAdd.map(f => ({ [field]: f })))
+    await relation.attach(addedModels.map(m => m.id))
+    const toRemove = difference(oldValues, intersection(data, oldValues))
+    await Promise.all(toRemove.map(value => relation.where(field, value).delete()))
+  }
 
-    if (relations.pictures) {
-      const oldPictures = await this.pictures()
-      const toAdd = difference(relations.pictures, oldPictures)
-      const addedModels = await this.pictures().createMany(toAdd.map(url => ({ url })))
-      await this.pictures().attach(addedModels.map(p => p.id))
+  async sync(request) {
 
-      const toRemove = difference(oldPictures, intersection(relations.pictures, oldPictures))
-      debugger
-      const removed_ids = await this._removeMany(toRemove, this.pictures(), 'url')
-      debugger
-      await this.pictures().detach(removed_ids)
-
+    if (request.pictures) {
+      await this._diff({
+        data: uniq(request.pictures),
+        relation: this.pictures(),
+        field: 'url'
+      })
     }
 
-    if (relations.videos) {
-      const oldVideos = await this.videos()
-      const toAdd = difference(relations.videos, oldVideos)
-      const toAddModels = await this.videos().createMany(toAdd.map(url => ({ url })))
-      await this.videos().attach(toAddModels.map(p => p.id))
-
-      const toRemove = difference(oldVideos, intersection(relations.videos, oldVideos))
-      const removed_ids = await this._removeMany(toRemove, this.videos(), 'url')
-      await this.videos().detach(removed_ids)
+    if (request.videos) {
+      await this._diff({
+        data: uniq(request.videos),
+        relation: this.videos(),
+        field: 'url'
+      })
     }
 
-    if (relations.labels) {
-      const oldLabels = await this.labels()
-      const toAdd = difference(relations.labels, oldLabels)
-      const toAddModels = await this.labels().createMany(toAdd.map(title => ({ title })))
-      await this.labels().attach(toAddModels.map(p => p.id))
-
-      const toRemove = difference(oldLabels, intersection(relations.labels, oldLabels))
-      const removed_ids = await this._removeMany(toRemove, this.labels(), 'title')
-      await this.labels().detach(removed_ids)
+    if (request.labels) {
+      await this._diff({
+        data: uniq(request.labels),
+        relation: this.labels(),
+        field: 'title'
+      })
     }
 
-    if (relations.details) {
-      const oldDetails = await this.details()
-      const toAdd = differenceBy(relations.details, oldDetails, 'label')
+    if (request.details) {
+      const oldDetails = await this._getJSON(this.details())
+      const toAdd = differenceBy(request.details, oldDetails, 'label')
       const toAddModels = await this.details().createMany(toAdd)
       await this.details().attach(toAddModels.map(p => p.id))
 
-      const toRemove = differenceBy(oldDetails, intersectionBy(relations.details, oldDetails, 'label'), 'label')
-      const removed_ids = await this._removeMany(toRemove, this.details(), 'label', 'label')
-      await this.details().detach(removed_ids)
+      const toRemove = differenceBy(oldDetails, intersectionBy(request.details, oldDetails, 'label'), 'label')
+      await Promise.all(toRemove.map(value => this.details().where('label', value.label).delete()))
     }
-
-    /*
-    Object.entries(relations).forEach(async ([key, values]) => {
-      const oldValues = await this[key]()
-      const toAdd = difference(values, oldValues)
-      const toRemove = difference(oldValues, intersection(values, oldValues))
-
-      const toRemoveModels = await Promise.all(toRemove.map((value) => {
-        const model = this
-
-        if (key === 'pictures' || key === 'videos') {
-          this.where('url', value).delete()
-        }
-
-        if (key === 'labels') {
-          this.where('title', value).delete()
-        }
-
-        if (key === 'details') {
-          this.where('label', value).delete()
-        }
-
-        return model
-      }))
-
-      const toAddModels = await this[key]().createMany(toAdd)
-      debugger
-      await this[key].attach(toAddModels.map(p => p.id))
-      await this[key].detach(toRemoveModels.map(p => p.id))
-
-      return this[key]
-    })
-    */
   }
 
   admin() {

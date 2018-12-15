@@ -1,24 +1,11 @@
-/* eslint-disable no-unused-expressions */
 const autoBind = require('auto-bind')
 const Place = use('App/Models/Place')
-
-const AddressRepository = use('App/Repositories/Address')
-const PictureRepository = use('App/Repositories/Picture')
-const VideoRepository = use('App/Repositories/Video')
-const DetailRepository = use('App/Repositories/Detail')
-const LabelRepository = use('App/Repositories/Label')
+const Address = use('App/Models/Address')
 
 class PlaceRepository {
 
   constructor() {
-    this.address = new AddressRepository()
-    this.pictures = new PictureRepository()
-    this.videos = new VideoRepository()
-    this.details = new DetailRepository()
-    this.labels = new LabelRepository()
-
     autoBind(this)
-
     this.query = Place.query()
       .with('admin')
       .with('address')
@@ -32,7 +19,7 @@ class PlaceRepository {
     return {
       title: place.title,
       admin_id: place.admin.id,
-      address_id: place.address && (await this.address.create(place.address)).id,
+      address_id: place.address && (await Address.create(place.address)).id,
       description: place.description,
     }
   }

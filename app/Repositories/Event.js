@@ -1,12 +1,10 @@
 const Event = use('App/Models/Event')
-const AddressRepository = use('App/Repositories/Address')
 const PictureRepository = use('App/Repositories/Picture')
 const autoBind = require('auto-bind')
 
 class EventRepository {
 
   constructor() {
-    this.address = new AddressRepository()
     this.picture = new PictureRepository()
     autoBind(this)
 

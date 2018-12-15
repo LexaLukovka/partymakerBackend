@@ -7,7 +7,6 @@ function generateName(extension) {
 }
 
 class UploadController {
-  // noinspection JSUnusedGlobalSymbols
   async store({ request }) {
     const profilePics = request.file('image', {
       types: ['image'],

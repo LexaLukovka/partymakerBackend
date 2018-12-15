@@ -12,7 +12,6 @@ class Picture extends Model {
   static get hidden() {
     return ['created_at', 'updated_at', 'id', 'pivot']
   }
-
   getUrl(url) {
     if (!url) return null
     if (url.includes('//')) return url

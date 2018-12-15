@@ -1,5 +1,6 @@
 const User = use('App/Models/User')
 const UserRepository = use('App/Repositories/User')
+const autoBind = require('auto-bind')
 
 /**
  * Resourceful controller for interacting with users
@@ -10,12 +11,8 @@ class UserController {
    * GET users
    */
   constructor() {
+    autoBind(this)
     this.user = new UserRepository()
-    this.index = this.index.bind(this)
-    this.store = this.store.bind(this)
-    this.show = this.show.bind(this)
-    this.update = this.update.bind(this)
-    this.destroy = this.destroy.bind(this)
   }
 
   async index({ request }) {
