@@ -46,7 +46,7 @@ class PlaceController {
 
     if (!place) return response.notFound()
 
-    return place
+    return this.place.find(place.id)
   }
 
   /**
@@ -60,7 +60,7 @@ class PlaceController {
 
     const updatedPlace = await this.place.update(place, request.all())
 
-    return response.accepted(await this.place.find(updatedPlace.id))
+    return this.place.find(updatedPlace.id)
   }
 
   /**
@@ -76,11 +76,9 @@ class PlaceController {
 
     if (!place) return response.notFound()
 
-    const title = `Place ${place.title} deleted`
-
     await place.delete()
 
-    return response.deleted({ title })
+    return response.deleted()
   }
 }
 
