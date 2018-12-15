@@ -4,14 +4,12 @@ const Hash = use('Hash')
 class AuthController {
 
   async login({ request, auth }) {
-
     const { email, password } = request.all()
 
     return auth.withRefreshToken().attempt(email, password, true)
   }
 
   async register({ request, auth }) {
-
     const { name, email, password, phone } = request.all()
 
     const user = await new User()

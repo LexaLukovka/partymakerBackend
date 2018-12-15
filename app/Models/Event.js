@@ -5,7 +5,7 @@ const uniq = require('lodash/uniq')
 
 class Event extends Model {
   static get hidden() {
-    return ['address_id', 'user_id', 'place_id']
+    return ['address_id', 'user_id', 'place_id', 'pivot']
   }
 
   static get policy() {
@@ -56,6 +56,14 @@ class Event extends Model {
 
   pictures() {
     return this.belongsToMany('App/Models/Picture')
+  }
+
+  details() {
+    return this.belongsToMany('App/Models/Detail')
+  }
+
+  videos() {
+    return this.belongsToMany('App/Models/Video')
   }
 
   guests() {

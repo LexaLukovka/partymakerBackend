@@ -10,6 +10,9 @@ class EventRepository {
       .with('admin')
       .with('place')
       .with('guests')
+      .with('pictures')
+      .with('details')
+      .with('videos')
   }
 
   _values(request) {

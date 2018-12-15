@@ -20,7 +20,7 @@ class Model extends BaseModel {
 
 
   /**
-   * sync request data to the table relations
+   * Sync request data to the table relations
    *
    * @param  {Object} data from request
    * @param  {BelongsToMany} relation of current model

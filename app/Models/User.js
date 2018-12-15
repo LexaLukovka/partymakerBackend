@@ -11,7 +11,16 @@ class User extends Model {
   }
 
   static get hidden() {
-    return ['created_at', 'updated_at', 'password', 'provider_id', 'provider_token', 'address_id', 'admin_id']
+    return [
+      'created_at',
+      'updated_at',
+      'pivot',
+      'password',
+      'provider_id',
+      'provider_token',
+      'address_id',
+      'admin_id'
+    ]
   }
 
   static get policy() {

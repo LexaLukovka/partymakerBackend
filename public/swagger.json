@@ -804,26 +804,8 @@
         ],
         "summary": "Create new event",
         "operationId": "event-create",
-        "consumes": [
-          "application/json"
-        ],
         "produces": [
           "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
-            "schema": {
-              "properties": {
-                "id": {
-                  "type": "integer",
-                  "example": 12
-                }
-              }
-            }
-          }
         ],
         "responses": {
           "201": {

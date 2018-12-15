@@ -31,15 +31,19 @@ class EventController {
   async store({ request, auth, response }) {
     const event = await this.event.create(request.all(), auth.user)
 
-    return response.created(event)
+    return response.created(await this.event.find(event.id))
   }
 
   /**
    * Display a single event.
    * GET events/:id
    */
-  show({ request, auth, params }) {
-    return this.event.find(params.id)
+  async show({ request, response, auth, params }) {
+    const event = await this.event.find(params.id)
+
+    if (!event) return response.notFound()
+
+    return this.event.find(event.id)
   }
 
   /**
@@ -57,7 +61,7 @@ class EventController {
 
     await this.event.edit(event, request.all())
 
-    return response.accepted(event)
+    return response.accepted(await this.event.find(event.id))
   }
 
   /**
@@ -75,7 +79,7 @@ class EventController {
 
     event.delete()
 
-    return response.deleted(event)
+    return response.deleted()
   }
 }
 
