@@ -12,10 +12,12 @@ class EventDetailsController {
    * Show a list of all event details.
    * GET events/:events_id/details
    */
-  async index({ request, params }) {
+  async index({ request, params, response }) {
     const { page, limit } = request.all()
 
     const event = await Event.find(params.events_id)
+
+    if (!event) return response.notFound()
 
     return event.details().paginate(page, limit)
   }
@@ -27,7 +29,11 @@ class EventDetailsController {
   async store({ request, auth, response, params }) {
     const { id } = request.all()
     const event = await Event.find(params.events_id)
+
+    if (!event) return response.notFound()
+
     await event.details().attach([id])
+
 
     return response.created()
   }
@@ -38,6 +44,9 @@ class EventDetailsController {
    */
   async show({ request, response, auth, params }) {
     const event = await Event.find(params.events_id)
+
+    if (!event) return response.notFound()
+
     const detail = await event.details().where('details.id', params.id).first()
 
     if (!detail) return response.notFound()
@@ -51,6 +60,8 @@ class EventDetailsController {
    */
   async destroy({ params, request, response }) {
     const event = await Event.find(params.events_id)
+
+    if (!event) return response.notFound()
 
     const detail = await event.details().where('details.id', params.id).first()
 

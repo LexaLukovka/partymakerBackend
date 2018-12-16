@@ -1679,13 +1679,18 @@
         "consumes": [
           "application/json"
         ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "events_id",
             "description": "ID of event",
             "required": true,
             "type": "integer",
@@ -1726,8 +1731,8 @@
         ],
         "parameters": [
           {
-            "name": "id",
             "in": "path",
+            "name": "events_id",
             "description": "ID of event",
             "required": true,
             "type": "integer",
@@ -1748,8 +1753,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "schema": {
               "$ref": "#/definitions/Place"
             }
@@ -1767,7 +1772,9 @@
             "$ref": "#/responses/NotFound"
           }
         }
-      },
+      }
+    },
+    "/events/{events_id}/place/{id}": {
       "delete": {
         "tags": [
           "event place"
@@ -1787,9 +1794,17 @@
         ],
         "parameters": [
           {
-            "name": "id",
             "in": "path",
+            "name": "events_id",
             "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of place",
             "required": true,
             "type": "integer",
             "format": "int64"

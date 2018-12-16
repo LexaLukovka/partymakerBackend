@@ -23,5 +23,10 @@ Route.group(() => {
     .apiOnly()
     .except(['update'])
 
+  Route.resource('events.place', 'EventPlaceController')
+    .middleware('auth')
+    .apiOnly()
+    .except(['update', 'show'])
+
 }).namespace('Event')
 

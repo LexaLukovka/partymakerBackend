@@ -27,6 +27,9 @@ class EventGuestsController {
   async store({ request, auth, response, params }) {
     const { id } = request.all()
     const event = await Event.find(params.events_id)
+
+    if (!event) return response.notFound()
+
     await event.guests().attach([id])
 
     return response.created()
@@ -38,6 +41,9 @@ class EventGuestsController {
    */
   async show({ request, response, auth, params }) {
     const event = await Event.find(params.events_id)
+
+    if (!event) return response.notFound()
+
     const guest = await event.guests().where('users.id', params.id).first()
 
     if (!guest) return response.notFound()
@@ -51,6 +57,8 @@ class EventGuestsController {
    */
   async destroy({ params, request, response }) {
     const event = await Event.find(params.events_id)
+
+    if (!event) return response.notFound()
 
     const guest = await event.guests().where('users.id', params.id).first()
 
