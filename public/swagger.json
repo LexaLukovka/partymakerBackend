@@ -981,7 +981,7 @@
         }
       }
     },
-    "/events/{id}/services": {
+    "/events/{events_id}/services": {
       "get": {
         "tags": [
           "event services"
@@ -996,7 +996,7 @@
         ],
         "parameters": [
           {
-            "name": "event_id",
+            "name": "events_id",
             "in": "path",
             "description": "ID of event",
             "required": true,
@@ -1113,7 +1113,7 @@
         }
       }
     },
-    "/events/{id}/services/{id}": {
+    "/events/{events_id}/services/{id}": {
       "get": {
         "tags": [
           "event services"
@@ -1129,7 +1129,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "events_id",
             "description": "ID of event",
             "required": true,
             "type": "integer",
@@ -1204,10 +1204,15 @@
         }
       }
     },
-    "/events/{id}/guests": {
+    "/events/{events_id}/guests": {
       "get": {
         "tags": [
           "event guests"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ],
         "summary": "List of all event guests",
         "operationId": "event-guests-list",
@@ -1219,12 +1224,11 @@
         ],
         "parameters": [
           {
-            "name": "event_id",
+            "name": "events_id",
             "in": "path",
             "description": "ID of event",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "number"
           },
           {
             "in": "query",
@@ -1287,7 +1291,7 @@
         ],
         "parameters": [
           {
-            "name": "event_id",
+            "name": "events_id",
             "in": "path",
             "description": "ID of event",
             "required": true,
@@ -1300,12 +1304,10 @@
             "required": true,
             "schema": {
               "properties": {
-                "ids": {
-                  "type": "array",
-                  "items": {
-                    "type": "integer",
-                    "example": 1
-                  }
+                "id": {
+                  "type": "integer",
+                  "example": 1,
+                  "description": "user_id"
                 }
               }
             }
@@ -1339,10 +1341,15 @@
         }
       }
     },
-    "/events/{id}/guests/{id}": {
+    "/events/{events_id}/guests/{id}": {
       "get": {
         "tags": [
           "event guests"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
         ],
         "summary": "Show guest",
         "operationId": "event-guests-show",
@@ -1355,7 +1362,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "events_id",
             "description": "ID of event",
             "required": true,
             "type": "integer",
@@ -1401,15 +1408,14 @@
         ],
         "parameters": [
           {
-            "name": "event_id",
+            "name": "events_id",
             "in": "path",
             "description": "ID of event",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "number"
           },
           {
-            "name": "guest_id",
+            "name": "id",
             "in": "path",
             "description": "ID of guest",
             "required": true,
@@ -1430,13 +1436,13 @@
         }
       }
     },
-    "/events/{id}/details": {
+    "/events/{events_id}/details": {
       "get": {
         "tags": [
-          "event badges"
+          "event details"
         ],
-        "summary": "List of all event badges",
-        "operationId": "event-badges-list",
+        "summary": "List of all event details",
+        "operationId": "event-details-list",
         "consumes": [
           "application/json"
         ],
@@ -1504,7 +1510,7 @@
       },
       "post": {
         "tags": [
-          "event badges"
+          "event details"
         ],
         "security": [
           {
@@ -1537,8 +1543,8 @@
             }
           }
         ],
-        "summary": "Add badges to event",
-        "operationId": "event-badges-attach",
+        "summary": "Add details to event",
+        "operationId": "event-details-attach",
         "produces": [
           "application/json"
         ],
@@ -1565,13 +1571,13 @@
         }
       }
     },
-    "/events/{id}/details/{id}": {
+    "/events/{events_id}/details/{id}": {
       "get": {
         "tags": [
-          "event badges"
+          "event details"
         ],
-        "summary": "Show badge",
-        "operationId": "event-badges-show",
+        "summary": "Show detail",
+        "operationId": "event-details-show",
         "consumes": [
           "application/json"
         ],
@@ -1590,7 +1596,7 @@
           {
             "in": "path",
             "name": "id",
-            "description": "ID of badge",
+            "description": "ID of detail",
             "required": true,
             "type": "integer",
             "format": "int64"
@@ -1610,15 +1616,15 @@
       },
       "delete": {
         "tags": [
-          "event badges"
+          "event details"
         ],
         "security": [
           {
             "bearer": []
           }
         ],
-        "summary": "Detach badge from event",
-        "operationId": "event-badge-delete",
+        "summary": "Detach detail from event",
+        "operationId": "event-detail-delete",
         "consumes": [
           "application/json"
         ],
@@ -1635,9 +1641,9 @@
             "format": "int64"
           },
           {
-            "name": "badge_id",
+            "name": "detail_id",
             "in": "path",
-            "description": "ID of badge",
+            "description": "ID of detail",
             "required": true,
             "type": "integer",
             "format": "int64"
@@ -1656,7 +1662,7 @@
         }
       }
     },
-    "/events/{id}/place": {
+    "/events/{events_id}/place": {
       "get": {
         "tags": [
           "event place"

@@ -15,12 +15,11 @@ class EventController {
    * GET events
    */
   async index({ request }) {
-    const { page, limit, ...params } = request.all()
+    const { page, limit } = request.all()
 
     return this.event.paginate({
       page: page || 1,
-      limit: limit || 10,
-      params,
+      limit: limit || 10
     })
   }
 
