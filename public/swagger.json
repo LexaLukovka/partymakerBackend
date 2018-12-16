@@ -1441,6 +1441,11 @@
         "tags": [
           "event details"
         ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "summary": "List of all event details",
         "operationId": "event-details-list",
         "consumes": [
@@ -1451,7 +1456,7 @@
         ],
         "parameters": [
           {
-            "name": "event_id",
+            "name": "events_id",
             "in": "path",
             "description": "ID of event",
             "required": true,
@@ -1519,7 +1524,7 @@
         ],
         "parameters": [
           {
-            "name": "event_id",
+            "name": "events_id",
             "in": "path",
             "description": "ID of event",
             "required": true,
@@ -1532,12 +1537,9 @@
             "required": true,
             "schema": {
               "properties": {
-                "ids": {
-                  "type": "array",
-                  "items": {
-                    "type": "integer",
-                    "example": 1
-                  }
+                "id": {
+                  "type": "integer",
+                  "example": 1
                 }
               }
             }
@@ -1581,13 +1583,18 @@
         "consumes": [
           "application/json"
         ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "events_id",
             "description": "ID of event",
             "required": true,
             "type": "integer",
@@ -1633,7 +1640,7 @@
         ],
         "parameters": [
           {
-            "name": "event_id",
+            "name": "events_id",
             "in": "path",
             "description": "ID of event",
             "required": true,
@@ -1641,7 +1648,7 @@
             "format": "int64"
           },
           {
-            "name": "detail_id",
+            "name": "id",
             "in": "path",
             "description": "ID of detail",
             "required": true,
@@ -1651,7 +1658,7 @@
         ],
         "responses": {
           "204": {
-            "description": "OK"
+            "description": "No content"
           },
           "403": {
             "$ref": "#/responses/Forbidden"

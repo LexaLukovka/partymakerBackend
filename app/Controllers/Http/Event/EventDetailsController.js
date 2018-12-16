@@ -2,65 +2,65 @@
 const Event = use('App/Models/Event')
 const autoBind = require('auto-bind')
 
-class EventGuestsController {
+class EventDetailsController {
 
   constructor() {
     autoBind(this)
   }
 
   /**
-   * Show a list of all event guests.
-   * GET events/:events_id/guests
+   * Show a list of all event details.
+   * GET events/:events_id/details
    */
   async index({ request, params }) {
     const { page, limit } = request.all()
 
     const event = await Event.find(params.events_id)
 
-    return event.guests().paginate(page, limit)
+    return event.details().paginate(page, limit)
   }
 
   /**
-   * Add new guest to current event.
-   * POST events/:events_id/guests
+   * Add new detail to current event.
+   * POST events/:events_id/details
    */
   async store({ request, auth, response, params }) {
     const { id } = request.all()
     const event = await Event.find(params.events_id)
-    await event.guests().attach([id])
+    await event.details().attach([id])
 
     return response.created()
   }
 
   /**
-   * Display a single event.
-   * GET  events/:event_id/guests/:id
+   * Display a single event detail.
+   * GET events/:events_id/details/:id
    */
   async show({ request, response, auth, params }) {
     const event = await Event.find(params.events_id)
-    const guest = await event.guests().where('users.id', params.id).first()
+    const detail = await event.details().where('details.id', params.id).first()
 
-    if (!guest) return response.notFound()
+    if (!detail) return response.notFound()
 
-    return guest
+    return detail
   }
 
   /**
-   * Detach an event guest with id.
-   * DELETE events/:events_id/guests/:id
+   * Detach a event detail with id.
+   * DELETE events/:events_id/details/:id
    */
   async destroy({ params, request, response }) {
     const event = await Event.find(params.events_id)
 
-    const guest = await event.guests().where('users.id', params.id).first()
+    const detail = await event.details().where('details.id', params.id).first()
 
-    if (!guest) return response.notFound()
+    if (!detail) return response.notFound()
 
-    await event.guests().detach([guest.id])
+    await event.details().detach([detail.id])
 
     return response.deleted()
   }
 }
 
-module.exports = EventGuestsController
+module.exports = EventDetailsController
 
