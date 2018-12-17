@@ -35,6 +35,14 @@ require('./places')
  * */
 require('./events')
 
+
+/**
+ *
+ * Label routes
+ *`
+ * */
+require('./labels')
+
 /**
  *
  * Upload routes

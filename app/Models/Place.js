@@ -1,6 +1,8 @@
 const Model = use('App/Models/Model')
 const differenceBy = require('lodash/differenceBy')
 const intersectionBy = require('lodash/intersectionBy')
+const difference = require('lodash/difference')
+const intersection = require('lodash/intersection')
 const uniq = require('lodash/uniq')
 
 class Place extends Model {
@@ -32,11 +34,15 @@ class Place extends Model {
     }
 
     if (request.labels) {
-      await this.diff({
-        data: uniq(request.labels),
-        relation: this.labels(),
-        field: 'title'
-      })
+      const oldLabelModels = await this.labels()
+      const oldLabels = oldLabelModels.map(l => l.title)
+      const toAdd = difference(request.labels, oldLabels)
+      const addedModels = await this.labels().createMany(toAdd.map(title => ({ title })))
+      await this.labels().attach(addedModels.map(m => m.id))
+
+      const toRemove = difference(oldLabels, intersection(request.labels, oldLabels))
+      const toRemoveModels = toRemove.map(title => oldLabelModels.find(l => l.title === title))
+      await this.labels().detach(toRemoveModels.map(m => m.id))
     }
 
     if (request.details) {

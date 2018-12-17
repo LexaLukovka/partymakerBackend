@@ -5,6 +5,10 @@ const LabelSerializer = require('./Serializers/LabelSerializer')
 
 class Label extends Model {
 
+  static get policy() {
+    return 'App/Policies/Label'
+  }
+
   static get Serializer() {
     return LabelSerializer
   }
