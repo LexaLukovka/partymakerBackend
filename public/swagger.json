@@ -2059,6 +2059,198 @@
           }
         }
       }
+    },
+    "/events/{events_id}/invites": {
+      "get": {
+        "tags": [
+          "event invites"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "List of all event invites",
+        "operationId": "event-invites-list",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "events_id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "number"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "number",
+                  "example": 23
+                },
+                "perPage": {
+                  "type": "number",
+                  "example": 10
+                },
+                "page": {
+                  "type": "number",
+                  "example": 1
+                },
+                "lastPage": {
+                  "type": "number",
+                  "example": 3
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Invite"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "event invites"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "events_id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "summary": "Create invite for event",
+        "operationId": "event-invites-create",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/Invite"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/invites/{hash}": {
+      "get": {
+        "tags": [
+          "invites"
+        ],
+        "summary": "Show invite",
+        "operationId": "invite-show",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hash",
+            "description": "ID of invite",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Invite"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "invites"
+        ],
+        "summary": "Delete invite",
+        "operationId": "invite-delete",
+        "consumes": [
+          "application/json"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of invite",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "OK"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          }
+        }
+      }
     }
   },
   "responses": {
@@ -2444,6 +2636,22 @@
           "type": "string",
           "format": "date-time",
           "example": "2018-09-23 19:29:38"
+        }
+      }
+    },
+    "Invite": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 3
+        },
+        "event": {
+          "$ref": "#/definitions/Event"
+        },
+        "hash": {
+          "type": "string",
+          "example": "pjm3MQ7zg7RsqMsv"
         }
       }
     }
