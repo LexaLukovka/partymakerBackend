@@ -50,6 +50,10 @@ class Place extends Model {
     }
   }
 
+  address() {
+    return this.belongsTo('App/Models/Address')
+  }
+
   admin() {
     return this.belongsTo('App/Models/User', 'admin_id', 'id')
   }
