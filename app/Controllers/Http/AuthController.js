@@ -3,29 +3,37 @@ const Hash = use('Hash')
 
 class AuthController {
 
+  /**
+   * login user
+   * POST /auth/login
+   */
   async login({ request, auth }) {
     const { email, password } = request.all()
 
     return auth.withRefreshToken().attempt(email, password, true)
   }
 
+  /**
+   * register user
+   * POST /auth/register
+   */
   async register({ request, auth }) {
-    const { name, email, password, phone } = request.all()
-
-    const user = await new User()
-    user.name = name
-    user.email = email
-    user.phone = phone
-    user.password = password
-    await user.save()
+    const user = await User.create(request.all())
     return auth.withRefreshToken().generate(user, true)
-
   }
 
+  /**
+   * get current user model
+   * GET /auth/user
+   */
   async user({ auth }) {
     return auth.user
   }
 
+  /**
+   * update current user
+   * PUT /auth/settings
+   */
   async settings({ request, auth }) {
     const req = request.all()
 
@@ -51,6 +59,10 @@ class AuthController {
       .generate(await User.find(auth.user.id), true)
   }
 
+  /**
+   * login user using facebook data
+   * POST /auth/login/facebook
+   */
   async facebook({ auth, request }) {
     const req = request.all()
 
@@ -66,6 +78,10 @@ class AuthController {
     return auth.withRefreshToken().generate(user, true)
   }
 
+  /**
+   * login user using google data
+   * POST /auth/login/google
+   */
   async google({ auth, request }) {
     const req = request.all()
 
