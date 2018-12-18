@@ -19,7 +19,7 @@ class EventPlaceController {
 
     const place = await event.place().fetch()
 
-    if (place) return response.notFound()
+    if (!place) return response.notFound()
 
     return place
   }

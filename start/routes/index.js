@@ -45,6 +45,13 @@ require('./labels')
 
 /**
  *
+ * Invite routes
+ *`
+ * */
+require('./invites')
+
+/**
+ *
  * Upload routes
  *`
  * */

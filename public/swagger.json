@@ -2200,10 +2200,9 @@
           {
             "in": "path",
             "name": "hash",
-            "description": "ID of invite",
+            "description": "Invite hash",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           }
         ],
         "responses": {
@@ -2236,10 +2235,9 @@
           {
             "name": "id",
             "in": "path",
-            "description": "ID of invite",
+            "description": "Hash of invite",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           }
         ],
         "responses": {
