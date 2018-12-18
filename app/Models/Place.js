@@ -43,6 +43,10 @@ class Place extends Model {
       const toRemove = difference(oldLabels, intersection(request.labels, oldLabels))
       const toRemoveModels = toRemove.map(title => oldLabelModels.find(l => l.title === title))
       await this.labels().detach(toRemoveModels.map(m => m.id))
+
+      const toAddOld = intersection(request.labels, oldLabels)
+      const addedOldModels = toAddOld.map(v => oldLabelModels.findIndex(value => value.title === v) + 1)
+      await this.labels().attach(addedOldModels.map(m => m))
     }
 
     if (request.details) {
