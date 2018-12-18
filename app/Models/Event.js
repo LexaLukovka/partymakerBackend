@@ -12,7 +12,6 @@ class Event extends Model {
     return 'App/Policies/Event'
   }
 
-
   async sync(request) {
 
     if (request.pictures) {
@@ -68,6 +67,10 @@ class Event extends Model {
 
   guests() {
     return this.belongsToMany('App/Models/User')
+  }
+
+  invites() {
+    return this.hasMany('App/Models/Invite')
   }
 }
 

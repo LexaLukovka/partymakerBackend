@@ -28,5 +28,9 @@ Route.group(() => {
     .apiOnly()
     .except(['update', 'show'])
 
+  Route.resource('events.invites', 'EventInvitesController')
+    .middleware('auth')
+    .only(['index', 'store'])
+
 }).namespace('Event')
 

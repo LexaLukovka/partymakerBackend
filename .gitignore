@@ -3,3 +3,4 @@
 /database/partymaker.sqlite
 .env
 /public/uploads/
+/test.json
