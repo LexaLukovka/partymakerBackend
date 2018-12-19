@@ -1,4 +1,5 @@
 const Model = use('App/Models/Model')
+const Label = use('App/Models/Label')
 const differenceBy = require('lodash/differenceBy')
 const intersectionBy = require('lodash/intersectionBy')
 const difference = require('lodash/difference')
@@ -34,19 +35,10 @@ class Place extends Model {
     }
 
     if (request.labels) {
-      const oldLabelModels = await this.labels()
-      const oldLabels = oldLabelModels.map(l => l.title)
-      const toAdd = difference(request.labels, oldLabels)
-      const addedModels = await this.labels().createMany(toAdd.map(title => ({ title })))
-      await this.labels().attach(addedModels.map(m => m.id))
-
-      const toRemove = difference(oldLabels, intersection(request.labels, oldLabels))
-      const toRemoveModels = toRemove.map(title => oldLabelModels.find(l => l.title === title))
-      await this.labels().detach(toRemoveModels.map(m => m.id))
-
-      const toAddOld = intersection(request.labels, oldLabels)
-      const addedOldModels = toAddOld.map(v => oldLabelModels.findIndex(value => value.title === v) + 1)
-      await this.labels().attach(addedOldModels.map(m => m))
+      const allModels = await Label.createManyIfNotExists(request.labels)
+      await this.labels().attach(allModels.map(m => m.id))
+      const toRemove = differenceBy(allModels, intersectionBy(request.labels, allModels, 'label'), 'label')
+      await this.labels().detach(toRemove.map(m => m.id))
     }
 
     if (request.details) {

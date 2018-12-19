@@ -6,7 +6,7 @@ class LabelSchema extends Schema {
   up() {
     this.create('labels', (table) => {
       table.increments()
-      table.string('title')
+      table.string('title').unique().notNullable()
       table.timestamps()
     })
   }

@@ -1,6 +1,5 @@
 const Invite = use('App/Models/Invite')
 const Event = use('App/Models/Event')
-
 const RandomString = require('randomstring')
 
 /**
