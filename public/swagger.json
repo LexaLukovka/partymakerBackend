@@ -2153,6 +2153,31 @@
             "required": true,
             "type": "integer",
             "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Вася Пупкин"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "vasya@mailinator.com"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+380000000001"
+                },
+                "telegram": {
+                  "type": "string",
+                  "example": "@vasya"
+                }
+              }
+            }
           }
         ],
         "summary": "Create invite for event",
