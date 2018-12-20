@@ -1,7 +1,14 @@
 const User = use('App/Models/User')
 const Hash = use('Hash')
+const AuthRepository = use('App/Repositories/Auth')
+const autoBind = require('auto-bind')
 
 class AuthController {
+
+  constructor() {
+    autoBind(this)
+    this.auth = new AuthRepository()
+  }
 
   /**
    * login user
@@ -18,8 +25,28 @@ class AuthController {
    * POST /auth/register
    */
   async register({ request, auth }) {
-    const user = await User.create(request.all())
+    const user = await this.auth.create(request.all())
+
     return auth.withRefreshToken().generate(user, true)
+  }
+
+  /**
+   * login user using Oauth
+   * POST /auth/social
+   */
+  async social({ auth, request }) {
+    const req = request.all()
+    const { email, provider_id } = req
+
+    const existingUser = await User.findBy({ email, provider_id })
+
+    if (existingUser) {
+      return auth.withRefreshToken().generate(existingUser, true)
+    }
+
+    const createdUser = await this.auth.create({ ...req, active: true })
+
+    return auth.withRefreshToken().generate(createdUser, true)
   }
 
   /**
@@ -35,67 +62,11 @@ class AuthController {
    * PUT /auth/settings
    */
   async settings({ request, auth }) {
-    const req = request.all()
+    const user = this.auth.edit(request.all(), auth.user)
 
-    const updatePassword = async () => {
-      if (!(req.password && req.oldPassword)) return undefined
-      const isSame = await Hash.verify(req.oldPassword, auth.user.password)
-      return isSame ? req.password : undefined
-    }
-
-    await User.query()
-      .where('id', auth.user.id)
-      .update({
-        name: req.name,
-        email: req.email,
-        phone: req.phone,
-        avatar_url: req.avatar_url,
-        instagram: req.instagram,
-        telegram: req.telegram,
-        password: await updatePassword(),
-      })
-
-    return auth.withRefreshToken()
-      .generate(await User.find(auth.user.id), true)
-  }
-
-  /**
-   * login user using facebook data
-   * POST /auth/login/facebook
-   */
-  async facebook({ auth, request }) {
-    const req = request.all()
-
-    const userDetails = {
-      name: req.name,
-      email: req.email,
-      provider_token: req.accessToken,
-      provider: 'facebook',
-      avatar_url: req.pictures.data.url,
-    }
-
-    const user = await User.findOrCreate({ email: userDetails.email }, userDetails)
     return auth.withRefreshToken().generate(user, true)
   }
 
-  /**
-   * login user using google data
-   * POST /auth/login/google
-   */
-  async google({ auth, request }) {
-    const req = request.all()
-
-    const userDetails = {
-      name: req.profileObj.name,
-      email: req.profileObj.email,
-      provider_token: req.accessToken,
-      provider: 'google',
-      avatar_url: req.profileObj.imageUrl,
-    }
-
-    const user = await User.findOrCreate({ email: userDetails.email }, userDetails)
-    return auth.withRefreshToken().generate(user, true)
-  }
 }
 
 module.exports = AuthController

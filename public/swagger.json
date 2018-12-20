@@ -78,7 +78,99 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/User"
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "bearer"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjExLCJkYXRhIjp7Im5hbWUiOiLQn9Cw0LLQtdC7IN..."
+                },
+                "refreshToken": {
+                  "type": "string",
+                  "example": "f24faf2f153a36db2809505cad9c4e5b9ZcsMbB8nwUSkJmyvOjzktu5b9ZcsMbB8nwUSkJmyvOjzktu..."
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          }
+        }
+      }
+    },
+    "/auth/social": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login user using google or facebook",
+        "operationId": "login-social",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "required": [
+                "name",
+                "email",
+                "provider_id"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Павел Костюк"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "kostyk.pavel.09@gmail.com"
+                },
+                "avatar_url": {
+                  "type": "string",
+                  "example": "https://lh5.googleusercontent.com/-CMSrZzpBle0/AAAAAAAAAAI/AAAAAAAAAGY/fg4fG1dIPr4/s96-c/photo.jpg"
+                },
+                "provider": {
+                  "type": "string",
+                  "example": "google",
+                  "enum": [
+                    "facebook",
+                    "google"
+                  ]
+                },
+                "provider_id": {
+                  "type": "string",
+                  "example": "117091234537766205437"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "bearer"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjExLCJkYXRhIjp7Im5hbWUiOiLQn9Cw0LLQtdC7IN..."
+                },
+                "refreshToken": {
+                  "type": "string",
+                  "example": "f24faf2f153a36db2809505cad9c4e5b9ZcsMbB8nwUSkJmyvOjzktu5b9ZcsMbB8nwUSkJmyvOjzktu..."
+                }
+              }
             }
           },
           "400": {
@@ -137,7 +229,20 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/User"
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "bearer"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjExLCJkYXRhIjp7Im5hbWUiOiLQn9Cw0LLQtdC7IN..."
+                },
+                "refreshToken": {
+                  "type": "string",
+                  "example": "f24faf2f153a36db2809505cad9c4e5b9ZcsMbB8nwUSkJmyvOjzktu5b9ZcsMbB8nwUSkJmyvOjzktu..."
+                }
+              }
             }
           },
           "400": {
@@ -2680,3 +2785,4 @@
     }
   }
 }
+

@@ -48,7 +48,7 @@ class Seeder {
   }
 
   createRealEvents(users) {
-    printProgress('creating real events...')
+    printProgress('creating events...')
     const admin = this.chance.pickone(users.filter(u => !u.superadmin))
     const events = EVENTS.map(event => this.event.create(event, admin))
 
