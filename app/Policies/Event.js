@@ -3,15 +3,15 @@
 class Event {
 
   static create(user) {
-    return user.superadmin
+    return user.superadmin || user.active
   }
 
   static edit(user, event) {
-    return user.superadmin || user.id === event.admin_id
+    return user.superadmin || user.active || user.id === event.admin_id
   }
 
   static delete(user, event) {
-    return user.superadmin || user.id === event.admin_id
+    return user.superadmin || user.active || user.id === event.admin_id
   }
 }
 

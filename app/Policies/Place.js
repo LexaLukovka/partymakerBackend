@@ -3,7 +3,7 @@
 class Place {
 
   static create(user) {
-    return user.superadmin
+    return user.superadmin || user.active
   }
 
   static edit(user, place) {

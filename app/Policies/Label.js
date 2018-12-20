@@ -7,11 +7,11 @@ class Label {
   }
 
   static edit(user, place) {
-    return user.superadmin || user.id === place.admin_id
+    return user.superadmin || user.active || user.id === place.admin_id
   }
 
   static delete(user, place) {
-    return user.superadmin || user.id === place.admin_id
+    return user.superadmin || user.active || user.id === place.admin_id
   }
 }
 

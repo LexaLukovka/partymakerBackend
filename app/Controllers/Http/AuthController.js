@@ -1,7 +1,9 @@
-const User = use('App/Models/User')
-const Hash = use('Hash')
-const AuthRepository = use('App/Repositories/Auth')
 const autoBind = require('auto-bind')
+const randomString = require('randomstring')
+const User = use('App/Models/User')
+const Token = use('App/Models/Token')
+const AuthRepository = use('App/Repositories/Auth')
+const ActivationMail = use('App/Services/ActivationMail')
 
 class AuthController {
 
@@ -26,8 +28,23 @@ class AuthController {
    */
   async register({ request, auth }) {
     const user = await this.auth.create(request.all())
+    const token = randomString.generate()
+    await user.tokens().create({ type: 'email', token })
+    ActivationMail.send({ user, token })
 
     return auth.withRefreshToken().generate(user, true)
+  }
+
+  /**
+   * activate user
+   * GET /auth/activate/:hash
+   */
+  async activate({ request, auth, params, response }) {
+    const token = await Token.findByOrFail({ token: params.hash })
+    await token.user().update({ active: true })
+    await token.delete()
+
+    return response.accepted()
   }
 
   /**
@@ -37,12 +54,9 @@ class AuthController {
   async social({ auth, request }) {
     const req = request.all()
     const { email, provider_id } = req
-
     const existingUser = await User.findBy({ email, provider_id })
 
-    if (existingUser) {
-      return auth.withRefreshToken().generate(existingUser, true)
-    }
+    if (existingUser) return auth.withRefreshToken().generate(existingUser, true)
 
     const createdUser = await this.auth.create({ ...req, active: true })
 
