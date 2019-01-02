@@ -35,8 +35,19 @@ class PlaceRepository {
     return place
   }
 
-  paginate(options) {
-    return this.query.orderBy('updated_at', 'DESC').paginate(options)
+  paginate({ page, limit, filter, sort, sortBy }) {
+
+    const filterQuery = this.query
+      .whereHas('address', (builder) => {
+        builder.where('address', 'like', `%${filter}%`)
+      })
+      .orWhereHas('labels', (builder) => {
+        builder.where('title', 'like', `%${filter}%`)
+      })
+
+    const query = filter ? filterQuery : this.query
+
+    return query.orderBy(sortBy, sort).paginate({ page, limit })
   }
 
   find(id) {

@@ -18,13 +18,15 @@ class PlaceController {
    * GET places
    */
   async index({ request }) {
-    const { page, limit } = request.all()
+    const { page, limit, filter, sort, sortBy } = request.all()
     return this.place.paginate({
       page: page || 1,
       limit: limit || 9,
+      filter: filter || null,
+      sort: sort || 'desc',
+      sortBy: sortBy || 'updated_at',
     })
   }
-
 
   /**
    * Create/save a new place.
