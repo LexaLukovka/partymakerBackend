@@ -1,4 +1,5 @@
 const autoBind = require('auto-bind')
+const isEmpty = require('lodash/isEmpty')
 const Place = use('App/Models/Place')
 const Address = use('App/Models/Address')
 
@@ -37,15 +38,17 @@ class PlaceRepository {
 
   paginate({ page, limit, filter, sort, sortBy }) {
 
-    const filterQuery = this.query
+    if (isEmpty(filter)) {
+      return this.query.orderBy(sortBy, sort).paginate({ page, limit })
+    }
+
+    const query = this.query
       .whereHas('address', (builder) => {
         builder.where('address', 'like', `%${filter}%`)
       })
       .orWhereHas('labels', (builder) => {
         builder.where('title', 'like', `%${filter}%`)
       })
-
-    const query = filter ? filterQuery : this.query
 
     return query.orderBy(sortBy, sort).paginate({ page, limit })
   }

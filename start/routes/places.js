@@ -9,7 +9,7 @@ const Route = use('Route')
 Route.group(() => {
 
   Route.resource('places', 'PlaceController')
-    .validator([['places.store', 'Place/Store'], ['places.update', 'Place/Update']])
+    .validator([['places.index', 'Place/Index', 'places.store', 'Place/Store'], ['places.update', 'Place/Update']])
     .middleware(new Map([[['store', 'update', 'destroy'], ['auth']]]))
     .apiOnly()
 
