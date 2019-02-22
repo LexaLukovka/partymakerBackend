@@ -10,8 +10,15 @@ class ActivationMail {
     return `${base}/auth/activate/${token}`
   }
 
-  async send({ user, token }) {
+  _generateLinkForgotPassword(token) {
+    const IS_DEV = Env.get('NODE_ENV') !== 'production'
+    const base = IS_DEV ? Env.get('APP_URL') : Env.get('FRONTEND_URL')
 
+    return `${base}/auth/resetPassword/${token}`
+  }
+
+
+  async send({ user, token }) {
     const data = {
       name: user.name,
       link: this._generateLink(token)
@@ -19,6 +26,17 @@ class ActivationMail {
 
     await Mail.send('emails.welcome', data, (message) => {
       message.to(user.email).from('activation@partymaker.zp.ua').subject('Please activate your account!')
+    })
+  }
+
+  async sendForgotPassword({ email, token }) {
+    const data = {
+      email,
+      link: this._generateLinkForgotPassword(token)
+    }
+
+    await Mail.send('emails.forgotPassword', data, (message) => {
+      message.to(email).from('activation@partymaker.zp.ua').subject('Please confirm your email!')
     })
   }
 }
