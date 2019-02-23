@@ -3,7 +3,7 @@ const Env = use('Env')
 
 class ActivationMail {
 
-  _generateLink(token) {
+  _generateLink() {
     const IS_DEV = Env.get('NODE_ENV') !== 'production'
     return IS_DEV ? Env.get('APP_URL') : Env.get('FRONTEND_URL')
   }
