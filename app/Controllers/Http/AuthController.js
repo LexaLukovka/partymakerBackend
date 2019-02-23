@@ -2,6 +2,7 @@ const autoBind = require('auto-bind')
 const randomString = require('randomstring')
 const User = use('App/Models/User')
 const Token = use('App/Models/Token')
+const ResetToken = use('App/Models/ResetToken')
 const AuthRepository = use('App/Repositories/Auth')
 const ActivationMail = use('App/Services/ActivationMail')
 
@@ -79,6 +80,24 @@ class AuthController {
     ActivationMail.sendForgotPassword({ email: req.email, token })
 
     return response.accepted()
+  }
+
+  /**
+   * forgot password
+   * POST /auth/restorePassword/:hash
+   */
+  async restorePassword({ auth, request, response, params }) {
+    const req = request.all()
+
+    if (req.newPassword !== req.repeatPassword) return response.send('Пароли не совпадают')
+
+    const token = await ResetToken.findBy({ token: params.hash })
+
+    const user = await User.findBy({ id: token.user_id })
+
+    const updateUser = await this.auth.restorePassword(req.newPassword, user)
+
+    return auth.withRefreshToken().generate(updateUser, true)
   }
 
   /**
