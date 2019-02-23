@@ -5,23 +5,23 @@ class ActivationMail {
 
   _generateLink(token) {
     const IS_DEV = Env.get('NODE_ENV') !== 'production'
-    const base = IS_DEV ? Env.get('APP_URL') : Env.get('FRONTEND_URL')
+    return IS_DEV ? Env.get('APP_URL') : Env.get('FRONTEND_URL')
+  }
 
+  activate(token) {
+    const base = this._generateLink(token)
     return `${base}/auth/activate/${token}`
   }
 
-  _generateLinkForgotPassword(token) {
-    const IS_DEV = Env.get('NODE_ENV') !== 'production'
-    const base = IS_DEV ? Env.get('APP_URL') : Env.get('FRONTEND_URL')
-
+  forgotPassword(token) {
+    const base = this._generateLink(token)
     return `${base}/auth/resetPassword/${token}`
   }
-
 
   async send({ user, token }) {
     const data = {
       name: user.name,
-      link: this._generateLink(token)
+      link: this.activate(token)
     }
 
     await Mail.send('emails.welcome', data, (message) => {
@@ -32,7 +32,7 @@ class ActivationMail {
   async sendForgotPassword({ email, token }) {
     const data = {
       email,
-      link: this._generateLinkForgotPassword(token)
+      link: this.forgotPassword(token)
     }
 
     await Mail.send('emails.forgotPassword', data, (message) => {

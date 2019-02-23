@@ -63,20 +63,19 @@ class AuthController {
     return auth.withRefreshToken().generate(createdUser, true)
   }
 
-
   /**
    * forgot password
    * POST /auth/forgotPassword
    */
   async forgotPassword({ auth, request, response }) {
-    this.auth.forgotPassword(request.all())
-
     const req = request.all()
     const user = await User.findBy({ email: req.email })
 
     if (!user) return response.notFound(user)
 
-    const token = auth.newRefreshToken()
+    const token = randomString.generate()
+    await user.resetTokens().create({ type: 'email', token })
+
     ActivationMail.sendForgotPassword({ email: req.email, token })
 
     return response.accepted()
