@@ -14,4 +14,6 @@ Route.post('auth/social', 'AuthController.social').validator('Auth/Social')
 
 Route.get('auth/activate/:hash', 'AuthController.activate')
 
+Route.post('auth/forgotPassword', 'AuthController.forgotPassword')
+
 Route.get('auth/user', 'AuthController.user').middleware('auth')

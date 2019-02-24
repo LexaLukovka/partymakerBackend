@@ -64,6 +64,24 @@ class AuthController {
   }
 
   /**
+   * forgot password
+   * POST /auth/forgotPassword
+   */
+  async forgotPassword({ auth, request, response }) {
+    const req = request.all()
+    const user = await User.findBy({ email: req.email })
+
+    if (!user) return response.notFound(user)
+
+    const token = randomString.generate()
+    await user.resetTokens().create({ type: 'email', token })
+
+    ActivationMail.sendForgotPassword({ email: req.email, token })
+
+    return response.accepted()
+  }
+
+  /**
    * get current user model
    * GET /auth/user
    */
