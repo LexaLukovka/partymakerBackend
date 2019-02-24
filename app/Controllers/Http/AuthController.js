@@ -54,7 +54,7 @@ class AuthController {
   async social({ auth, request }) {
     const req = request.all()
     const { email, provider_id } = req
-    const existingUser = await User.findBy({ email, provider_id })
+    const existingUser = await User.findBy({ email })
 
     if (existingUser) return auth.withRefreshToken().generate(existingUser, true)
 

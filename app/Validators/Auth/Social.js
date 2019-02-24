@@ -3,7 +3,7 @@ module.exports = class Social {
   get rules() {
     return {
       name: 'required',
-      email: 'required|email|notEmpty:users,provider_id',
+      email: 'required|email',
       provider_id: 'required',
       provider: 'required|string',
       avatar_url: 'string',
