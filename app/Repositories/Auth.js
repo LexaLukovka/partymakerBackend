@@ -24,6 +24,11 @@ class AuthRepository {
     }
   }
 
+  async _newPassword(newPassword) {
+    const token = await Hash.make(newPassword)
+    return token
+  }
+
   create(request) {
     return User.create(this._userData(request))
   }
@@ -39,6 +44,18 @@ class AuthRepository {
     return User.query()
       .where('id', user.id)
       .update({ ...this._userData(request), password })
+  }
+
+  async restorePassword(newPassword, user) {
+    const password = await this._newPassword(newPassword)
+
+    await User.query()
+      .where('id', user.id)
+      .update({ password })
+
+    const updateUser = await User.findBy({ id: user.id })
+
+    return updateUser
   }
 }
 
