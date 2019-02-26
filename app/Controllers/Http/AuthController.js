@@ -54,7 +54,7 @@ class AuthController {
    */
   async social({ auth, request }) {
     const req = request.all()
-    const { email, provider_id } = req
+    const { email } = req
     const existingUser = await User.findBy({ email })
 
     if (existingUser) return auth.withRefreshToken().generate(existingUser, true)
@@ -71,8 +71,6 @@ class AuthController {
   async forgotPassword({ auth, request, response }) {
     const req = request.all()
     const user = await User.findBy({ email: req.email })
-
-    if (!user) return response.notFound(user)
 
     const token = randomString.generate()
     await user.resetTokens().create({ type: 'email', token })
