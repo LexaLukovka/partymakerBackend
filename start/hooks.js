@@ -14,3 +14,18 @@ hooks.after.providersRegistered(() => {
    */
   require('./extend/Validator')
 })
+
+hooks.after.providersBooted(() => {
+  const User = use('App/Models/User')
+  const Validator = use('Validator')
+
+  const emailExistsFn = async (data, field, message, args, get) => {
+    const value = get(data, field)
+    if (!value) return
+
+    const user = await User.findBy({ email: data.email })
+    if (!user) throw message
+  }
+
+  Validator.extend('emailExists', emailExistsFn)
+})

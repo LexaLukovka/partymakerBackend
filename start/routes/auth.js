@@ -14,8 +14,8 @@ Route.post('auth/social', 'AuthController.social').validator('Auth/Social')
 
 Route.get('auth/activate/:hash', 'AuthController.activate')
 
-Route.post('auth/forgotPassword', 'AuthController.forgotPassword')
+Route.post('auth/password/forgot', 'AuthController.forgotPassword').validator('Auth/ForgotPassword')
 
-Route.post('auth/restorePassword/:hash', 'AuthController.restorePassword')
+Route.post('auth/password/restore/:hash', 'AuthController.restorePassword').validator('Auth/RestorePassword')
 
 Route.get('auth/user', 'AuthController.user').middleware('auth')

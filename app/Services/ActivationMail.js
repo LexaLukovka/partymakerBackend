@@ -5,7 +5,7 @@ class ActivationMail {
 
   _generateLink() {
     const IS_DEV = Env.get('NODE_ENV') !== 'production'
-    return IS_DEV ? Env.get('APP_URL') : Env.get('FRONTEND_URL')
+    return IS_DEV ? Env.get('FRONTEND_URL') : Env.get('APP_URL')
   }
 
   activate(token) {
@@ -15,7 +15,7 @@ class ActivationMail {
 
   forgotPassword(token) {
     const base = this._generateLink(token)
-    return `${base}/auth/restorePassword/${token}`
+    return `${base}/auth/password/restore/${token}`
   }
 
   async send({ user, token }) {
