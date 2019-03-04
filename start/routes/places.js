@@ -14,4 +14,3 @@ Route.group(() => {
     .apiOnly()
 
 }).namespace('Place')
-

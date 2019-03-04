@@ -18,6 +18,14 @@ class Place extends Model {
 
   async sync(request) {
 
+    if (request.types) {
+      await this.diff({
+        data: uniq(request.types),
+        relation: this.types(),
+        field: 'type'
+      })
+    }
+
     if (request.pictures) {
       await this.diff({
         data: uniq(request.pictures),
@@ -58,6 +66,10 @@ class Place extends Model {
 
   admin() {
     return this.belongsTo('App/Models/User', 'admin_id', 'id')
+  }
+
+  types() {
+    return this.belongsToMany('App/Models/Types')
   }
 
   pictures() {

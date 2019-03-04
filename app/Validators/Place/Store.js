@@ -2,17 +2,21 @@
 module.exports = class Store {
   get rules() {
     return {
-      title: 'required|string',
+      name: 'required|string',
+      rating: 'required|double',
+      types: 'required|array',
       address: 'required|object',
-      description: 'required|string',
+      user_ratings_total: 'required|integer',
     }
   }
 
   get messages() {
     return {
-      'title.required': 'Имя места обязательно для заполнения',
+      'name.required': 'Имя места обязательно для заполнения',
+      'rating.required': 'Рейтинг обязательный для заполнения',
+      'types.required': 'Типы обязательно для заполнение',
       'address.required': 'Адресс обязательный для заполнения',
-      'description.required': 'Описание обязательно для заполнение',
+      'user_ratings_total.required': 'Количество людей обязательный для заполнения',
     }
   }
 

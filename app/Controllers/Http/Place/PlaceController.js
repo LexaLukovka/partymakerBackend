@@ -33,9 +33,17 @@ class PlaceController {
    * POST places
    */
   async store({ request, response, auth }) {
-    const place = await this.place.create(request.all(), auth.user)
+    const req = request.all()
 
-    return response.created(await this.place.find(place.id))
+    console.log(req.location, req.bounds)
+
+    await req.places.map(async value => {
+      const place = await this.place.create(value)
+
+      await this.place.find(place.id)
+    })
+
+    return response.accepted()
   }
 
   /**

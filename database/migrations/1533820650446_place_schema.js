@@ -5,11 +5,10 @@ class PlaceSchema extends Schema {
   up() {
     this.create('places', (table) => {
       table.increments()
-      table.string('title')
-      table.text('description')
-      table.integer('admin_id').unsigned().references('id').inTable('users').notNullable().onDelete('CASCADE')
+      table.string('name').notNullable()
+      table.double('rating').notNullable()
+      table.integer('user_ratings_total').notNullable()
       table.integer('address_id').unsigned().references('id').inTable('address').notNullable().onDelete('CASCADE')
-      table.bool('private').default(false).notNullable()
       table.timestamps()
     })
   }

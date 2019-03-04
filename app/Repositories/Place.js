@@ -8,29 +8,24 @@ class PlaceRepository {
   constructor() {
     autoBind(this)
     this.query = Place.query()
-      .with('admin')
       .with('address')
+      .with('types')
       .with('pictures')
-      .with('details')
-      .with('videos')
-      .with('labels')
   }
 
   async _values(place) {
     return {
-      title: place.title,
-      admin_id: place.admin_id,
+      name: place.name,
+      rating: place.rating,
+      user_ratings_total: place.user_ratings_total,
       address_id: place.address && (await Address.create(place.address)).id,
-      description: place.description,
     }
   }
 
   async _sync(request, place) {
     await place.sync({
-      details: request.details,
-      labels: request.labels,
+      types: request.types,
       pictures: request.pictures,
-      videos: request.videos,
     })
 
     return place
@@ -58,11 +53,11 @@ class PlaceRepository {
   }
 
   async create(place, admin) {
-    const placeModel = await Place.create(await this._values({
-      ...place, admin_id: admin.id
-    }))
+    const placeModel = await Place.create(await this._values(place))
 
-    return this._sync(place, placeModel)
+    const sync = await this._sync(place, placeModel)
+
+    return sync
   }
 
   async update(placeModel, place) {
