@@ -35,7 +35,7 @@ class PlaceController {
   async store({ request, response, auth }) {
     const req = request.all()
 
-    console.log(req.places, req.search, req.bounds)
+    console.log(req.places, req.search, req.bounds, req.location)
 
     await req.places.map(async value => {
       const place = await this.place.create(value)
