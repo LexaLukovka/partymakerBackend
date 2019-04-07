@@ -24,11 +24,6 @@ class AuthRepository {
     }
   }
 
-  async _newPassword(newPassword) {
-    const token = await Hash.make(newPassword)
-    return token
-  }
-
   create(request) {
     return User.create(this._userData(request))
   }
@@ -47,12 +42,13 @@ class AuthRepository {
   }
 
   async restorePassword(newPassword, user) {
-    const password = await this._newPassword(newPassword)
+    const password = await Hash.make(newPassword)
 
     await User.query()
       .where('id', user.id)
       .update({ password })
 
+    // noinspection UnnecessaryLocalVariableJS
     const updateUser = await User.findBy({ id: user.id })
 
     return updateUser
