@@ -2,24 +2,13 @@
 const Env = use('Env')
 const Hash = use('Hash')
 const Model = use('Model')
-const UserSerializer = require('./Serializers/UserSerializer')
 
 class User extends Model {
 
-  static get Serializer() {
-    return UserSerializer
-  }
-
   static get hidden() {
     return [
-      'created_at',
-      'updated_at',
       'pivot',
       'password',
-      'provider_id',
-      'provider_token',
-      'address_id',
-      'admin_id'
     ]
   }
 

@@ -642,143 +642,6 @@
         }
       }
     },
-    "/messages": {
-      "get": {
-        "tags": [
-          "messages"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "get list of messages",
-        "operationId": "messages",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "room_id",
-            "type": "integer",
-            "required": true,
-            "format": "int64",
-            "default": 1
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "type": "integer",
-            "format": "int64",
-            "default": 0
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "type": "integer",
-            "format": "int64",
-            "default": 20
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "$ref": "#/definitions/Message"
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          },
-          "500": {
-            "$ref": "#/responses/InternalServerError"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "messages"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "new message",
-        "operationId": "create-message",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "room_id",
-            "type": "integer",
-            "required": true,
-            "format": "int64",
-            "default": 1
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Create new message",
-            "required": true,
-            "schema": {
-              "required": [
-                "text"
-              ],
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "new message"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "$ref": "#/definitions/Message"
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          },
-          "500": {
-            "$ref": "#/responses/InternalServerError"
-          }
-        }
-      }
-    },
     "/rooms": {
       "get": {
         "tags": [
@@ -888,20 +751,18 @@
             "$ref": "#/responses/InternalServerError"
           }
         }
-      }
-    },
-    "/guests": {
-      "get": {
+      },
+      "post": {
         "tags": [
-          "guests"
+          "rooms"
         ],
         "security": [
           {
             "bearer": []
           }
         ],
-        "summary": "get event guests",
-        "operationId": "guests",
+        "summary": "new room",
+        "operationId": "create-room",
         "consumes": [
           "application/json"
         ],
@@ -912,6 +773,83 @@
           {
             "in": "header",
             "name": "room_id",
+            "type": "integer",
+            "required": true,
+            "format": "int64",
+            "default": 1
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Create new room",
+            "required": true,
+            "schema": {
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "День рождения"
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2014-06-26 04:07:31"
+                },
+                "place_id": {
+                  "type": "integer",
+                  "format": "int64",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/Message"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/rooms/{id}/guests": {
+      "get": {
+        "tags": [
+          "guests"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "get list of guests",
+        "operationId": "guests",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
             "type": "integer",
             "required": true,
             "format": "int64",
@@ -996,6 +934,143 @@
                 "user_id": {
                   "type": "integer",
                   "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/Message"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/rooms/{id}/messages": {
+      "get": {
+        "tags": [
+          "messages"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "get list of messages",
+        "operationId": "messages",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "room_id",
+            "type": "integer",
+            "required": true,
+            "format": "int64",
+            "default": 1
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "type": "integer",
+            "format": "int64",
+            "default": 0
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "format": "int64",
+            "default": 20
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/Message"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "messages"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "new message",
+        "operationId": "create-message",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "room_id",
+            "type": "integer",
+            "required": true,
+            "format": "int64",
+            "default": 1
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Create new message",
+            "required": true,
+            "schema": {
+              "required": [
+                "text"
+              ],
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "example": "new message"
                 }
               }
             }

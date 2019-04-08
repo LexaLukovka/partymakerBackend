@@ -5,12 +5,10 @@ import/newline-after-import,
 function-paren-newline,
 no-console,
 */
+
 const autoBind = require('auto-bind')
 const Chance = require('chance')
-const flatten = require('lodash/flattenDeep')
 const USERS = require('./users')
-const PLACES = require('./places')
-const EVENTS = require('./events')
 const Factory = use('Factory')
 const User = use('App/Models/User')
 
@@ -39,39 +37,6 @@ class Seeder {
     return [...defaultUsers, ...randomUsers]
   }
 
-  createPlaces(users) {
-    printProgress('creating places...')
-    const admin = this.chance.pickone(users.filter(u => u.superadmin))
-    const places = PLACES.map(place => this.place.create(place, admin))
-
-    return Promise.all(places)
-  }
-
-  createRealEvents(users) {
-    printProgress('creating events...')
-    const admin = this.chance.pickone(users.filter(u => !u.superadmin))
-    const events = EVENTS.map(event => this.event.create(event, admin))
-
-    return Promise.all(events)
-  }
-
-  createFakeEvents(users, places) {
-    printProgress('creating fake events...')
-
-    const promises = Array.from(new Array(20), async () => {
-      const admin = this.chance.pickone(users)
-      const event = await Factory.model('App/Models/Event').create({
-        admin, place: this.chance.pickone(places),
-      })
-
-      await event.users().attach([admin.id])
-      await event.users().attach(users.map(user => user.id))
-
-      return event
-    })
-
-    return Promise.all(flatten(promises))
-  }
 
   async run() {
     const users = await this.createUsers()
