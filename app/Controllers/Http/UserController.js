@@ -28,7 +28,10 @@ class UserController {
     if (auth.user.cannot('create', User)) {
       return response.forbidden()
     }
-    return this.user.create(request.all())
+
+    const user = this.user.create(request.all())
+
+    return response.created(user)
   }
 
   /**
@@ -44,18 +47,25 @@ class UserController {
    * PUT or PATCH users/:id
    */
   async update({ params, request, auth, response }) {
-    const req = request.all()
+    const fields = request.all()
 
     let user = await User.find(params.id)
-    if (!user) return response.notFound(user)
-    if (auth.user.cannot('edit', user)) return response.forbidden()
 
-    await this.user.edit(user, req)
+    if (!user) {
+      return response.notFound(user)
+    }
+
+    if (auth.user.cannot('edit', user)) {
+      return response.forbidden()
+    }
+
+    await this.user.edit(user, fields)
 
     user = await User.find(params.id)
 
-    return auth.withRefreshToken()
-      .generate(user, true)
+    const tokens = await auth.withRefreshToken().generate(user, true)
+
+    return response.updated(tokens)
   }
 
   /**
@@ -71,7 +81,7 @@ class UserController {
     }
     await user.delete()
 
-    return user
+    return response.deleted()
   }
 }
 

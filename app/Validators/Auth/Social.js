@@ -4,8 +4,6 @@ module.exports = class Social {
     return {
       name: 'required',
       email: 'required|email',
-      provider_id: 'required',
-      provider: 'required|string',
       avatar_url: 'string',
       phone: 'string',
     }

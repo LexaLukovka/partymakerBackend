@@ -21,6 +21,15 @@ require('./auth')
  * */
 require('./users')
 
+
+/**
+ *
+ * Room routes
+ *
+ * */
+require('./rooms')
+
+
 /**
  *
  * Upload routes

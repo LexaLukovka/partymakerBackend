@@ -7,8 +7,13 @@ no-console,
 */
 
 const USERS = require('./users')
+const PLACES = require('./places')
+const ROOMS = require('./rooms')
+
 const Factory = use('Factory')
 const User = use('App/Models/User')
+const Place = use('App/Models/Place')
+const Room = use('App/Models/Room')
 
 
 function printProgress(text) {
@@ -26,9 +31,24 @@ class Seeder {
     return [...defaultUsers, ...randomUsers]
   }
 
+  async createPlaces() {
+    printProgress('creating places...')
+    const defaultPlaces = await Promise.all(PLACES.map(fields => Place.create(fields)))
+
+    return [...defaultPlaces]
+  }
+
+  async createRooms() {
+    printProgress('creating rooms...')
+    const defaultRooms = await Promise.all(ROOMS.map(fields => Room.create(fields)))
+
+    return [...defaultRooms]
+  }
 
   async run() {
     await this.createUsers()
+    await this.createPlaces()
+    await this.createRooms()
     return true
   }
 }

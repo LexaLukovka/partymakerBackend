@@ -19,12 +19,12 @@
       "description": "Users"
     },
     {
-      "name": "messages",
-      "description": "messages"
-    },
-    {
       "name": "rooms",
       "description": "rooms"
+    },
+    {
+      "name": "messages",
+      "description": "messages"
     },
     {
       "name": "guests",
@@ -403,6 +403,9 @@
               "type": "object",
               "$ref": "#/definitions/User"
             }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
           }
         }
       }
@@ -663,7 +666,7 @@
         "parameters": [
           {
             "in": "query",
-            "name": "offset",
+            "name": "page",
             "type": "integer",
             "format": "int64",
             "default": 0
@@ -695,6 +698,70 @@
           },
           "404": {
             "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "rooms"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "new room",
+        "operationId": "create-room",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Create new room",
+            "required": true,
+            "schema": {
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Идем в боулинг"
+                },
+                "place_id": {
+                  "type": "integer",
+                  "format": "int64",
+                  "example": 1
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2014-06-26 04:07:31"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/Room"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
           },
           "500": {
             "$ref": "#/responses/InternalServerError"
@@ -752,7 +819,7 @@
           }
         }
       },
-      "post": {
+      "put": {
         "tags": [
           "rooms"
         ],
@@ -761,8 +828,8 @@
             "bearer": []
           }
         ],
-        "summary": "new room",
-        "operationId": "create-room",
+        "summary": "update room",
+        "operationId": "update-room",
         "consumes": [
           "application/json"
         ],
@@ -771,17 +838,17 @@
         ],
         "parameters": [
           {
-            "in": "header",
-            "name": "room_id",
+            "in": "path",
+            "name": "id",
             "type": "integer",
-            "required": true,
             "format": "int64",
+            "required": true,
             "default": 1
           },
           {
             "in": "body",
             "name": "body",
-            "description": "Create new room",
+            "description": "Update complete room",
             "required": true,
             "schema": {
               "properties": {
@@ -789,27 +856,27 @@
                   "type": "string",
                   "example": "День рождения"
                 },
-                "date": {
-                  "type": "string",
-                  "example": "2014-06-26 04:07:31"
-                },
                 "place_id": {
                   "type": "integer",
                   "format": "int64",
-                  "example": 1
+                  "example": "1"
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2014-06-26 04:07:31"
                 }
               }
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
+          "202": {
+            "description": "Updated",
             "schema": {
               "type": "array",
               "items": {
                 "type": "object",
-                "$ref": "#/definitions/Message"
+                "$ref": "#/definitions/Room"
               }
             }
           },
@@ -826,9 +893,129 @@
             "$ref": "#/responses/InternalServerError"
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "rooms"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "modify room",
+        "operationId": "modify-room",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int64",
+            "required": true,
+            "default": 1
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Modify room",
+            "required": true,
+            "schema": {
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "День рождения"
+                },
+                "place_id": {
+                  "type": "integer",
+                  "format": "int64",
+                  "example": "1"
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2014-06-26 04:07:31"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Updated",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/Room"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "rooms"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "delete room",
+        "operationId": "delete-room",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int64",
+            "required": true,
+            "default": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
       }
     },
-    "/rooms/{id}/guests": {
+    "/rooms/{room_id}/guests": {
       "get": {
         "tags": [
           "guests"
@@ -897,7 +1084,7 @@
       },
       "post": {
         "tags": [
-          "messages"
+          "guests"
         ],
         "security": [
           {
@@ -905,7 +1092,7 @@
           }
         ],
         "summary": "new guest",
-        "operationId": "create-message",
+        "operationId": "create-guest",
         "consumes": [
           "application/json"
         ],
@@ -965,7 +1152,103 @@
         }
       }
     },
-    "/rooms/{id}/messages": {
+    "/rooms/{room_id}/guests/{id}": {
+      "get": {
+        "tags": [
+          "guests"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "get guest",
+        "operationId": "guest",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int64",
+            "required": true,
+            "default": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/Guest"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "guests"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "delete guest",
+        "operationId": "delete-guest",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int64",
+            "required": true,
+            "default": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/rooms/{room_id}/messages": {
       "get": {
         "tags": [
           "messages"
@@ -985,7 +1268,7 @@
         ],
         "parameters": [
           {
-            "in": "header",
+            "in": "path",
             "name": "room_id",
             "type": "integer",
             "required": true,
@@ -1336,12 +1619,13 @@
           "type": "string",
           "example": "http://192.168.0.103:3333/images/dummy/pavliha.jpg"
         },
-        "provider": {
-          "type": "string",
-          "enum": [
-            "facebook",
-            "google"
-          ]
+        "is_superadmin": {
+          "type": "boolean",
+          "default": false
+        },
+        "is_active": {
+          "type": "boolean",
+          "default": true
         },
         "created_at": {
           "type": "string",

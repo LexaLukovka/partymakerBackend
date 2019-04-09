@@ -4,6 +4,9 @@
 const Model = use('Model')
 
 class Room extends Model {
+  static get policy() {
+    return 'App/Policies/Room'
+  }
 }
 
 module.exports = Room

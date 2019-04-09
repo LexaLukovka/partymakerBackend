@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>ServiceDesk Service Swagger</title>
@@ -21,10 +21,29 @@
 <script>
   window.onload = function () {
     // Build a system
-    const ui = SwaggerUIBundle({
+    window.ui = SwaggerUIBundle({
       url: '/swagger.json',
       dom_id: '#swagger-ui',
       deepLinking: true,
+      requestInterceptor: (request) => {
+
+        const token = localStorage.getItem('token')
+
+        return {
+          ...request,
+          headers: {
+            ...request.headers,
+            Authorization: token ? `Bearer ${token}` : undefined
+          }
+        }
+      },
+
+      responseInterceptor: (response) => {
+        const { token } = response.obj || {}
+        if (token) {
+          localStorage.setItem('token', token)
+        }
+      },
       presets: [
         SwaggerUIBundle.presets.apis,
         SwaggerUIStandalonePreset,
@@ -34,7 +53,6 @@
       ],
       layout: 'StandaloneLayout',
     })
-    window.ui = ui
   }
 </script>
 </body>

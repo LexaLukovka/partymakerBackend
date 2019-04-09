@@ -18,12 +18,10 @@ class RoomController {
    * @param {object} ctx
    * @param {Request} ctx.request
    */
-  async index({ request }) {
-    const { offset, limit } = request.all()
+  async index({ request, auth }) {
+    const { page, limit } = request.all()
 
-    const page = offset / limit
-
-    return Room.query().paginate({ page, limit })
+    return Room.query().where({ admin_id: auth.user.id }).paginate({ page, limit })
   }
 
   /**
@@ -35,15 +33,18 @@ class RoomController {
    * @param {Response} ctx.response
    */
   async store({ request, response, auth }) {
-    const req = request.all()
+    const fields = request.all()
 
     if (auth.user.cannot('create', Room)) {
       return response.forbidden()
     }
 
-    const room = await Room.create(req)
+    const room = await Room.create({
+      ...fields,
+      admin_id: auth.user.id,
+    })
 
-    return Room.find(room.id)
+    return response.created(await Room.find(room.id))
   }
 
   /**
@@ -51,23 +52,9 @@ class RoomController {
    * GET rooms/:id
    *
    * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
    */
-  async show({ params, request, response, view }) {
-  }
-
-  /**
-   * Render a form to update an existing room.
-   * GET rooms/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit({ params, request, response, view }) {
+  async show({ params }) {
+    return Room.find(params.id)
   }
 
   /**
@@ -78,7 +65,18 @@ class RoomController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request, response }) {
+  async update({ params, auth, request, response }) {
+    const fields = request.all()
+    const room = Room.find(params.id)
+
+    if (auth.user.cannot('edit', room)) {
+      return response.forbidden()
+    }
+
+    room.merge(fields)
+    await room.save()
+
+    return response.updated(room)
   }
 
   /**
@@ -86,10 +84,23 @@ class RoomController {
    * DELETE rooms/:id
    *
    * @param {object} ctx
-   * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy({ params, request, response }) {
+  async destroy({ params, auth, response }) {
+    const room = await Room.find(params.id)
+
+
+    if (!room) {
+      return response.notFound()
+    }
+
+    if (auth.user.cannot('delete', room)) {
+      return response.forbidden()
+    }
+
+    await room.delete()
+
+    return response.deleted()
   }
 }
 

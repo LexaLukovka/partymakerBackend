@@ -22,7 +22,7 @@ Response.macro('created', function (data) {
   this.status(201).json(data)
 })
 
-Response.macro('accepted', function (data) {
+Response.macro('updated', function (data) {
   this.status(202).json(data)
 })
 

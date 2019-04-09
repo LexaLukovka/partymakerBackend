@@ -15,12 +15,8 @@ class AuthRepository {
       email: request.email,
       phone: request.phone,
       avatar_url: request.avatar_url,
-      instagram: request.instagram,
-      telegram: request.telegram,
       password: request.password,
-      active: request.active,
-      provider: request.provider,
-      provider_id: request.provider_id,
+      is_active: request.is_active,
     }
   }
 

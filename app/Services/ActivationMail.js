@@ -15,7 +15,7 @@ class ActivationMail {
 
   forgotPassword(token) {
     const base = this._generateLink(token)
-    return `${base}/auth/password/restore/${token}`
+    return `${base}/auth/password/reset/${token}`
   }
 
   async send({ user, token }) {
