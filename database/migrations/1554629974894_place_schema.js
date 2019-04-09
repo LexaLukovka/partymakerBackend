@@ -9,6 +9,7 @@ class PlaceSchema extends Schema {
       table.increments()
       table.string('title').nullable()
       table.string('address').notNullable()
+      table.integer('admin_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.timestamps()
     })
   }

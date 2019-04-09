@@ -21,6 +21,13 @@ require('./auth')
  * */
 require('./users')
 
+/**
+ *
+ * Place routes
+ *
+ * */
+require('./places')
+
 
 /**
  *

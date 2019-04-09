@@ -1,6 +1,6 @@
 'use strict'
 
-const Room = use('App/Models/Room')
+const Place = use('App/Models/Place')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -8,25 +8,25 @@ const Room = use('App/Models/Room')
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 /**
- * Resourceful controller for interacting with rooms
+ * Resourceful controller for interacting with places
  */
-class RoomController {
+class PlaceController {
   /**
-   * Show a list of all rooms.
-   * GET rooms
+   * Show a list of all places.
+   * GET places
    *
    * @param {object} ctx
    * @param {Request} ctx.request
    */
-  async index({ request, auth }) {
+  async index({ request }) {
     const { page, limit } = request.all()
 
-    return Room.query().where({ admin_id: auth.user.id }).paginate({ page, limit })
+    return Place.query().paginate({ page, limit })
   }
 
   /**
-   * Create/save a new room.
-   * POST rooms
+   * Create/save a new place.
+   * POST places
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -35,31 +35,31 @@ class RoomController {
   async store({ request, response, auth }) {
     const fields = request.all()
 
-    if (auth.user.cannot('create', Room)) {
+    if (auth.user.cannot('create', Place)) {
       return response.forbidden()
     }
 
-    const room = await Room.create({
+    const place = await Place.create({
       ...fields,
       admin_id: auth.user.id,
     })
 
-    return response.created(await Room.find(room.id))
+    return response.created(await Place.find(place.id))
   }
 
   /**
-   * Display a single room.
-   * GET rooms/:id
+   * Display a single place.
+   * GET places/:id
    *
    * @param {object} ctx
    */
   async show({ params }) {
-    return Room.find(params.id)
+    return Place.find(params.id)
   }
 
   /**
-   * Update room details.
-   * PUT or PATCH rooms/:id
+   * Update place details.
+   * PUT or PATCH places/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -67,41 +67,45 @@ class RoomController {
    */
   async update({ params, auth, request, response }) {
     const fields = request.all()
-    const room = await Room.find(params.id)
+    const place = await Place.find(params.id)
 
-    if (auth.user.cannot('edit', room)) {
+    if (!place) {
+      return response.notFound()
+    }
+
+    if (auth.user.cannot('edit', place)) {
       return response.forbidden()
     }
 
-    room.merge(fields)
-    await room.save()
+    place.merge(fields)
+    await place.save()
 
-    return response.updated(room)
+    return response.updated(place)
   }
 
   /**
-   * Delete a room with id.
-   * DELETE rooms/:id
+   * Delete a place with id.
+   * DELETE places/:id
    *
    * @param {object} ctx
    * @param {Response} ctx.response
    */
   async destroy({ params, auth, response }) {
-    const room = await Room.find(params.id)
+    const place = await Place.find(params.id)
 
 
-    if (!room) {
+    if (!place) {
       return response.notFound()
     }
 
-    if (auth.user.cannot('delete', room)) {
+    if (auth.user.cannot('delete', place)) {
       return response.forbidden()
     }
 
-    await room.delete()
+    await place.delete()
 
     return response.deleted()
   }
 }
 
-module.exports = RoomController
+module.exports = PlaceController
