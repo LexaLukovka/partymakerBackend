@@ -1636,7 +1636,7 @@
           },
           {
             "in": "query",
-            "name": "offset",
+            "name": "page",
             "type": "integer",
             "format": "int64",
             "default": 0
@@ -1693,7 +1693,7 @@
         ],
         "parameters": [
           {
-            "in": "header",
+            "in": "path",
             "name": "room_id",
             "type": "integer",
             "required": true,
@@ -1713,14 +1713,19 @@
                 "text": {
                   "type": "string",
                   "example": "new message"
+                },
+                "asset_id": {
+                  "type": "integer",
+                  "format": "int64",
+                  "example": null
                 }
               }
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "schema": {
               "type": "array",
               "items": {
@@ -2026,9 +2031,7 @@
     },
     "Message": {
       "required": [
-        "text",
-        "created_at",
-        "updated_at"
+        "text"
       ],
       "type": "object",
       "properties": {
@@ -2039,6 +2042,11 @@
         "text": {
           "type": "string",
           "example": "Pavel Kostyuk"
+        },
+        "asset_id": {
+          "type": "integer",
+          "format": "int64",
+          "example": null
         },
         "created_at": {
           "type": "string",

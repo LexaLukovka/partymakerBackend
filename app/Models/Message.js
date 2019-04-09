@@ -4,6 +4,9 @@
 const Model = use('Model')
 
 class Message extends Model {
+  static get policy() {
+    return 'App/Policies/Message'
+  }
 }
 
 module.exports = Message
