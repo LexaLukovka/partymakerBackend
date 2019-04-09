@@ -23,35 +23,6 @@ require('./users')
 
 /**
  *
- * Places routes
- *
- * */
-require('./places')
-
-/**
- *
- * Event routes
- *`
- * */
-require('./events')
-
-
-/**
- *
- * Label routes
- *`
- * */
-require('./labels')
-
-/**
- *
- * Invite routes
- *`
- * */
-require('./invites')
-
-/**
- *
  * Upload routes
  *`
  * */

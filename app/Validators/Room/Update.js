@@ -3,8 +3,7 @@ module.exports = class Update {
     return {
       title: 'string|max:30',
       date: 'date',
-      private: 'boolean',
-      description: 'string',
+      place_id: 'exists:places,id'
     }
   }
 

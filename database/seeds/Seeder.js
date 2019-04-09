@@ -6,14 +6,10 @@ function-paren-newline,
 no-console,
 */
 
-const autoBind = require('auto-bind')
-const Chance = require('chance')
 const USERS = require('./users')
 const Factory = use('Factory')
 const User = use('App/Models/User')
 
-const PlaceRepository = use('App/Repositories/Place')
-const EventRepository = use('App/Repositories/Event')
 
 function printProgress(text) {
   console.log(text)
@@ -21,13 +17,6 @@ function printProgress(text) {
 }
 
 class Seeder {
-
-  constructor() {
-    this.chance = new Chance()
-    this.place = new PlaceRepository()
-    this.event = new EventRepository()
-    autoBind(this)
-  }
 
   async createUsers() {
     printProgress('creating users...')
@@ -39,10 +28,7 @@ class Seeder {
 
 
   async run() {
-    const users = await this.createUsers()
-    await this.createPlaces(users)
-    await this.createRealEvents(users)
-
+    await this.createUsers()
     return true
   }
 }

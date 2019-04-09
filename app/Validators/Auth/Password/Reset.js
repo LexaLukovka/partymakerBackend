@@ -2,8 +2,8 @@ module.exports = class RestorePassword {
 
   get rules() {
     return {
-      newPassword: 'required',
-      repeatPassword: 'required',
+      password: 'required',
+      password_repeat: 'required|same:password',
     }
   }
 

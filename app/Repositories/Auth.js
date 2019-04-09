@@ -41,8 +41,7 @@ class AuthRepository {
       .update({ ...this._userData(request), password })
   }
 
-  async restorePassword(newPassword, user) {
-    const password = await Hash.make(newPassword)
+  async resetPassword(password, user) {
 
     await User.query()
       .where('id', user.id)

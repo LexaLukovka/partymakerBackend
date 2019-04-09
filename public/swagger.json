@@ -1249,10 +1249,17 @@
           "format": "int64",
           "example": "1"
         },
-        "date_id": {
-          "type": "integer",
-          "format": "int64",
-          "example": "1"
+        "date": {
+          "type": "string",
+          "example": "2014-06-26 04:07:31"
+        },
+        "created_at": {
+          "type": "string",
+          "example": "2014-06-26 04:07:31"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2014-06-26 04:07:31"
         }
       }
     },

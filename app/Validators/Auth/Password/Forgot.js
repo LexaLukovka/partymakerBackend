@@ -8,7 +8,7 @@ module.exports = class ForgotPassword {
 
   get messages() {
     return {
-      'email.email_exists': 'Пользователь с такой почтой на найден',
+      'email.email_exists': 'Пользователь с такой почтой не найден',
     }
   }
 

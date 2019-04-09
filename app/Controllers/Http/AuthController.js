@@ -42,7 +42,7 @@ class AuthController {
    */
   async activate({ params: { hash }, response }) {
     const token = await Token.findByOrFail({ token: hash })
-    await token.user().update({ active: true })
+    await token.user().update({ is_active: true })
     await token.delete()
 
     return response.accepted()
@@ -59,14 +59,14 @@ class AuthController {
 
     if (existingUser) return auth.withRefreshToken().generate(existingUser, true)
 
-    const createdUser = await this.auth.create({ ...req, active: true })
+    const createdUser = await this.auth.create({ ...req, is_active: true })
 
     return auth.withRefreshToken().generate(createdUser, true)
   }
 
   /**
    * forgot password
-   * POST /auth/forgotPassword
+   * POST /auth/password/forgot
    */
   async forgotPassword({ request, response }) {
     const req = request.all()
@@ -82,20 +82,16 @@ class AuthController {
 
   /**
    * forgot password
-   * POST /auth/restorePassword/:hash
+   * POST /auth/password/reset/:hash
    */
-  async restorePassword({ auth, request, params: { hash } }) {
-    const { newPassword, repeatPassword } = request.all()
-
-    if (newPassword !== repeatPassword) {
-      return { non_field_error: 'Пароли не совпадают' }
-    }
+  async resetPassword({ auth, request, params: { hash } }) {
+    const { password } = request.all()
 
     const token = await ResetToken.findBy({ token: hash })
     const user = await User.findBy({ id: token.user_id })
-    const updateUser = await this.auth.restorePassword(newPassword, user)
+    const updatedUser = await this.auth.resetPassword(password, user)
 
-    return auth.withRefreshToken().generate(updateUser, true)
+    return auth.withRefreshToken().generate(updatedUser, true)
   }
 
   /**
