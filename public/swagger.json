@@ -1395,25 +1395,11 @@
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "room_id",
             "type": "integer",
             "required": true,
             "format": "int64",
             "default": 1
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "type": "integer",
-            "format": "int64",
-            "default": 0
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "type": "integer",
-            "format": "int64",
-            "default": 20
           }
         ],
         "responses": {
@@ -1440,127 +1426,9 @@
             "$ref": "#/responses/InternalServerError"
           }
         }
-      },
-      "post": {
-        "tags": [
-          "guests"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "new guest",
-        "operationId": "create-guest",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "room_id",
-            "type": "integer",
-            "required": true,
-            "format": "int64",
-            "default": 1
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Add new guest",
-            "required": true,
-            "schema": {
-              "required": [
-                "user_id"
-              ],
-              "properties": {
-                "user_id": {
-                  "type": "integer",
-                  "example": 1
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "$ref": "#/definitions/Message"
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          },
-          "500": {
-            "$ref": "#/responses/InternalServerError"
-          }
-        }
       }
     },
     "/rooms/{room_id}/guests/{id}": {
-      "get": {
-        "tags": [
-          "guests"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "get guest",
-        "operationId": "guest",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "type": "integer",
-            "format": "int64",
-            "required": true,
-            "default": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "$ref": "#/definitions/Guest"
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          },
-          "500": {
-            "$ref": "#/responses/InternalServerError"
-          }
-        }
-      },
       "delete": {
         "tags": [
           "guests"
@@ -1579,6 +1447,14 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "in": "path",
+            "name": "room_id",
+            "type": "integer",
+            "format": "int64",
+            "required": true,
+            "default": 1
+          },
           {
             "in": "path",
             "name": "id",

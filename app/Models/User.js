@@ -52,9 +52,6 @@ class User extends Model {
     return this.hasMany('App/Models/ResetToken')
   }
 
-  events() {
-    return this.hasMany('App/Models/Event', 'id', 'admin_id')
-  }
 }
 
 module.exports = User

@@ -36,13 +36,6 @@ require('./places')
  * */
 require('./rooms')
 
-/**
- *
- * Message routes
- *
- * */
-require('./messages')
-
 
 /**
  *

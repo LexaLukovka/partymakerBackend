@@ -13,6 +13,11 @@ class Room {
   static delete(user, place) {
     return user.is_superadmin || user.id === place.admin_id
   }
+
+  static removeGuest(user, room) {
+    return user.id === room.admin_id
+  }
+
 }
 
 module.exports = Room
