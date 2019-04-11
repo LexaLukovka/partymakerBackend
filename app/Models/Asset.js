@@ -4,6 +4,9 @@
 const Model = use('Model')
 
 class Asset extends Model {
+  static get policy() {
+    return 'App/Policies/Asset'
+  }
 }
 
 module.exports = Asset

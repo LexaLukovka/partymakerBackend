@@ -8,6 +8,7 @@ class AssetSchema extends Schema {
     this.create('assets', (table) => {
       table.increments()
       table.string('url').nullable()
+      table.integer('admin_id').notNullable().unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.timestamps()
     })
   }

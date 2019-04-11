@@ -38,7 +38,11 @@ require('./rooms')
 
 /**
  *
- * Upload route
- *`
+ * Asset routes
+ *
  * */
-Route.resource('upload', 'UploadController').middleware('auth')
+Route.resource('assets', 'AssetController')
+  .validator([['rooms.store', 'Asset/Store'], ['rooms.update', 'Asset/Update']])
+  .middleware(new Map([[['index', 'store', 'update', 'destroy'], ['auth']]]))
+  .apiOnly()
+
