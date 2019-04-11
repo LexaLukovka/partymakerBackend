@@ -1,5 +1,7 @@
 'use strict'
 
+const Env = use('Env')
+
 const Helpers = use('Helpers')
 
 function generateName(extension) {
@@ -8,7 +10,7 @@ function generateName(extension) {
 
 class UploadController {
   async store({ request }) {
-    const profilePics = request.file('image', {
+    const profilePics = request.file('asset', {
       types: ['image'],
       allowedExtensions: ['jpg', 'png', 'jpeg']
     })
@@ -19,7 +21,7 @@ class UploadController {
 
     if (!profilePics.move()) return [profilePics.error()]
 
-    return { url: `http://localhost:3333/uploads/${name}` }
+    return { url: `${Env.get('HOST')}/uploads/${name}` }
   }
 }
 

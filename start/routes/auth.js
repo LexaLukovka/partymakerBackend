@@ -6,16 +6,22 @@ const Route = use('Route')
  *
  * */
 
-Route.post('auth/login', 'AuthController.login').validator('Auth/Login')
+Route.group(() => {
 
-Route.post('auth/register', 'AuthController.register').validator('Auth/Register')
+  Route.post('auth/login', 'LoginController.login').validator('Auth/Login')
+  Route.post('auth/social', 'LoginController.social').validator('Auth/Social')
 
-Route.post('auth/social', 'AuthController.social').validator('Auth/Social')
+  Route.post('auth/register', 'RegisterController.register').validator('Auth/Register')
+  Route.post('auth/activate/:hash', 'RegisterController.activate')
 
-Route.post('auth/activate/:hash', 'AuthController.activate')
+  Route.post('auth/password/forgot', 'PasswordController.forgot').validator('Auth/Password/Forgot')
+  Route.post('auth/password/reset/:hash', 'PasswordController.reset').validator('Auth/Password/Reset')
 
-Route.post('auth/password/forgot', 'AuthController.forgotPassword').validator('Auth/Password/Forgot')
+  Route.get('auth/user', 'UserController.show')
+  Route.put('auth/user', 'UserController.update').validator('Auth/UpdateUser')
 
-Route.post('auth/password/reset/:hash', 'AuthController.resetPassword').validator('Auth/Password/Reset')
+  Route.get('auth/user/account', 'AccountController.show')
+  Route.put('auth/user/account', 'AccountController.update').validator('Auth/UpdateAccount')
 
-Route.get('auth/user', 'AuthController.user').middleware('auth')
+
+}).namespace('Auth')

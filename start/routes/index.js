@@ -20,7 +20,6 @@ require('./auth')
  *
  * */
 require('./users')
-
 /**
  *
  * Place routes
@@ -39,7 +38,7 @@ require('./rooms')
 
 /**
  *
- * Upload routes
+ * Upload route
  *`
  * */
 Route.resource('upload', 'UploadController').middleware('auth')

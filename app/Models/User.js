@@ -44,6 +44,25 @@ class User extends Model {
     return `${Env.get('APP_URL')}${url}`
   }
 
+
+  static async createFromSocial(fields) {
+    const createdUser = await this.create({
+      name: fields.name,
+      email: fields.email,
+      avatar_url: fields.avatar_url,
+      phone: fields.phone,
+      is_active: true
+    })
+
+    await createdUser.socials().create({
+      provider: fields.provider,
+      provider_id: fields.provider_id
+    })
+
+
+    return createdUser
+  }
+
   tokens() {
     return this.hasMany('App/Models/Token')
   }
@@ -52,6 +71,13 @@ class User extends Model {
     return this.hasMany('App/Models/ResetToken')
   }
 
+  socials() {
+    return this.hasMany('App/Models/Social')
+  }
+
+  account() {
+    return this.hasMany('App/Models/Account')
+  }
 }
 
 module.exports = User

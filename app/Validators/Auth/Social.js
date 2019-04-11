@@ -9,12 +9,6 @@ module.exports = class Social {
     }
   }
 
-  get messages() {
-    return {
-      'email.notEmpty': 'Пользователь с таким email адресом уже зарегистрирован c использованием пароля'
-    }
-  }
-
   get validateAll() {
     return true
   }
