@@ -36,6 +36,7 @@
     "@adonisjs/shield": "^1.0.8",
     "@adonisjs/validator": "^5.0.6",
     "@adonisjs/vow": "^1.0.17",
+    "@adonisjs/websocket": "^1.0.11",
     "adonis-lucid-update-or-create": "^1.0.2",
     "auto-bind": "^1.2.1",
     "babel-eslint": "^8.2.3",

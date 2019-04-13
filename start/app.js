@@ -23,7 +23,8 @@ const providers = [
   '@adonisjs/framework/providers/ViewProvider',
   '@adonisjs/validator/providers/ValidatorProvider',
   'adonis-lucid-update-or-create/providers/UpdateOrCreateProvider',
-  '@adonisjs/mail/providers/MailProvider'
+  '@adonisjs/mail/providers/MailProvider',
+  '@adonisjs/websocket/providers/WsProvider'
 ]
 
 /*
