@@ -1,5 +1,6 @@
 const Validator = use('Validator')
 const Database = use('Database')
+const User = use('App/Models/User')
 
 const notEmptyFn = async (data, field, message, args, get) => {
   const value = get(data, field)
@@ -31,6 +32,16 @@ const existsFn = async (data, field, message, args, get) => {
     throw message
   }
 }
+
+const emailExistsFn = async (data, field, message, args, get) => {
+  const value = get(data, field)
+  if (!value) return
+
+  const user = await User.findBy({ email: data.email })
+  if (!user) throw message
+}
+
+Validator.extend('emailExists', emailExistsFn)
 
 Validator.extend('exists', existsFn)
 

@@ -4,6 +4,9 @@
 const Model = use('Model')
 
 class Invite extends Model {
+  static get policy() {
+    return 'App/Policies/Invite'
+  }
 }
 
 module.exports = Invite

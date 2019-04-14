@@ -39,6 +39,10 @@
       "description": "guests"
     },
     {
+      "name": "invites",
+      "description": "invites"
+    },
+    {
       "name": "assets",
       "description": "assets"
     }
@@ -1795,6 +1799,412 @@
         }
       }
     },
+    "/rooms/{room_id}/invites": {
+      "get": {
+        "tags": [
+          "invites"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "get list of invites into current room",
+        "operationId": "invites",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "room_id",
+            "type": "integer",
+            "format": "int64",
+            "default": 1
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "type": "integer",
+            "format": "int64",
+            "default": 0
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "format": "int64",
+            "default": 20
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/Invite"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "invites"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "new invite",
+        "operationId": "create-invite",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "room_id",
+            "type": "integer",
+            "format": "int64",
+            "default": 1
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Create new invite",
+            "required": true,
+            "schema": {
+              "properties": {
+                "headline": {
+                  "type": "string",
+                  "example": "Идем на пати"
+                },
+                "background_id": {
+                  "type": "integer",
+                  "format": "int64",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/Invite"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/rooms/{room_id}/invites/{id}": {
+      "get": {
+        "tags": [
+          "invites"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "get invite",
+        "operationId": "invite",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "room_id",
+            "type": "integer",
+            "format": "int64",
+            "default": 1
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int64",
+            "required": true,
+            "default": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/Invite"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "invites"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "update invite",
+        "operationId": "update-invite",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "room_id",
+            "type": "integer",
+            "format": "int64",
+            "default": 1
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int64",
+            "required": true,
+            "default": 1
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Update invite",
+            "required": true,
+            "schema": {
+              "properties": {
+                "headline": {
+                  "type": "string",
+                  "example": "Идем на пати"
+                },
+                "background_id": {
+                  "type": "integer",
+                  "format": "int64",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Updated",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/Invite"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "invites"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "modify invite",
+        "operationId": "modify-invite",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "room_id",
+            "type": "integer",
+            "format": "int64",
+            "default": 1
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int64",
+            "required": true,
+            "default": 1
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Update invite",
+            "required": true,
+            "schema": {
+              "properties": {
+                "headline": {
+                  "type": "string",
+                  "example": "Идем на пати"
+                },
+                "background_id": {
+                  "type": "integer",
+                  "format": "int64",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Updated",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/Invite"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "invites"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "delete invite",
+        "operationId": "delete-invite",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "room_id",
+            "type": "integer",
+            "format": "int64",
+            "default": 1
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "type": "integer",
+            "format": "int64",
+            "required": true,
+            "default": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      }
+    },
     "/assets": {
       "get": {
         "tags": [
@@ -2202,25 +2612,15 @@
           "type": "string",
           "example": "День рождения"
         },
-        "background_url": {
-          "type": "string",
-          "example": "http://api.partymaker.zp.ua/assets/QwRtyQwr2vaEtS.jpeg"
-        },
-        "address": {
-          "type": "string",
-          "example": "вул. Червоногвардійська, 48/18,"
-        },
-        "place_pictures": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "example": "http://api.partymaker.zp.ua/assets/QwRtyQwr2vaEtS.jpeg"
-          }
+        "background_id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
         },
         "room_id": {
           "type": "integer",
           "format": "int64",
-          "example": "1"
+          "example": 1
         },
         "created_at": {
           "type": "string",

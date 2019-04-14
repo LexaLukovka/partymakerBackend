@@ -42,7 +42,7 @@ require('./rooms')
  *
  * */
 Route.resource('assets', 'AssetController')
-  .validator([['rooms.store', 'Asset/Store'], ['rooms.update', 'Asset/Update']])
+  .validator([['assets.store', 'Asset/Store'], ['assets.update', 'Asset/Update']])
   .middleware(new Map([[['index', 'store', 'update', 'destroy'], ['auth']]]))
   .apiOnly()
 
