@@ -3,6 +3,7 @@ const randomString = require('randomstring')
 const User = use('App/Models/User')
 const ResetToken = use('App/Models/ResetToken')
 const PasswordResetMail = use('App/Services/PasswordResetMail')
+const Hash = use('Hash')
 
 class PasswordController {
 
@@ -32,7 +33,9 @@ class PasswordController {
       return response.notFound('Password reset token was not found!')
     }
 
-    await User.query().where('id', token.user_id).update({ password })
+    const user = await User.query().where('id', token.user_id).first()
+    user.password = await Hash.make(password)
+    await user.save()
 
     const updatedUser = await User.find(token.user_id)
 

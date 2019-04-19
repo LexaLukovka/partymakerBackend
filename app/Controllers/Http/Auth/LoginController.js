@@ -29,6 +29,23 @@ class LoginController {
 
     return auth.withRefreshToken().generate(createdUser, true)
   }
+
+  /**
+   * login user
+   * POST /auth/logout
+   */
+  async logout({ response, auth }) {
+    const { user } = auth
+    const token = auth.getAuthHeader()
+
+    await user
+      .tokens()
+      .where('token', token)
+      .update({ is_revoked: true })
+
+
+    return response.deleted()
+  }
 }
 
 module.exports = LoginController

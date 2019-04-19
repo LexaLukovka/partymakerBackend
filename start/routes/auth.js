@@ -9,6 +9,7 @@ const Route = use('Route')
 Route.group(() => {
 
   Route.post('auth/login', 'LoginController.login').validator('Auth/Login')
+  Route.post('auth/logout', 'LoginController.logout')
   Route.post('auth/social', 'LoginController.social').validator('Auth/Social')
 
   Route.post('auth/register', 'RegisterController.register').validator('Auth/Register')
