@@ -21,7 +21,9 @@ class RoomController {
   async index({ request, auth }) {
     const { page, limit } = request.all()
 
-    return Room.query().where({ admin_id: auth.user.id }).paginate({ page, limit })
+    return Room.query()
+      .where({ admin_id: auth.user.id })
+      .paginate({ page, limit })
   }
 
   /**
@@ -43,6 +45,8 @@ class RoomController {
       ...fields,
       admin_id: auth.user.id,
     })
+
+    await room.users().attach([auth.user.id])
 
     return response.created(await Room.find(room.id))
   }
@@ -88,7 +92,6 @@ class RoomController {
    */
   async destroy({ params, auth, response }) {
     const room = await Room.find(params.id)
-
 
     if (!room) {
       return response.notFound()

@@ -11,13 +11,11 @@ const PLACES = require('./places')
 const ROOMS = require('./rooms')
 const MESSAGES = require('./messages')
 
-
 const Factory = use('Factory')
 const User = use('App/Models/User')
 const Place = use('App/Models/Place')
 const Room = use('App/Models/Room')
 const Message = use('App/Models/Message')
-
 
 function printProgress(text) {
   console.log(text)
@@ -25,7 +23,6 @@ function printProgress(text) {
 }
 
 class Seeder {
-
   async createUsers() {
     printProgress('creating users...')
     const defaultUsers = await Promise.all(USERS.map(user => User.create(user)))
@@ -44,15 +41,24 @@ class Seeder {
     return Promise.all(ROOMS.map(fields => Room.create(fields)))
   }
 
+  addUsersToRoom(rooms, users) {
+    printProgress('adding users to rooms...')
+
+    return Promise.all(
+      rooms.map(room => room.users().attach(users.map(u => u.id)))
+    )
+  }
+
   createMessages() {
     printProgress('creating messages...')
     return Promise.all(MESSAGES.map(fields => Message.create(fields)))
   }
 
   async run() {
-    await this.createUsers()
+    const users = await this.createUsers()
     await this.createPlaces()
-    await this.createRooms()
+    const rooms = await this.createRooms()
+    await this.addUsersToRoom(rooms, users)
     await this.createMessages()
 
     return true
@@ -60,4 +66,3 @@ class Seeder {
 }
 
 module.exports = Seeder
-

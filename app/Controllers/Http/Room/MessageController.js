@@ -22,7 +22,9 @@ class MessageController {
     const { rooms_id } = params
     const { page, limit } = request.all()
 
-    return Message.query().where({ room_id: rooms_id }).paginate({ page, limit })
+    return Message.query()
+      .where({ room_id: rooms_id })
+      .paginate(page, limit)
   }
 
   /**
@@ -94,7 +96,6 @@ class MessageController {
    */
   async destroy({ params, auth, response }) {
     const message = await Message.find(params.id)
-
 
     if (!message) {
       return response.notFound()

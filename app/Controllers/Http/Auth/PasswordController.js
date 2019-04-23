@@ -18,7 +18,7 @@ class PasswordController {
     await user.resetTokens().create({ type: 'email', token })
     PasswordResetMail.send({ email: fields.email, token })
 
-    return response.accepted(`Password reset link was sent to ${fields.email}`)
+    return response.accepted(`Ссслыка для восстановления пароля выслана на ${fields.email}`)
   }
 
   /**
@@ -30,12 +30,12 @@ class PasswordController {
     const token = await ResetToken.findBy({ token: hash })
 
     if (!token) {
-      return response.notFound('Password reset token was not found!')
+      return response.notFound('Токен для восстановления пароля не найден!')
     }
 
-    const user = await User.query().where('id', token.user_id).first()
-    user.password = await Hash.make(password)
-    await user.save()
+    await User.query()
+      .where('id', token.user_id)
+      .update({ password: await Hash.make(password) })
 
     const updatedUser = await User.find(token.user_id)
 

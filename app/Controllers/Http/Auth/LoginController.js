@@ -31,7 +31,7 @@ class LoginController {
   }
 
   /**
-   * login user
+   * logout user
    * POST /auth/logout
    */
   async logout({ response, auth }) {
