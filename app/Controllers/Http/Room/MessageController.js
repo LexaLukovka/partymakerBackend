@@ -23,6 +23,7 @@ class MessageController {
     const { page, limit } = request.all()
 
     return Message.query()
+      .orderBy('created_at', 'DESC')
       .where({ room_id: rooms_id })
       .paginate(page, limit)
   }
