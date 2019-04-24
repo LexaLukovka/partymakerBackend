@@ -1,6 +1,5 @@
-'use strict'
-
 const Message = use('App/Models/Message')
+const Ws = use('Ws')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -49,7 +48,11 @@ class MessageController {
       user_id: auth.user.id,
     })
 
-    return response.created(await Message.find(message.id))
+    const chat = Ws.getChannel('room:*')
+    const topic = chat.topic(`room:${message.room_id}`)
+    topic.broadcast('message', message)
+
+    return response.created(message)
   }
 
   /**

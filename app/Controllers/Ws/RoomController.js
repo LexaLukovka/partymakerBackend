@@ -1,6 +1,6 @@
 const Message = use('App/Models/Message')
 
-class ChatController {
+class RoomController {
   constructor({ socket, request, auth }) {
     this.auth = auth
     this.socket = socket
@@ -22,4 +22,4 @@ class ChatController {
 
 }
 
-module.exports = ChatController
+module.exports = RoomController
