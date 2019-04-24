@@ -1,5 +1,6 @@
 'use strict'
 
+const User = use('App/Models/User')
 const Room = use('App/Models/Room')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -21,9 +22,7 @@ class RoomController {
   async index({ request, auth }) {
     const { page, limit } = request.all()
 
-    return Room.query()
-      .where({ admin_id: auth.user.id })
-      .paginate({ page, limit })
+    return auth.user.rooms().paginate({ page, limit })
   }
 
   /**

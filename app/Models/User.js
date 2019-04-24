@@ -77,6 +77,10 @@ class User extends Model {
   account() {
     return this.hasMany('App/Models/Account')
   }
+
+  rooms() {
+    return this.belongsToMany('App/Models/Room')
+  }
 }
 
 module.exports = User
