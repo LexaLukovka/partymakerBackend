@@ -38,9 +38,11 @@ Route.group(() => {
    * Invite routes
    *
    * */
-  Route.resource('rooms.invites', 'InviteController')
-    .validator([['rooms.invites.store', 'Invite/Store'], ['rooms.invites.update', 'Invite/Update']])
+  Route.resource('rooms.invite', 'InviteController')
+    .validator([['rooms.invite.store', 'Invite/Store'], ['rooms.invite.update', 'Invite/Update']])
     .middleware(new Map([[['index', 'store', 'update', 'destroy'], ['auth']]]))
     .apiOnly()
+
+  Route.put('rooms/:rooms_id/invite', 'InviteController.update')
 
 }).namespace('Room')

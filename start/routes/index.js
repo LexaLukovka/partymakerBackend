@@ -38,6 +38,14 @@ require('./rooms')
 
 /**
  *
+ * Invite routes
+ *
+ * */
+require('./invite')
+
+
+/**
+ *
  * Asset routes
  *
  * */

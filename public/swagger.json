@@ -39,8 +39,8 @@
       "description": "guests"
     },
     {
-      "name": "invites",
-      "description": "invites"
+      "name": "invite",
+      "description": "invite"
     },
     {
       "name": "assets",
@@ -1799,18 +1799,18 @@
         }
       }
     },
-    "/rooms/{room_id}/invites": {
+    "/rooms/{room_id}/invite": {
       "get": {
         "tags": [
-          "invites"
+          "invite"
         ],
         "security": [
           {
             "bearer": []
           }
         ],
-        "summary": "get list of invites into current room",
-        "operationId": "invites",
+        "summary": "get invite into current room",
+        "operationId": "invite",
         "consumes": [
           "application/json"
         ],
@@ -1825,31 +1825,14 @@
             "type": "integer",
             "format": "int64",
             "default": 1
-          },
-          {
-            "in": "query",
-            "name": "page",
-            "type": "integer",
-            "format": "int64",
-            "default": 0
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "type": "integer",
-            "format": "int64",
-            "default": 20
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "$ref": "#/definitions/Invite"
-              }
+              "type": "object",
+              "$ref": "#/definitions/Invite"
             }
           },
           "401": {
@@ -1868,7 +1851,7 @@
       },
       "post": {
         "tags": [
-          "invites"
+          "invite"
         ],
         "security": [
           {
@@ -1901,12 +1884,27 @@
               "properties": {
                 "headline": {
                   "type": "string",
-                  "example": "Идем на пати"
+                  "example": "Пришлашенние"
                 },
-                "background_id": {
-                  "type": "integer",
-                  "format": "int64",
-                  "example": 1
+                "preposition": {
+                  "type": "string",
+                  "example": "на"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "Пати"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "Вул. Червоногвардійська, 48/18,"
+                },
+                "datetime": {
+                  "type": "string",
+                  "example": "2014-06-26 04:07:31"
+                },
+                "background_url": {
+                  "type": "string",
+                  "example": "http://localhost:3333/uploads/something.jpeg"
                 }
               }
             }
@@ -1915,65 +1913,6 @@
         "responses": {
           "201": {
             "description": "Created",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "$ref": "#/definitions/Invite"
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "500": {
-            "$ref": "#/responses/InternalServerError"
-          }
-        }
-      }
-    },
-    "/rooms/{room_id}/invites/{id}": {
-      "get": {
-        "tags": [
-          "invites"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "get invite",
-        "operationId": "invite",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "room_id",
-            "type": "integer",
-            "format": "int64",
-            "default": 1
-          },
-          {
-            "in": "path",
-            "name": "id",
-            "type": "integer",
-            "format": "int64",
-            "required": true,
-            "default": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
             "schema": {
               "type": "object",
               "$ref": "#/definitions/Invite"
@@ -1985,9 +1924,6 @@
           "403": {
             "$ref": "#/responses/Forbidden"
           },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          },
           "500": {
             "$ref": "#/responses/InternalServerError"
           }
@@ -1995,7 +1931,7 @@
       },
       "put": {
         "tags": [
-          "invites"
+          "invite"
         ],
         "security": [
           {
@@ -2036,91 +1972,27 @@
               "properties": {
                 "headline": {
                   "type": "string",
-                  "example": "Идем на пати"
+                  "example": "Пришлашенние"
                 },
-                "background_id": {
-                  "type": "integer",
-                  "format": "int64",
-                  "example": 1
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "Updated",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "$ref": "#/definitions/Invite"
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          },
-          "500": {
-            "$ref": "#/responses/InternalServerError"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "invites"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "modify invite",
-        "operationId": "modify-invite",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "room_id",
-            "type": "integer",
-            "format": "int64",
-            "default": 1
-          },
-          {
-            "in": "path",
-            "name": "id",
-            "type": "integer",
-            "format": "int64",
-            "required": true,
-            "default": 1
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Update invite",
-            "required": true,
-            "schema": {
-              "properties": {
-                "headline": {
+                "preposition": {
                   "type": "string",
-                  "example": "Идем на пати"
+                  "example": "на"
                 },
-                "background_id": {
-                  "type": "integer",
-                  "format": "int64",
-                  "example": 1
+                "title": {
+                  "type": "string",
+                  "example": "Пати"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "Вул. Червоногвардійська, 48/18,"
+                },
+                "datetime": {
+                  "type": "string",
+                  "example": "2014-06-26 04:07:31"
+                },
+                "background_url": {
+                  "type": "string",
+                  "example": "http://localhost:3333/uploads/something.jpeg"
                 }
               }
             }
@@ -2153,7 +2025,7 @@
       },
       "delete": {
         "tags": [
-          "invites"
+          "invite"
         ],
         "security": [
           {
@@ -2198,6 +2070,101 @@
           },
           "404": {
             "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/invite/{token}": {
+      "get": {
+        "tags": [
+          "invite"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "get invite into current room",
+        "operationId": "token-invite",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "token",
+            "type": "string",
+            "default": "4fReEaDgGjJnU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/Invite"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "invite"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "accept invite",
+        "operationId": "accept-invite",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "token",
+            "type": "string",
+            "default": "4fReEaDgGjJnU"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/Room"
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
           },
           "500": {
             "$ref": "#/responses/InternalServerError"
@@ -2610,17 +2577,27 @@
         },
         "headline": {
           "type": "string",
-          "example": "День рождения"
+          "example": "Пришлашенние"
         },
-        "background_id": {
-          "type": "integer",
-          "format": "int64",
-          "example": 1
+        "preposition": {
+          "type": "string",
+          "example": "на"
         },
-        "room_id": {
-          "type": "integer",
-          "format": "int64",
-          "example": 1
+        "title": {
+          "type": "string",
+          "example": "Пати"
+        },
+        "address": {
+          "type": "string",
+          "example": "Вул. Червоногвардійська, 48/18,"
+        },
+        "datetime": {
+          "type": "string",
+          "example": "2014-06-26 04:07:31"
+        },
+        "background_url": {
+          "type": "string",
+          "example": "http://localhost:3333/uploads/something.jpeg"
         },
         "created_at": {
           "type": "string",

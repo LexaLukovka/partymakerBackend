@@ -7,6 +7,10 @@ class Invite extends Model {
   static get policy() {
     return 'App/Policies/Invite'
   }
+
+  room() {
+    return this.belongsTo('App/Models/Invite')
+  }
 }
 
 module.exports = Invite

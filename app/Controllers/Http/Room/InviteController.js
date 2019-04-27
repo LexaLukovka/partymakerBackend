@@ -1,5 +1,5 @@
-'use strict'
-
+const randomString = require('randomstring')
+const Room = use('App/Models/Room')
 const Invite = use('App/Models/Invite')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -11,29 +11,22 @@ const Invite = use('App/Models/Invite')
  * Resourceful controller for interacting with invites
  */
 class InviteController {
+
   /**
-   * Show a list of all invites.
-   * GET invites
+   * Display invite.
+   * GET /rooms/:rooms_id/invite
    *
    * @param {object} ctx
-   * @param {Request} ctx.request
    */
+  async index({ params }) {
+    const room = await Room.findOrFail(params.rooms_id)
 
-  async index({ request, auth, params }) {
-    const { page, limit } = request.all()
-
-    return Invite
-      .query()
-      .where({
-        admin_id: auth.user.id,
-        room_id: params.rooms_id,
-      })
-      .paginate({ page, limit })
+    return room.invite().fetch()
   }
 
   /**
    * Create a new invite.
-   * POST invites
+   * POST /rooms/:rooms_id/invite
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -41,33 +34,21 @@ class InviteController {
    */
   async store({ request, response, params, auth }) {
     const fields = request.all()
+    const room = await Room.findOrFail(params.rooms_id)
 
     if (auth.user.cannot('create', Invite)) {
       return response.forbidden()
     }
 
-    const invite = await Invite.create({
-      ...fields,
-      room_id: params.rooms_id,
-      admin_id: auth.user.id,
-    })
+    const form = { ...fields, token: randomString.generate() }
+    const invite = await room.invite().create(form)
 
     return response.created(invite)
   }
 
   /**
-   * Display a single invite.
-   * GET invites/:id
-   *
-   * @param {object} ctx
-   */
-  async show({ params }) {
-    return Invite.find(params.id)
-  }
-
-  /**
    * Update invite details.
-   * PUT or PATCH invites/:id
+   * PUT or PATCH /rooms/:rooms_id/invite
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -75,38 +56,33 @@ class InviteController {
    */
   async update({ params, auth, request, response }) {
     const fields = request.all()
-    const invite = await Invite.find(params.id)
+    const room = await Room.findOrFail(params.rooms_id)
 
-    if (!invite) {
-      return response.notFound('Invite not found!')
-    }
-
-    if (auth.user.cannot('edit', invite)) {
+    if (auth.user.cannot('edit', room)) {
       return response.forbidden()
     }
 
-    invite.merge(fields)
-    await invite.save()
+    await room.invite().update(fields)
 
-    return response.updated(invite)
+    return response.updated(await room.invite().fetch())
   }
 
   /**
    * Delete a invite with id.
-   * DELETE invites/:id
+   * DELETE /rooms/:rooms_id/invite
    *
    * @param {object} ctx
    * @param {Response} ctx.response
    */
   async destroy({ params, auth, response }) {
-    const invite = await Invite.find(params.id)
-
+    const room = await Room.findOrFail(params.rooms_id)
+    const invite = await room.invite()
 
     if (!invite) {
       return response.notFound()
     }
 
-    if (auth.user.cannot('delete', invite)) {
+    if (auth.user.cannot('delete', room)) {
       return response.forbidden()
     }
 

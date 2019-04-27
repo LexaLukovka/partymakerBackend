@@ -1,14 +1,16 @@
-module.exports = class Store {
+module.exports = class Update {
   get rules() {
     return {
       headline: 'required|string',
-      background_id: 'exists:assets,id',
+      preposition: 'required|string',
+      title: 'required|string',
+      address: 'required|string',
+      datetime: 'required|string',
+      background_url: 'required|string',
     }
   }
 
-  get messages() {
-    return {
-      'background_id.exists': 'Please provider valid asset_id which already exists in our database'
-    }
+  get validateAll() {
+    return true
   }
 }
