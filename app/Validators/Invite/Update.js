@@ -5,7 +5,8 @@ module.exports = class Update {
       preposition: 'string',
       title: 'string',
       address: 'string',
-      datetime: 'string',
+      date: 'required|string',
+      time: 'required|string',
       background_url: 'string',
     }
   }
