@@ -21,6 +21,10 @@ class Room extends Model {
   invite() {
     return this.hasOne('App/Models/Invite')
   }
+
+  place() {
+    return this.belongsTo('App/Models/Place')
+  }
 }
 
 module.exports = Room

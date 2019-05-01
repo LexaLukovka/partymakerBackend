@@ -13,7 +13,7 @@ const Room = use('App/Models/Room')
 class RoomController {
   /**
    * Show a list of all rooms.
-   * GET rooms
+   * GET /rooms
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -26,7 +26,7 @@ class RoomController {
 
   /**
    * Create/save a new room.
-   * POST rooms
+   * POST /rooms
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -51,7 +51,7 @@ class RoomController {
 
   /**
    * Display a single room.
-   * GET rooms/:id
+   * GET /rooms/:id
    *
    * @param {object} ctx
    */
@@ -61,19 +61,15 @@ class RoomController {
 
   /**
    * Update room details.
-   * PUT or PATCH rooms/:id
+   * PUT or PATCH /rooms/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, auth, request, response }) {
+  async update({ params, request, response }) {
     const fields = request.all()
     const room = await Room.find(params.id)
-
-    if (auth.user.cannot('edit', room)) {
-      return response.forbidden()
-    }
 
     room.merge(fields)
     await room.save()
@@ -82,8 +78,8 @@ class RoomController {
   }
 
   /**
-   * Delete a room with id.
-   * DELETE rooms/:id
+   * Remove user from room.
+   * DELETE /rooms/:id
    *
    * @param {object} ctx
    * @param {Response} ctx.response
@@ -91,17 +87,9 @@ class RoomController {
   async destroy({ params, auth, response }) {
     const room = await Room.find(params.id)
 
-    if (!room) {
-      return response.notFound()
-    }
+    await room.users().detach([auth.user.id])
 
-    if (auth.user.cannot('delete', room)) {
-      return response.forbidden()
-    }
-
-    await room.delete()
-
-    return response.deleted()
+    return response.deleted(`${auth.user.name} left ${room.title}`)
   }
 }
 

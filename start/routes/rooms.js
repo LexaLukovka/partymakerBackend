@@ -45,4 +45,16 @@ Route.group(() => {
 
   Route.put('rooms/:rooms_id/invite', 'InviteController.update')
 
+  /**
+   *
+   * Place routes
+   *
+   * */
+  Route.resource('rooms.place', 'PlaceController')
+    .validator([['rooms.place.store', 'Place/Store'], ['rooms.place.update', 'Place/Update']])
+    .middleware(new Map([[['index', 'store', 'update', 'destroy'], ['auth']]]))
+    .apiOnly()
+
+  Route.put('rooms/:rooms_id/place', 'PlaceController.update')
+
 }).namespace('Room')

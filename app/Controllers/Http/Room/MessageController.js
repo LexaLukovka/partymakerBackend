@@ -50,7 +50,8 @@ class MessageController {
 
     const chat = Ws.getChannel('room:*')
     const topic = chat.topic(`room:${message.room_id}`)
-    topic.broadcast('message', message)
+
+    if (topic) topic.broadcast('message', message)
 
     return response.created(message)
   }
@@ -75,11 +76,7 @@ class MessageController {
    */
   async update({ params, auth, request, response }) {
     const fields = request.all()
-    const message = await Message.find(params.id)
-
-    if (!message) {
-      return response.notFound()
-    }
+    const message = await Message.findOrFail(params.id)
 
     if (auth.user.cannot('edit', message)) {
       return response.forbidden()
