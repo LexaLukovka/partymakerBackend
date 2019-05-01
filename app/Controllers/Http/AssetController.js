@@ -56,6 +56,7 @@ class AssetController {
 
     const asset = await Asset.create({
       admin_id: auth.user.id,
+      title: request.input('title'),
       url: `${Env.get('APP_URL')}/uploads/${name}`
     })
 

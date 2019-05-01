@@ -1,7 +1,7 @@
 module.exports = class Store {
   get rules() {
     return {
-      text: 'required|string',
+      text: 'string',
       asset_id: 'exists:assets,id',
     }
   }

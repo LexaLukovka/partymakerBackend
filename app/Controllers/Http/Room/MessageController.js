@@ -22,6 +22,7 @@ class MessageController {
     const { page, limit } = request.all()
 
     return Message.query()
+      .with('asset')
       .orderBy('created_at', 'DESC')
       .where({ room_id: rooms_id })
       .paginate(page, limit)
@@ -53,7 +54,12 @@ class MessageController {
 
     if (topic) topic.broadcast('message', message)
 
-    return response.created(message)
+    const newMessage = await Message.query()
+      .with('asset')
+      .where({ id: message.id })
+      .first()
+
+    return response.created(newMessage)
   }
 
   /**
@@ -85,7 +91,12 @@ class MessageController {
     message.merge(fields)
     await message.save()
 
-    return response.updated(message)
+    const newMessage = await Message.query()
+      .with('asset')
+      .where({ id: message.id })
+      .first()
+
+    return response.updated(newMessage)
   }
 
   /**

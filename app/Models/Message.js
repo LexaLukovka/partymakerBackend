@@ -7,6 +7,10 @@ class Message extends Model {
   static get policy() {
     return 'App/Policies/Message'
   }
+
+  asset() {
+    return this.belongsTo('App/Models/Asset')
+  }
 }
 
 module.exports = Message
