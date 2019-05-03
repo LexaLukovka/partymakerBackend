@@ -1,5 +1,5 @@
 const User = use('App/Models/User')
-const UserRepository = use('App/Repositories/User')
+const UserRepository = use('App/Repositories/UserRepository')
 const autoBind = require('auto-bind')
 
 /**
@@ -49,11 +49,7 @@ class UserController {
   async update({ params, request, auth, response }) {
     const fields = request.all()
 
-    let user = await User.find(params.id)
-
-    if (!user) {
-      return response.notFound(user)
-    }
+    const user = await User.findOrFail(params.id)
 
     if (auth.user.cannot('edit', user)) {
       return response.forbidden()
@@ -61,9 +57,9 @@ class UserController {
 
     await this.user.edit(user, fields)
 
-    user = await User.find(params.id)
-
-    const tokens = await auth.withRefreshToken().generate(user, true)
+    const tokens = await auth
+      .withRefreshToken()
+      .generate(await User.find(params.id), true)
 
     return response.updated(tokens)
   }
@@ -74,7 +70,7 @@ class UserController {
    */
   async destroy({ params, auth, response }) {
 
-    const user = await User.find(params.id)
+    const user = await User.findOrFail(params.id)
 
     if (auth.user.cannot('delete', user)) {
       return response.forbidden()

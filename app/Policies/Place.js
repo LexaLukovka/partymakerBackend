@@ -3,7 +3,6 @@
 class Place {
 
   static create(user) {
-    debugger
     return user.is_superadmin || user.is_active
   }
 

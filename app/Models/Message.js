@@ -11,6 +11,10 @@ class Message extends Model {
   asset() {
     return this.belongsTo('App/Models/Asset')
   }
+
+  place() {
+    return this.belongsTo('App/Models/Place')
+  }
 }
 
 module.exports = Message

@@ -44,7 +44,7 @@ class PlaceController {
       admin_id: auth.user.id,
     })
 
-    return response.created(await Place.find(place.id))
+    return response.created(place)
   }
 
   /**
@@ -67,17 +67,16 @@ class PlaceController {
    */
   async update({ params, auth, request, response }) {
     const fields = request.all()
-    const place = await Place.find(params.id)
-
-    if (!place) {
-      return response.notFound()
-    }
+    const place = await Place.findOrFail(params.id)
 
     if (auth.user.cannot('edit', place)) {
       return response.forbidden()
     }
 
-    place.merge(fields)
+    place.merge({
+      ...fields,
+      admin_id: auth.user.id
+    })
     await place.save()
 
     return response.updated(place)

@@ -1,36 +1,42 @@
+const autoBind = require('auto-bind')
+
 const Message = use('App/Models/Message')
+const MessageRepository = use('App/Repositories/MessageRepository')
 const Ws = use('Ws')
+
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
-
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 /**
  * Resourceful controller for interacting with messages
  */
 class MessageController {
+
+  constructor() {
+    autoBind(this)
+    this.messages = new MessageRepository()
+  }
+
   /**
-   * Show a list of all messages.
-   * GET messages
+   * Show a list of all messages of room.
+   * GET /rooms/:rooms_id/messages
    *
    * @param {object} ctx
    * @param {Request} ctx.request
    */
+
   async index({ request, params }) {
     const { rooms_id } = params
     const { page, limit } = request.all()
 
-    return Message.query()
-      .with('asset')
-      .orderBy('created_at', 'DESC')
-      .where({ room_id: rooms_id })
-      .paginate(page, limit)
+    return this.messages.paginate(rooms_id, { page, limit })
   }
 
   /**
-   * Create/save a new message.
-   * POST messages
+   * Create/save a new message for current room.
+   * POST /rooms/:rooms_id/messages
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -51,30 +57,25 @@ class MessageController {
 
     const chat = Ws.getChannel('room:*')
     const topic = chat.topic(`room:${message.room_id}`)
-
     if (topic) topic.broadcast('message', message)
-
-    const newMessage = await Message.query()
-      .with('asset')
-      .where({ id: message.id })
-      .first()
+    const newMessage = await this.messages.find(message.id)
 
     return response.created(newMessage)
   }
 
   /**
    * Display a single message.
-   * GET messages/:id
+   * GET /rooms/:rooms_id/messages/:id
    *
    * @param {object} ctx
    */
   async show({ params }) {
-    return Message.find(params.id)
+    return this.messages.find(params.id)
   }
 
   /**
    * Update message details.
-   * PUT or PATCH messages/:id
+   * PUT or PATCH /rooms/:rooms_id/messages/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -91,17 +92,14 @@ class MessageController {
     message.merge(fields)
     await message.save()
 
-    const newMessage = await Message.query()
-      .with('asset')
-      .where({ id: message.id })
-      .first()
+    const newMessage = await this.messages.find(message.id)
 
     return response.updated(newMessage)
   }
 
   /**
    * Delete a message with id.
-   * DELETE messages/:id
+   * DELETE /rooms/:rooms_id/messages/:id
    *
    * @param {object} ctx
    * @param {Response} ctx.response
