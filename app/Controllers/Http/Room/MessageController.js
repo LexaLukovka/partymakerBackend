@@ -57,8 +57,10 @@ class MessageController {
 
     const chat = Ws.getChannel('room:*')
     const topic = chat.topic(`room:${message.room_id}`)
-    if (topic) topic.broadcast('message', message)
+
     const newMessage = await this.messages.find(message.id)
+
+    if (topic) topic.broadcast('message', newMessage)
 
     return response.created(newMessage)
   }
