@@ -1,5 +1,6 @@
 const autoBind = require('auto-bind')
 
+const RoomUser = use('App/Models/RoomUser')
 const Message = use('App/Models/Message')
 const MessageRepository = use('App/Repositories/MessageRepository')
 const Ws = use('Ws')
@@ -7,6 +8,7 @@ const Ws = use('Ws')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
+
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 /**
@@ -49,15 +51,17 @@ class MessageController {
       return response.forbidden()
     }
 
+    const is_read = await RoomUser.isSomeoneOnline(params.rooms_id, auth)
+
     const message = await Message.create({
       ...fields,
       room_id: params.rooms_id,
       user_id: auth.user.id,
+      is_read,
     })
 
     const chat = Ws.getChannel('room:*')
     const topic = chat.topic(`room:${message.room_id}`)
-
     const newMessage = await this.messages.find(message.id)
 
     if (topic) topic.broadcast('message', newMessage)

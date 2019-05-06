@@ -13,6 +13,7 @@ class MessageSchema extends Schema {
       table.integer('room_id').notNullable().unsigned().references('id').inTable('rooms').onDelete('CASCADE')
       table.integer('asset_id').unsigned().references('id').inTable('assets').onDelete('CASCADE')
       table.integer('place_id').unsigned().references('id').inTable('places').onDelete('CASCADE')
+      table.boolean('is_read').defaultTo(false)
       table.date('date')
       table.time('time')
       table.timestamps()

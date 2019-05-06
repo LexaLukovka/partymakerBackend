@@ -15,7 +15,7 @@ class Room extends Model {
   }
 
   users() {
-    return this.belongsToMany('App/Models/User')
+    return this.belongsToMany('App/Models/User').pivotModel('App/Models/RoomUser').withPivot(['is_online'])
   }
 
   invite() {
@@ -24,6 +24,10 @@ class Room extends Model {
 
   place() {
     return this.belongsTo('App/Models/Place')
+  }
+
+  messages() {
+    return this.hasMany('App/Models/Message')
   }
 }
 
