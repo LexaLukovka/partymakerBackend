@@ -11,7 +11,6 @@ class InviteSchema extends Schema {
       table.string('headline')
       table.string('title')
       table.string('preposition')
-      table.string('address')
       table.string('background_url')
       table.date('date')
       table.time('time')
