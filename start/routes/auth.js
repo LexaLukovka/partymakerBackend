@@ -17,6 +17,8 @@ Route.group(() => {
 
   Route.post('auth/password/forgot', 'PasswordController.forgot').validator('Auth/Password/Forgot')
   Route.post('auth/password/reset/:hash', 'PasswordController.reset').validator('Auth/Password/Reset')
+  Route.put('auth/password/update', 'PasswordController.update').validator('Auth/Password/Update')
+
 
   Route.get('auth/user', 'User/UserController.show')
   Route.put('auth/user', 'User/UserController.update').validator('Auth/User/Update')

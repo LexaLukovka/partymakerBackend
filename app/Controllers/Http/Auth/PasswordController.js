@@ -42,6 +42,29 @@ class PasswordController {
     return auth.withRefreshToken().generate(updatedUser, true)
   }
 
+  /**
+   * update password
+   * PUT /auth/password/update
+   */
+
+  async update({ auth, request, response }) {
+    const { password, password_new } = request.all()
+
+    const isPasswordValid = await Hash.verify(password, auth.user.password)
+
+    if (!isPasswordValid) {
+      return response.forbidden('Старый пароль не верный!')
+    }
+
+    auth.user.merge({
+      password: password_new
+    })
+
+    await auth.user.save()
+
+    return auth.withRefreshToken().generate(auth.user, true)
+  }
+
 }
 
 module.exports = PasswordController
