@@ -75,7 +75,7 @@ class User extends Model {
   }
 
   account() {
-    return this.hasMany('App/Models/Account')
+    return this.hasOne('App/Models/Account')
   }
 
   rooms() {

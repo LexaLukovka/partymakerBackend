@@ -18,11 +18,10 @@ Route.group(() => {
   Route.post('auth/password/forgot', 'PasswordController.forgot').validator('Auth/Password/Forgot')
   Route.post('auth/password/reset/:hash', 'PasswordController.reset').validator('Auth/Password/Reset')
 
-  Route.get('auth/user', 'UserController.show')
-  Route.put('auth/user', 'UserController.update').validator('Auth/UpdateUser')
+  Route.get('auth/user', 'User/UserController.show')
+  Route.put('auth/user', 'User/UserController.update').validator('Auth/User/Update')
 
-  Route.get('auth/user/account', 'AccountController.show')
-  Route.put('auth/user/account', 'AccountController.update').validator('Auth/UpdateAccount')
-
+  Route.get('auth/user/account', 'User/AccountController.show')
+  Route.put('auth/user/account', 'User/AccountController.update').validator('Auth/User/Account/Update')
 
 }).namespace('Auth')

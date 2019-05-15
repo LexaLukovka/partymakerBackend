@@ -1,4 +1,3 @@
-const Message = use('App/Models/Message')
 const Room = use('App/Models/Room')
 
 class RoomController {
@@ -6,14 +5,6 @@ class RoomController {
     this.auth = auth
     this.socket = socket
     this.request = request
-  }
-
-
-  async onMessage(form) {
-    const user_id = this.auth.user.id
-    const message = await Message.create({ ...form, user_id, })
-
-    this.socket.emit('message', message)
   }
 
   async onJoin(room_id) {
@@ -37,7 +28,12 @@ class RoomController {
       .where({ user_id })
       .update({ is_online: false })
 
-    this.socket.broadcast('leave', user_id)
+    try {
+      this.socket.broadcast('leave', user_id)
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn(e)
+    }
   }
 
   async onClose({ topic }) {

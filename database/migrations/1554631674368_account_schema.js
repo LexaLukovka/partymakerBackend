@@ -10,6 +10,8 @@ class AccountSchema extends Schema {
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.string('instagram', 60).nullable()
       table.string('facebook', 60).nullable()
+      table.string('telegram', 60).nullable()
+      table.string('skype', 60).nullable()
       table.timestamps()
     })
   }

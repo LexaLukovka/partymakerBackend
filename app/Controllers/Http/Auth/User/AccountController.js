@@ -14,8 +14,13 @@ class AccountController {
    */
   async update({ request, auth }) {
     const fields = request.all()
+    const account = await auth.user.account().fetch()
 
-    await auth.user.account().update(fields)
+    if (!account) {
+      await auth.user.account().create(fields)
+    } else {
+      await auth.user.account().update(fields)
+    }
 
     return auth.user.account().fetch()
   }

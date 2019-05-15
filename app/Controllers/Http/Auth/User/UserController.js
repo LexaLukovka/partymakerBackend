@@ -1,4 +1,6 @@
-class UpdateController {
+const User = use('App/Models/User')
+
+class UserController {
 
   /**
    * get current user model
@@ -15,10 +17,13 @@ class UpdateController {
    */
   async update({ auth, request }) {
     const fields = request.all()
-    await auth.user.update(fields)
 
-    return auth.user
+    const user = await User.find(auth.user.id)
+    user.merge(fields)
+    await user.save()
+
+    return auth.withRefreshToken().generate(user, true)
   }
 }
 
-module.exports = UpdateController
+module.exports = UserController
