@@ -8,6 +8,11 @@ class RoomUser extends Model {
     return 'room_user'
   }
 
+  static boot() {
+    super.boot()
+    this.addHook('afterCreate', 'RoomUserHook.notifyAddUser')
+  }
+
   static get createdAtColumn() {
     return null
   }

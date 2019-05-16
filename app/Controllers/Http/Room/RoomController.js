@@ -1,6 +1,6 @@
-'use strict'
-
 const Room = use('App/Models/Room')
+const Ws = use('Ws')
+const Message = use('App/Models/Message')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -21,7 +21,10 @@ class RoomController {
   async index({ request, auth }) {
     const { page, limit } = request.all()
 
-    return auth.user.rooms().paginate({ page, limit })
+    return auth.user.rooms()
+      .with('invite')
+      .with('place')
+      .paginate({ page, limit })
   }
 
   /**
@@ -84,12 +87,20 @@ class RoomController {
    * @param {object} ctx
    * @param {Response} ctx.response
    */
-  async destroy({ params, auth, response }) {
+  async destroy({ params, auth: { user }, response }) {
     const room = await Room.find(params.id)
+    const chat = Ws.getChannel('room:*')
+    const topic = chat.topic(`room:${room.id}`)
 
-    await room.users().detach([auth.user.id])
+    if (topic) topic.broadcast('guest:left', user)
 
-    return response.deleted(`${auth.user.name} left ${room.title}`)
+    await Message.create({
+      text: `${user.name} покинул к событие`,
+      room_id: room.id
+    })
+
+    await room.users().detach([user.id])
+    return response.deleted(`${user.name} left ${room.title}`)
   }
 }
 

@@ -15,7 +15,7 @@ module.exports = {
     'arrow-parens': 0,
     'func-names': 0,
     'global-require': 0,
-    'no-throw-literal':0,
+    'no-throw-literal': 0,
     'padded-blocks': 0,
     'no-param-reassign': ['error', { 'props': false }],
     'semi': [2, 'never'],
@@ -25,6 +25,7 @@ module.exports = {
     'no-unused-vars': 0,
     'comma-dangle': 0,
     'strict': 0,
+    'no-multi-assign': 0,
     'no-plusplus': 0,
   },
   'settings': {

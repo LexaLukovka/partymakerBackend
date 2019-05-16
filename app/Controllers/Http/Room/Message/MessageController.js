@@ -3,7 +3,6 @@ const autoBind = require('auto-bind')
 const RoomUser = use('App/Models/RoomUser')
 const Message = use('App/Models/Message')
 const MessageRepository = use('App/Repositories/MessageRepository')
-const Ws = use('Ws')
 
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -51,22 +50,14 @@ class MessageController {
       return response.forbidden()
     }
 
-    const is_read = await RoomUser.isSomeoneOnline(params.rooms_id, auth)
-
     const message = await Message.create({
       ...fields,
       room_id: params.rooms_id,
       user_id: auth.user.id,
-      is_read,
+      is_read: await RoomUser.isSomeoneOnline(params.rooms_id, auth),
     })
 
-    const chat = Ws.getChannel('room:*')
-    const topic = chat.topic(`room:${message.room_id}`)
-    const newMessage = await this.messages.find(message.id)
-
-    if (topic) topic.broadcast('message', newMessage)
-
-    return response.created(newMessage)
+    return response.created(await this.messages.find(message.id))
   }
 
   /**
