@@ -23,6 +23,8 @@ class RoomController {
     const user_id = this.auth.user.id
     const room = await Room.find(room_id)
 
+    if (!room) return
+
     await room.users()
       .pivotQuery()
       .where({ user_id })
@@ -32,7 +34,7 @@ class RoomController {
       this.socket.broadcast('leave', user_id)
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.warn(e)
+      console.warn('user left non existing connection!')
     }
   }
 

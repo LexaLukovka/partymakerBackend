@@ -12,8 +12,6 @@ class InviteSchema extends Schema {
       table.string('title')
       table.string('preposition')
       table.string('background_url')
-      table.date('date')
-      table.time('time')
       table.string('token')
       table.integer('room_id').unsigned().references('id').inTable('rooms').onDelete('CASCADE')
       table.timestamps()

@@ -2,6 +2,8 @@
 
 const Room = use('App/Models/Room')
 const User = use('App/Models/User')
+const Ws = use('Ws')
+const Message = use('App/Models/Message')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -50,8 +52,18 @@ class GuestController {
     }
 
     if (auth.user.cannot('removeGuest', room)) {
-      return response.forbidden('Only admin of the room can delete guest!')
+      return response.forbidden('Only member of the room can delete guest!')
     }
+
+    const chat = Ws.getChannel('room:*')
+    const topic = chat.topic(`room:${room.id}`)
+
+    if (topic) topic.broadcast('guest:left', auth.user)
+
+    await Message.create({
+      text: `${auth.user.name} удалил пользователя ${guest.name} из события`,
+      room_id: room.id
+    })
 
     await room.users().detach([guest.id])
 

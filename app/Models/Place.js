@@ -4,6 +4,12 @@
 const Model = use('Model')
 
 class Place extends Model {
+
+  static boot() {
+    super.boot()
+    this.addHook('afterCreate', 'PlaceHook.broadcast')
+  }
+
   static get policy() {
     return 'App/Policies/Place'
   }

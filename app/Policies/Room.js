@@ -15,7 +15,7 @@ class Room {
   }
 
   static removeGuest(user, room) {
-    return user.id === room.admin_id
+    return room.contains(user)
   }
 
 }

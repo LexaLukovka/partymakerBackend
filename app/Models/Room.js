@@ -9,6 +9,11 @@ class Room extends Model {
     return 'App/Policies/Room'
   }
 
+  static boot() {
+    super.boot()
+    this.addHook('afterCreate', 'RoomHook.broadcast')
+  }
+
   async contains(user) {
     const result = await this.users().wherePivot('user_id', user.id).first()
     return !!result
