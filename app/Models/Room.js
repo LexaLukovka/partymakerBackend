@@ -11,7 +11,7 @@ class Room extends Model {
 
   static boot() {
     super.boot()
-    this.addHook('afterCreate', 'RoomHook.broadcast')
+    this.addHook('afterCreate', 'RoomHook.createInvite')
   }
 
   async contains(user) {
@@ -20,7 +20,9 @@ class Room extends Model {
   }
 
   users() {
-    return this.belongsToMany('App/Models/User').pivotModel('App/Models/RoomUser').withPivot(['is_online'])
+    return this.belongsToMany('App/Models/User')
+      .pivotModel('App/Models/RoomUser')
+      .withPivot(['is_online', 'last_seen'])
   }
 
   invite() {

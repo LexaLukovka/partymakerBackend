@@ -61,7 +61,7 @@ class GuestController {
     if (topic) topic.broadcast('guest:left', auth.user)
 
     await Message.create({
-      text: `${auth.user.name} удалил пользователя ${guest.name} из события`,
+      text: `${auth.user.name} удалил(а) пользователя ${guest.name} из события`,
       room_id: room.id
     })
 

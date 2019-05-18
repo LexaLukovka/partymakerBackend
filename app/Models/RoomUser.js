@@ -13,6 +13,11 @@ class RoomUser extends Model {
     this.addHook('afterCreate', 'RoomUserHook.notifyAddUser')
   }
 
+
+  static get dates() {
+    return super.dates.concat(['last_seen'])
+  }
+
   static get createdAtColumn() {
     return null
   }

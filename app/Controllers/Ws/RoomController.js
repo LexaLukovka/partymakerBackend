@@ -1,4 +1,5 @@
 const Room = use('App/Models/Room')
+const moment = require('moment')
 
 class RoomController {
   constructor({ socket, request, auth }) {
@@ -14,7 +15,10 @@ class RoomController {
     await room.users()
       .pivotQuery()
       .where({ user_id })
-      .update({ is_online: true })
+      .update({
+        is_online: true,
+        last_seen: moment().format('YYYY-MM-DD HH:mm:ss'),
+      })
 
     this.socket.broadcast('join', user_id)
   }
