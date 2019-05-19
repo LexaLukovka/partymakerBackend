@@ -46,10 +46,6 @@ class MessageController {
   async store({ request, response, params, auth }) {
     const fields = request.all()
 
-    if (auth.user.cannot('create', Message)) {
-      return response.forbidden()
-    }
-
     const message = await Message.create({
       ...fields,
       room_id: params.rooms_id,
@@ -102,11 +98,7 @@ class MessageController {
    * @param {Response} ctx.response
    */
   async destroy({ params, auth, response }) {
-    const message = await Message.find(params.id)
-
-    if (!message) {
-      return response.notFound()
-    }
+    const message = await Message.findOrFail(params.id)
 
     if (auth.user.cannot('delete', message)) {
       return response.forbidden()
