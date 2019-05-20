@@ -1,5 +1,4 @@
-'use strict'
-
+const Message = use('App/Models/Message')
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 
@@ -11,7 +10,12 @@ class Room extends Model {
 
   static boot() {
     super.boot()
-    this.addHook('afterCreate', 'RoomHook.createInvite')
+    this.addHook('afterCreate', 'RoomHook.afterUpdate')
+
+  }
+
+  static get dates() {
+    return super.dates.concat(['date'])
   }
 
   async contains(user) {
@@ -35,6 +39,13 @@ class Room extends Model {
 
   messages() {
     return this.hasMany('App/Models/Message')
+  }
+
+  async notify(text) {
+    await Message.create({
+      text,
+      room_id: this.id,
+    })
   }
 }
 

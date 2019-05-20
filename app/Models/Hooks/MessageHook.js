@@ -4,7 +4,7 @@ const MessageRepository = use('App/Repositories/MessageRepository')
 
 const MessageHook = exports = module.exports = {}
 
-MessageHook.broadcast = async (message) => {
+MessageHook.afterCreate = async (message) => {
   const messageRepository = new MessageRepository()
 
   const chat = Ws.getChannel('room:*')

@@ -1,8 +1,8 @@
 /* eslint-disable no-multi-assign */
 const randomString = require('randomstring')
-const Room = exports = module.exports = {}
+const RoomHook = exports = module.exports = {}
 
-Room.createInvite = async (room) => {
+RoomHook.afterUpdate = async (room) => {
   await room.invite().create({
     headline: 'Приглашение',
     preposition: 'на',

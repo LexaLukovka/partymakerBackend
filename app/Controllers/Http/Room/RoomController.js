@@ -1,6 +1,6 @@
 const Room = use('App/Models/Room')
 const Ws = use('Ws')
-const Message = use('App/Models/Message')
+const moment = require('moment')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -70,9 +70,14 @@ class RoomController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request, response }) {
+  async update({ params, auth, request, response }) {
     const fields = request.all()
     const room = await Room.find(params.id)
+    const date = moment(fields.date).format('D MMMM, dddd')
+
+    if (room.date !== fields.date) {
+      await room.notify(`${auth.user.name} установил(а) дату события на ${date}`)
+    }
 
     room.merge(fields)
     await room.save()
@@ -94,10 +99,7 @@ class RoomController {
 
     if (topic) topic.broadcast('guest:left', user)
 
-    await Message.create({
-      text: `${user.name} покинул к событие`,
-      room_id: room.id
-    })
+    await room.notify(`${user.name} покинул к событие`)
 
     await room.users().detach([user.id])
     return response.deleted(`${user.name} left ${room.title}`)

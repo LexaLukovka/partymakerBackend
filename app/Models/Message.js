@@ -7,11 +7,15 @@ class Message extends Model {
 
   static boot() {
     super.boot()
-    this.addHook('afterCreate', 'MessageHook.broadcast')
+    this.addHook('afterCreate', 'MessageHook.afterCreate')
   }
 
   static get policy() {
     return 'App/Policies/Message'
+  }
+
+  static get dates() {
+    return super.dates.concat(['date'])
   }
 
   asset() {
