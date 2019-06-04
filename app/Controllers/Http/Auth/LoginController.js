@@ -38,6 +38,10 @@ class LoginController {
     const { user } = auth
     const token = auth.getAuthHeader()
 
+    if (!user) {
+      return response.notFound()
+    }
+
     await user
       .tokens()
       .where('token', token)
