@@ -6,8 +6,6 @@ const fs = require('fs')
 const Env = use('Env')
 const Helpers = use('Helpers')
 const Asset = use('App/Models/Asset')
-
-
 const unlink = Helpers.promisify(fs.unlink)
 
 function generateName(extension) {
@@ -33,8 +31,9 @@ class AssetController {
    */
   async index({ request, auth }) {
     const { page, limit } = request.all()
-
-    return Asset.query().where({ admin_id: auth.user.id }).paginate({ page, limit })
+    return Asset.query()
+      .where({ admin_id: auth.user.id })
+      .paginate({ page, limit })
   }
 
   /**
@@ -47,19 +46,14 @@ class AssetController {
    */
   async store({ request, response, auth }) {
     const file = request.file('file')
-
     const name = generateName(file.subtype)
-
     const uploadsFolder = Helpers.publicPath('uploads')
-
     await file.move(uploadsFolder, { name })
-
     const asset = await Asset.create({
       admin_id: auth.user.id,
       title: request.input('title'),
       url: `${Env.get('APP_URL')}/uploads/${name}`
     })
-
     return response.created(asset)
   }
 
@@ -81,20 +75,10 @@ class AssetController {
    * @param {Response} ctx.response
    */
   async destroy({ params, auth, response }) {
-    const asset = await Asset.find(params.id)
-
-    if (!asset) {
-      return response.notFound()
-    }
-
-    if (auth.user.cannot('delete', asset)) {
-      return response.forbidden()
-    }
-
+    const asset = await Asset.findOrFail(params.id)
+    if (auth.user.cannot('delete', asset)) return response.forbidden()
     await unlink(Helpers.publicPath(`uploads/${basename(asset.url)}`))
-
     await asset.delete()
-
     return response.deleted('Asset was deleted successfully!')
   }
 }

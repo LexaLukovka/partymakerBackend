@@ -32,18 +32,9 @@ class PlaceController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store({ request, response, auth }) {
+  async store({ request, response }) {
     const fields = request.all()
-
-    if (auth.user.cannot('create', Place)) {
-      return response.forbidden()
-    }
-
-    const place = await Place.create({
-      ...fields,
-      admin_id: auth.user.id,
-    })
-
+    const place = await Place.create(fields)
     return response.created(place)
   }
 
@@ -54,7 +45,7 @@ class PlaceController {
    * @param {object} ctx
    */
   async show({ params }) {
-    return Place.find(params.id)
+    return Place.findOrFail(params.id)
   }
 
   /**
@@ -65,20 +56,10 @@ class PlaceController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, auth, request, response }) {
+  async update({ auth, request, response, place }) {
     const fields = request.all()
-    const place = await Place.findOrFail(params.id)
-
-    if (auth.user.cannot('edit', place)) {
-      return response.forbidden()
-    }
-
-    place.merge({
-      ...fields,
-      admin_id: auth.user.id
-    })
+    place.merge({ ...fields, admin_id: auth.user.id })
     await place.save()
-
     return response.updated(place)
   }
 
@@ -89,20 +70,8 @@ class PlaceController {
    * @param {object} ctx
    * @param {Response} ctx.response
    */
-  async destroy({ params, auth, response }) {
-    const place = await Place.find(params.id)
-
-
-    if (!place) {
-      return response.notFound()
-    }
-
-    if (auth.user.cannot('delete', place)) {
-      return response.forbidden()
-    }
-
+  async destroy({ place, response }) {
     await place.delete()
-
     return response.deleted()
   }
 }

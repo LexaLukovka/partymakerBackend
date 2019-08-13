@@ -1,5 +1,4 @@
-module.exports = class Edit {
-
+module.exports = class Update {
 
   get rules() {
     return {
@@ -8,12 +7,8 @@ module.exports = class Edit {
       phone: 'string|unique:users,phone',
       password: 'string',
       avatar_url: 'string',
-      provider_id: 'integer',
-      provider: 'in:google,facebook',
-      provider_token: 'string',
     }
   }
-
 
   get messages() {
     return {
@@ -23,7 +18,6 @@ module.exports = class Edit {
       'avatar_url.string': 'фото пользователя должно быть в виде сслыки',
     }
   }
-
 
   get validateAll() {
     return true

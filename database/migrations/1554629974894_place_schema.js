@@ -7,10 +7,14 @@ class PlaceSchema extends Schema {
   up() {
     this.create('places', (table) => {
       table.increments()
-      table.string('title').nullable()
-      table.string('background_url')
-      table.string('address').notNullable()
-      table.integer('admin_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
+      table.string('title')
+      table.string('picture_url')
+      table.string('working_hours')
+      table.string('price')
+      table.string('website_url')
+      table.string('map_url')
+      table.string('phone')
+      table.integer('entertainment_id').unsigned().references('id').inTable('entertainments')
       table.timestamps()
     })
   }

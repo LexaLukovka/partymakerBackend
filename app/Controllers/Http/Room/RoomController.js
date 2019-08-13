@@ -5,8 +5,6 @@ const moment = require('moment')
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
 /**
  * Resourceful controller for interacting with rooms
  */
@@ -22,7 +20,6 @@ class RoomController {
     const { page, limit } = request.all()
 
     return auth.user.rooms()
-      .with('invite')
       .with('place')
       .paginate({ page, limit })
   }

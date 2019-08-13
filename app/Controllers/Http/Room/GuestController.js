@@ -2,13 +2,11 @@
 
 const Room = use('App/Models/Room')
 const User = use('App/Models/User')
-const Ws = use('Ws')
-const Message = use('App/Models/Message')
+const Event = use('Event')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
 
-/** @typedef {import('@adonisjs/framework/src/View')} View */
+/** @typedef {import('@adonisjs/framework/src/Response')} Response */
 
 /**
  * Resourceful controller for interacting with guests
@@ -20,15 +18,9 @@ class GuestController {
    *
    * @param {object} ctx
    */
-  async index({ response, params }) {
+  async index({ params }) {
     const { rooms_id } = params
-
-    const room = await Room.find(rooms_id)
-
-    if (!room) {
-      return response.notFound('Room not found!')
-    }
-
+    const room = await Room.findOrFail(rooms_id)
     return room.users().fetch()
   }
 
@@ -40,32 +32,16 @@ class GuestController {
    * @param {Response} ctx.response
    */
   async destroy({ params, auth, response }) {
-    const room = await Room.find(params.rooms_id)
-    const guest = await User.find(params.id)
-
-    if (!room) {
-      return response.notFound('Room not found!')
-    }
-
+    const room = await Room.findOrFail(params.rooms_id)
+    const guest = await User.findOrFail(params.id)
     if (!await room.contains(guest)) {
       return response.notFound('Guest not found!')
     }
-
     if (auth.user.cannot('removeGuest', room)) {
       return response.forbidden('Only member of the room can delete guest!')
     }
 
-    const chat = Ws.getChannel('room:*')
-    const topic = chat.topic(`room:${room.id}`)
-
-    if (topic) topic.broadcast('guest:left', auth.user)
-
-    await Message.create({
-      text: `${auth.user.name} удалил(а) пользователя ${guest.name} из события`,
-      room_id: room.id
-    })
-
-    await room.users().detach([guest.id])
+    Event.fire('guest:remove', room, auth.user, guest)
 
     return response.deleted('User kicked out from the room!')
   }

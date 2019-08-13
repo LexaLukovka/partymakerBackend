@@ -1,22 +1,52 @@
+/* eslint-disable */
+
 module.exports = [
   {
-    title: 'День рождения',
-    address: 'улица Героев 55-й бригады, 49, Запорожье, Запорожская область, 69000'
+    title: 'Клуб “Blok-Post”',
+    picture_url: 'http://www.laser-tag.zp.ua/wp-content/uploads/2018/06/cropped-Club-Block-Post..jpg',
+    working_hours: 'ежедневно с 7:00 до 19:00',
+    price: 'от 300 грн/чел',
+    map_url: 'https://www.google.com/maps/place/Klub+%22Blok-Post%22+Peyntbol,Lazertag,TIR,Arenda+besedok./@47.7976408,35.167646,15z/data=!4m2!3m1!1s0x0:0xd3cabe72da827682?sa=X&ved=2ahUKEwjKjq-YyPrjAhWtwqYKHePkAQQQ_BIwCnoECAoQCA',
+    website_url: 'http://www.laser-tag.zp.ua/',
+    phone: '+380961039348',
+    entertainment_id: 1,
   },
   {
-    title: 'Сауна Анлантида',
-    address: 'вулиця Франка, 41, Запоріжжя, Запорізька область, 69061'
+    title: 'Клуб “Stalker”',
+    picture_url: 'http://www.igra.zp.ua/wp-content/gallery/dnepr-300511/DSC04496_thumb.jpg',
+    working_hours: 'ежедневно с 7:00 до 19:00',
+    price: 'от 300 грн/чел',
+    map_url: 'https://www.google.com/maps/place/Klub+%22Blok-Post%22+Peyntbol,Lazertag,TIR,Arenda+besedok./@47.7976408,35.167646,15z/data=!4m2!3m1!1s0x0:0xd3cabe72da827682?sa=X&ved=2ahUKEwjKjq-YyPrjAhWtwqYKHePkAQQQ_BIwCnoECAoQCA',
+    website_url: 'http://www.igra.zp.ua/',
+    phone: '+380689605760',
+    entertainment_id: 1,
   },
   {
-    title: 'Кафе Тепло',
-    address: '166, проспект Соборний, Запоріжжя, Запорізька область, 69061'
+    title: 'Rock & Rope - Прыжки с арочного моста”',
+    picture_url: 'https://rocknrope.com.ua/uploads/Bridge%20long%2001.jpg',
+    working_hours: 'ежедневно с 7:00 до 19:00',
+    price: 'от 300 грн/чел',
+    map_url: 'https://www.google.com/maps/place/Zaporizhia+Arch+Bridge/@47.8592032,35.0652423,16.53z/data=!4m5!3m4!1s0x0:0x5f9d5923298bec9e!8m2!3d47.8618822!4d35.0622238',
+    website_url: 'https://rocknrope.com.ua/',
+    phone: '+3800676065557',
+    entertainment_id: 2,
   },
   {
-    title: 'Гребной канал',
-    address: 'Запорожье, Запорожская область, 69061'
+    title: 'Rock & Rope - Прыжки с трубы”',
+    picture_url: 'https://rocknrope.com.ua/uploads/Bridge%20long%2001.jpg',
+    working_hours: 'ежедневно с 7:00 до 19:00',
+    price: 'от 300 грн/чел',
+    map_url: 'https://www.google.com/maps/place/Zaporizhia+Arch+Bridge/@47.8592032,35.0652423,16.53z/data=!4m5!3m4!1s0x0:0x5f9d5923298bec9e!8m2!3d47.8618822!4d35.0622238',
+    website_url: 'http://hortica.zp.ua/vel1.jpg',
+    entertainment_id: 2,
   },
   {
-    title: 'База отдыха «Виктория»',
-    address: 'Запорожье, Запорожская область, 69061'
+    title: 'Покататься по острову Хортица',
+    picture_url: 'http://hortica.zp.ua/ua/guide/north/143-veloprokat',
+    working_hours: 'ежедневно с 7:00 до 19:00',
+    price: 'от 300 грн/чел',
+    map_url: 'https://www.google.com/maps/place/Zaporizhia+Arch+Bridge/@47.8592032,35.0652423,16.53z/data=!4m5!3m4!1s0x0:0x5f9d5923298bec9e!8m2!3d47.8618822!4d35.0622238',
+    website_url: 'https://rocknrope.com.ua/',
+    entertainment_id: 3,
   },
 ]

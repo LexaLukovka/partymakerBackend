@@ -39,8 +39,8 @@
       "description": "guests"
     },
     {
-      "name": "invite",
-      "description": "invite"
+      "name": "entertainment",
+      "description": "entertainment"
     },
     {
       "name": "assets",
@@ -909,11 +909,36 @@
               "properties": {
                 "title": {
                   "type": "string",
-                  "example": "Клуб Crowbar"
+                  "example": "Клуб “Blok-Post”"
                 },
-                "address": {
+                "picture_url": {
                   "type": "string",
-                  "example": "167, проспект Соборний, Запоріжжя, Запорізька область, 69061"
+                  "example": "http://www.laser-tag.zp.ua/wp-content/uploads/2018/06/cropped-Club-Block-Post..jpg"
+                },
+                "working_hours": {
+                  "type": "string",
+                  "example": "ежедневно с 7:00 до 19:00"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "от 300 грн/чел"
+                },
+                "map_url": {
+                  "type": "string",
+                  "example": "https://www.google.com/maps/place/Klub+%22Blok-Post%22+Peyntbol,Lazertag,TIR,Arenda+besedok./@47.7976408,35.167646,15z/data=!4m2!3m1!1s0x0:0xd3cabe72da827682?sa=X&ved=2ahUKEwjKjq-YyPrjAhWtwqYKHePkAQQQ_BIwCnoECAoQCA"
+                },
+                "website_url": {
+                  "type": "string",
+                  "example": "http://www.laser-tag.zp.ua"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+380961039348"
+                },
+                "entertainment_id": {
+                  "type": "integer",
+                  "format": "int64",
+                  "example": 1
                 }
               }
             }
@@ -1027,11 +1052,36 @@
               "properties": {
                 "title": {
                   "type": "string",
-                  "example": "Клуб Crowbar"
+                  "example": "Клуб “Blok-Post”"
                 },
-                "address": {
+                "picture_url": {
                   "type": "string",
-                  "example": "167, проспект Соборний, Запоріжжя, Запорізька область, 69061"
+                  "example": "http://www.laser-tag.zp.ua/wp-content/uploads/2018/06/cropped-Club-Block-Post..jpg"
+                },
+                "working_hours": {
+                  "type": "string",
+                  "example": "ежедневно с 7:00 до 19:00"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "от 300 грн/чел"
+                },
+                "map_url": {
+                  "type": "string",
+                  "example": "https://www.google.com/maps/place/Klub+%22Blok-Post%22+Peyntbol,Lazertag,TIR,Arenda+besedok./@47.7976408,35.167646,15z/data=!4m2!3m1!1s0x0:0xd3cabe72da827682?sa=X&ved=2ahUKEwjKjq-YyPrjAhWtwqYKHePkAQQQ_BIwCnoECAoQCA"
+                },
+                "website_url": {
+                  "type": "string",
+                  "example": "http://www.laser-tag.zp.ua"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+380961039348"
+                },
+                "entertainment_id": {
+                  "type": "integer",
+                  "format": "int64",
+                  "example": 1
                 }
               }
             }
@@ -1097,11 +1147,36 @@
               "properties": {
                 "title": {
                   "type": "string",
-                  "example": "Клуб Crowbar"
+                  "example": "Клуб “Blok-Post”"
                 },
-                "address": {
+                "picture_url": {
                   "type": "string",
-                  "example": "167, проспект Соборний, Запоріжжя, Запорізька область, 69061"
+                  "example": "http://www.laser-tag.zp.ua/wp-content/uploads/2018/06/cropped-Club-Block-Post..jpg"
+                },
+                "working_hours": {
+                  "type": "string",
+                  "example": "ежедневно с 7:00 до 19:00"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "от 300 грн/чел"
+                },
+                "map_url": {
+                  "type": "string",
+                  "example": "https://www.google.com/maps/place/Klub+%22Blok-Post%22+Peyntbol,Lazertag,TIR,Arenda+besedok./@47.7976408,35.167646,15z/data=!4m2!3m1!1s0x0:0xd3cabe72da827682?sa=X&ved=2ahUKEwjKjq-YyPrjAhWtwqYKHePkAQQQ_BIwCnoECAoQCA"
+                },
+                "website_url": {
+                  "type": "string",
+                  "example": "http://www.laser-tag.zp.ua"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+380961039348"
+                },
+                "entertainment_id": {
+                  "type": "integer",
+                  "format": "int64",
+                  "example": 1
                 }
               }
             }
@@ -1270,10 +1345,6 @@
                   "type": "integer",
                   "format": "int64",
                   "example": 1
-                },
-                "date": {
-                  "type": "string",
-                  "example": "2014-06-26 04:07:31"
                 }
               }
             }
@@ -1468,10 +1539,6 @@
                   "type": "integer",
                   "format": "int64",
                   "example": "1"
-                },
-                "date": {
-                  "type": "string",
-                  "example": "2014-06-26 04:07:31"
                 }
               }
             }
@@ -1783,284 +1850,6 @@
                 "$ref": "#/definitions/Message"
               }
             }
-          },
-          "401": {
-            "$ref": "#/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          },
-          "500": {
-            "$ref": "#/responses/InternalServerError"
-          }
-        }
-      }
-    },
-    "/rooms/{room_id}/invite": {
-      "get": {
-        "tags": [
-          "invite"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "get invite into current room",
-        "operationId": "invite",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "room_id",
-            "type": "integer",
-            "format": "int64",
-            "default": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "$ref": "#/definitions/Invite"
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          },
-          "500": {
-            "$ref": "#/responses/InternalServerError"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "invite"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "new invite",
-        "operationId": "create-invite",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "room_id",
-            "type": "integer",
-            "format": "int64",
-            "default": 1
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Create new invite",
-            "required": true,
-            "schema": {
-              "properties": {
-                "headline": {
-                  "type": "string",
-                  "example": "Пришлашенние"
-                },
-                "preposition": {
-                  "type": "string",
-                  "example": "на"
-                },
-                "title": {
-                  "type": "string",
-                  "example": "Пати"
-                },
-                "address": {
-                  "type": "string",
-                  "example": "Вул. Червоногвардійська, 48/18,"
-                },
-                "datetime": {
-                  "type": "string",
-                  "example": "2014-06-26 04:07:31"
-                },
-                "background_url": {
-                  "type": "string",
-                  "example": "http://localhost:3333/uploads/something.jpeg"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created",
-            "schema": {
-              "type": "object",
-              "$ref": "#/definitions/Invite"
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "500": {
-            "$ref": "#/responses/InternalServerError"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "invite"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "update invite",
-        "operationId": "update-invite",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "room_id",
-            "type": "integer",
-            "format": "int64",
-            "default": 1
-          },
-          {
-            "in": "path",
-            "name": "id",
-            "type": "integer",
-            "format": "int64",
-            "required": true,
-            "default": 1
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Update invite",
-            "required": true,
-            "schema": {
-              "properties": {
-                "headline": {
-                  "type": "string",
-                  "example": "Пришлашенние"
-                },
-                "preposition": {
-                  "type": "string",
-                  "example": "на"
-                },
-                "title": {
-                  "type": "string",
-                  "example": "Пати"
-                },
-                "address": {
-                  "type": "string",
-                  "example": "Вул. Червоногвардійська, 48/18,"
-                },
-                "datetime": {
-                  "type": "string",
-                  "example": "2014-06-26 04:07:31"
-                },
-                "background_url": {
-                  "type": "string",
-                  "example": "http://localhost:3333/uploads/something.jpeg"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "Updated",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "$ref": "#/definitions/Invite"
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/responses/NotFound"
-          },
-          "500": {
-            "$ref": "#/responses/InternalServerError"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "invite"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "delete invite",
-        "operationId": "delete-invite",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "required": true,
-            "name": "room_id",
-            "type": "integer",
-            "format": "int64",
-            "default": 1
-          },
-          {
-            "in": "path",
-            "name": "id",
-            "type": "integer",
-            "format": "int64",
-            "required": true,
-            "default": 1
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Deleted"
           },
           "401": {
             "$ref": "#/responses/Unauthorized"
@@ -2506,7 +2295,13 @@
   "definitions": {
     "Place": {
       "required": [
-        "title"
+        "title",
+        "picture_url",
+        "price",
+        "map_url",
+        "website_url",
+        "phone",
+        "entertainment_id"
       ],
       "type": "object",
       "properties": {
@@ -2516,11 +2311,36 @@
         },
         "title": {
           "type": "string",
-          "example": "Клуб Crowbar"
+          "example": "Клуб “Blok-Post”"
         },
-        "address": {
+        "picture_url": {
           "type": "string",
-          "example": "167, проспект Соборний, Запоріжжя, Запорізька область, 69061"
+          "example": "http://www.laser-tag.zp.ua/wp-content/uploads/2018/06/cropped-Club-Block-Post..jpg"
+        },
+        "working_hours": {
+          "type": "string",
+          "example": "ежедневно с 7:00 до 19:00"
+        },
+        "price": {
+          "type": "string",
+          "example": "от 300 грн/чел"
+        },
+        "map_url": {
+          "type": "string",
+          "example": "https://www.google.com/maps/place/Klub+%22Blok-Post%22+Peyntbol,Lazertag,TIR,Arenda+besedok./@47.7976408,35.167646,15z/data=!4m2!3m1!1s0x0:0xd3cabe72da827682?sa=X&ved=2ahUKEwjKjq-YyPrjAhWtwqYKHePkAQQQ_BIwCnoECAoQCA"
+        },
+        "website_url": {
+          "type": "string",
+          "example": "http://www.laser-tag.zp.ua"
+        },
+        "phone": {
+          "type": "string",
+          "example": "+380961039348"
+        },
+        "entertainment_id": {
+          "type": "integer",
+          "format": "int64",
+          "example": 1
         },
         "created_at": {
           "type": "string",
@@ -2550,10 +2370,6 @@
           "type": "integer",
           "format": "int64",
           "example": "1"
-        },
-        "date": {
-          "type": "string",
-          "example": "2014-06-26 04:07:31"
         },
         "created_at": {
           "type": "string",

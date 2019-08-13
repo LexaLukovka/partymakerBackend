@@ -8,9 +8,9 @@ class RoomSchema extends Schema {
     this.create('rooms', (table) => {
       table.increments()
       table.string('title')
-      table.date('date')
-      table.integer('admin_id').notNullable().unsigned().references('id').inTable('users').onDelete('CASCADE')
+      table.string('invite_token')
       table.integer('place_id').unsigned().references('id').inTable('places').onDelete('CASCADE')
+      table.integer('order_id').unsigned().references('id').inTable('orders').onDelete('CASCADE')
       table.timestamps()
     })
   }

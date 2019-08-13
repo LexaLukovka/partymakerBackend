@@ -10,8 +10,7 @@ class Room extends Model {
 
   static boot() {
     super.boot()
-    this.addHook('afterCreate', 'RoomHook.afterUpdate')
-
+    this.addHook('afterCreate', 'RoomHook.afterCreate')
   }
 
   static get dates() {
@@ -29,10 +28,6 @@ class Room extends Model {
       .withPivot(['is_online', 'last_seen'])
   }
 
-  invite() {
-    return this.hasOne('App/Models/Invite')
-  }
-
   place() {
     return this.belongsTo('App/Models/Place')
   }
@@ -41,11 +36,8 @@ class Room extends Model {
     return this.hasMany('App/Models/Message')
   }
 
-  async notify(text) {
-    await Message.create({
-      text,
-      room_id: this.id,
-    })
+  notify(text) {
+    return Message.create({ text, room_id: this.id })
   }
 }
 
