@@ -31,13 +31,16 @@ const setupListeners = (room_id, namespace) => async (socket) => {
 
   await updateUser(room, user, true)
 
+  Event.on('ws:message', (message) => socket.emit('message', message))
+
+
   socket.on('disconnect', async () => {
     namespace.emit('offline', user.id)
     await updateUser(room, user, false)
     console.log('disconnected', user.name)
+    Event.removeAllListeners('ws:message')
   })
 
-  Event.on('ws:message', (message) => socket.emit('message', message))
 }
 
 const activateNamespace = (room_id) => {
