@@ -3,6 +3,7 @@ const Ws = use('Ws')
 const moment = require('moment')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
+
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 
 /**
@@ -56,7 +57,12 @@ class RoomController {
    * @param {object} ctx
    */
   async show({ params }) {
-    return Room.find(params.id)
+    return Room
+      .query()
+      .with('users')
+      .with('place')
+      .where({ id: params.id })
+      .first()
   }
 
   /**

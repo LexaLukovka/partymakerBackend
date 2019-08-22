@@ -54,10 +54,12 @@
     "mysql2": "^1.6.4",
     "nodemon": "^1.18.9",
     "randomstring": "latest",
+    "socket.io": "^2.2.0",
     "sqlite3": "^4.0.6",
     "uniqid": "^5.0.3",
     "url-parse": "^1.4.4",
-    "util-to": "^1.0.2"
+    "util-to": "^1.0.2",
+    "jsonwebtoken": "latest"
   },
   "autoload": {
     "App": "./app"

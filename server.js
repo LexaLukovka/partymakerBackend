@@ -21,6 +21,6 @@ const { Ignitor } = require('@adonisjs/ignitor')
 
 new Ignitor(require('@adonisjs/fold'))
   .appRoot(__dirname)
-  .wsServer()
   .fireHttpServer()
+  // eslint-disable-next-line no-console
   .catch(console.error)

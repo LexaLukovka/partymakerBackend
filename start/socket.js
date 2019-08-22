@@ -1,18 +1,6 @@
-'use strict'
+/* eslint-disable no-console */
+const Room = use('App/Models/Room')
+const activateNamespace = require('../socket')
 
-/*
-|--------------------------------------------------------------------------
-| Websocket
-|--------------------------------------------------------------------------
-|
-| This file is used to register websocket channels and start the Ws server.
-| Learn more about same in the official documentation.
-| https://adonisjs.com/docs/websocket
-|
-| For middleware, do check `wsKernel.js` file.
-|
-*/
+Room.ids().then(rooms_ids => rooms_ids.forEach(activateNamespace))
 
-const Ws = use('Ws')
-
-Ws.channel('room:*', 'RoomController').middleware(['auth'])
