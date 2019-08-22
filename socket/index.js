@@ -12,33 +12,34 @@ const io = use('socket.io')(Server.getInstance(), {
 })
 
 
-const updateUser = async (room, user, is_online) =>
+const updateUser = async (room, user) =>
   room.users()
     .pivotQuery()
     .where({ user_id: user.id })
-    .update({
-      is_online,
-      last_seen: moment().format('YYYY-MM-DD HH:mm:ss'),
-    })
+    .update({ last_seen: moment().format('YYYY-MM-DD HH:mm:ss'), })
 
-const setupListeners = (room_id, namespace) => async (socket) => {
+const activeUsers = {}
+
+const setupListeners = (room_id) => async (socket) => {
   const room = await Room.find(room_id)
   const { user } = socket
 
+  activeUsers[socket.user.id] = user
+
   console.log('connected', user.name)
+  console.log('active users', activeUsers)
 
-  socket.emit('online', user.id)
-
-  await updateUser(room, user, true)
+  socket.emit('online', Object.values(activeUsers).map(u => u.id))
 
   Event.on('ws:message', (message) => socket.emit('message', message))
 
 
   socket.on('disconnect', async () => {
-    namespace.emit('offline', user.id)
-    await updateUser(room, user, false)
+    delete activeUsers[user.id]
+    socket.emit('online', Object.values(activeUsers).map(u => u.id))
     console.log('disconnected', user.name)
     Event.removeAllListeners('ws:message')
+    await updateUser(room.user)
   })
 
 }
