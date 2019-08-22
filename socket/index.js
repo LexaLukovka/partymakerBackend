@@ -27,7 +27,6 @@ const setupListeners = (room_id) => async (socket) => {
   activeUsers[socket.user.id] = user
 
   console.log('connected', user.name)
-  console.log('active users', activeUsers)
 
   socket.emit('online', Object.values(activeUsers).map(u => u.id))
 
@@ -39,7 +38,7 @@ const setupListeners = (room_id) => async (socket) => {
     socket.emit('online', Object.values(activeUsers).map(u => u.id))
     console.log('disconnected', user.name)
     Event.removeAllListeners('ws:message')
-    await updateUser(room.user)
+    await updateUser(room, user)
   })
 
 }
