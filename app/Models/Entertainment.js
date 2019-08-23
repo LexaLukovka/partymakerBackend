@@ -8,6 +8,10 @@ class Entertainment extends Model {
   static get policy() {
     return 'App/Policies/Entertainment'
   }
+
+  places() {
+    return this.hasMany('App/Models/Place')
+  }
 }
 
 module.exports = Entertainment

@@ -20,6 +20,7 @@ require('./auth')
  *
  * */
 require('./users')
+
 /**
  *
  * Place routes
@@ -27,6 +28,12 @@ require('./users')
  * */
 require('./places')
 
+/**
+ *
+ * Entertainment routes
+ *
+ * */
+require('./entertainments')
 
 /**
  *
@@ -35,14 +42,12 @@ require('./places')
  * */
 require('./rooms')
 
-
 /**
  *
  * Invite routes
  *
  * */
 require('./invite')
-
 
 /**
  *
