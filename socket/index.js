@@ -31,13 +31,16 @@ const setupListeners = (room_id) => async (socket) => {
   socket.emit('online', Object.values(activeUsers).map(u => u.id))
 
   Event.on('ws:message', (message) => socket.emit('message', message))
-
+  Event.on('ws:guest:left', (leftUser) => socket.emit('guest:left', leftUser))
+  Event.on('ws:guest:joined', (joinedUser) => socket.emit('guest:joined', joinedUser))
 
   socket.on('disconnect', async () => {
     delete activeUsers[user.id]
     socket.emit('online', Object.values(activeUsers).map(u => u.id))
     console.log('disconnected', user.name)
     Event.removeAllListeners('ws:message')
+    Event.removeAllListeners('ws:guest:left')
+    Event.removeAllListeners('ws:guest:joined')
     await updateUser(room, user)
   })
 

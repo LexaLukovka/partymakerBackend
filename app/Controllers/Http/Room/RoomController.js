@@ -1,5 +1,5 @@
 const Room = use('App/Models/Room')
-const Ws = use('Ws')
+const Event = use('Event')
 const moment = require('moment')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -40,10 +40,7 @@ class RoomController {
       return response.forbidden()
     }
 
-    const room = await Room.create({
-      ...fields,
-      admin_id: auth.user.id,
-    })
+    const room = await Room.create(fields)
 
     await room.users().attach([auth.user.id])
 
@@ -97,13 +94,8 @@ class RoomController {
    */
   async destroy({ params, auth: { user }, response }) {
     const room = await Room.find(params.id)
-    const chat = Ws.getChannel('room:*')
-    const topic = chat.topic(`room:${room.id}`)
-
-    if (topic) topic.broadcast('guest:left', user)
-
+    Event.fire('ws:guest:left', user)
     await room.notify(`${user.name} покинул к событие`)
-
     await room.users().detach([user.id])
     return response.deleted(`${user.name} left ${room.title}`)
   }
