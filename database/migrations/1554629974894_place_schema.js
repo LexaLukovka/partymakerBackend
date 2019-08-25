@@ -12,7 +12,7 @@ class PlaceSchema extends Schema {
       table.string('working_hours')
       table.string('price')
       table.string('website_url')
-      table.string('map_url')
+      table.text('map_url')
       table.string('phone')
       table.integer('entertainment_id').unsigned().references('id').inTable('entertainments')
       table.timestamps()
