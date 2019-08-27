@@ -20,6 +20,10 @@ class RoomController {
   async index({ request, auth }) {
     const { page, limit } = request.all()
 
+    if (auth.user.is_superadmin) {
+      return Room.query().with('place').paginate({ page, limit })
+    }
+
     return auth.user.rooms()
       .with('place')
       .paginate({ page, limit })
