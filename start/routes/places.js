@@ -6,6 +6,10 @@ const Route = use('Route')
  *
  * */
 Route.resource('places', 'PlaceController')
-  .validator([['places.store', 'Place/Store'], ['places.update', 'Place/Update']])
+  .validator([
+    ['places.store', 'Place/Store'],
+    ['places.update', 'Place/Update'],
+    ['places.destroy', 'Place/Destroy'],
+  ])
   .middleware(new Map([[['index', 'store', 'update', 'destroy'], ['auth']]]))
   .apiOnly()

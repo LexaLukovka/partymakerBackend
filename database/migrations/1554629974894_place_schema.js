@@ -14,6 +14,7 @@ class PlaceSchema extends Schema {
       table.string('website_url')
       table.text('map_url')
       table.string('phone')
+      table.integer('admin_id').unsigned().references('id').inTable('users')
       table.integer('entertainment_id').unsigned().references('id').inTable('entertainments')
       table.timestamps()
     })
