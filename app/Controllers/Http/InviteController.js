@@ -24,9 +24,16 @@ class InviteController {
    * @param {object} ctx
    */
   async accept({ auth, response, params: { room_id } }) {
-    const room = await Room.find(room_id)
+    const room = await Room.findOrFail(room_id)
     await room.users().attach([auth.user.id])
-    return response.accepted(room)
+
+    const updatedRoom = await Room.query()
+      .with('users')
+      .with('place')
+      .where({ id: room.id })
+      .firstOrFail()
+
+    return response.accepted(updatedRoom)
   }
 }
 
