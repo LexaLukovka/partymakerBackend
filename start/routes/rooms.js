@@ -1,6 +1,6 @@
 const Route = use('Route')
 
-const ICUD = new Map([[['index', 'store', 'update', 'destroy'], ['auth']]])
+const CUD = new Map([[['store', 'update', 'destroy'], ['auth']]])
 const LD = new Map([[['index', 'destroy'], ['auth']]])
 
 Route.group(() => {
@@ -12,7 +12,7 @@ Route.group(() => {
    * */
   Route.resource('rooms', 'RoomController')
     .validator([['rooms.store', 'Room/Store'], ['rooms.update', 'Room/Update']])
-    .middleware(ICUD)
+    .middleware(CUD)
     .apiOnly()
 
   /**
@@ -26,24 +26,12 @@ Route.group(() => {
 
   /**
    *
-   * Invite routes
-   *
-   * */
-  Route.resource('rooms.invite', 'InviteController')
-    .validator([['rooms.invite.store', 'Invite/Store'], ['rooms.invite.update', 'Invite/Update']])
-    .middleware(ICUD)
-    .apiOnly()
-
-  Route.put('rooms/:rooms_id/invite', 'InviteController.update')
-
-  /**
-   *
    * Place routes
    *
    * */
   Route.resource('rooms.place', 'PlaceController')
     .validator([['rooms.place.store', 'Place/Store'], ['rooms.place.update', 'Place/Update']])
-    .middleware(ICUD)
+    .middleware(CUD)
     .apiOnly()
 
   Route.put('rooms/:rooms_id/place', 'PlaceController.update')
@@ -62,7 +50,7 @@ Route.group(() => {
 
   Route.resource('rooms.messages', 'MessageController')
     .validator([['rooms.messages.store', 'Message/Store'], ['rooms.messages.update', 'Message/Update']])
-    .middleware(ICUD)
+    .middleware(CUD)
     .apiOnly()
 
 
