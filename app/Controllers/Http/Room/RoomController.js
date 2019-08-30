@@ -67,7 +67,14 @@ class RoomController {
     if (isNewDate) await room.notify(`${auth.user.name} установил(а) дату события на ${date}`)
     room.merge(fields)
     await room.save()
-    return response.updated(room)
+
+    const newRoom = await Room.query()
+      .with('users')
+      .with('place')
+      .where({ id: room.id })
+      .first()
+
+    return response.updated(newRoom)
   }
 
   /**

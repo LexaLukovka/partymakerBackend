@@ -5,8 +5,8 @@ module.exports = class Update {
   async authorize() {
     const { auth, response, params } = this.ctx
     this.ctx.room = await Room.findOrFail(params.id)
-    const isEditable = auth.user.can('edit', this.ctx.room)
-    if (!isEditable) return response.forbidden()
+    const canEdit = await this.ctx.room.contains(auth.user)
+    if (!canEdit) return response.forbidden()
     return true
   }
 
