@@ -11,5 +11,5 @@ Route.resource('entertainments', 'EntertainmentController')
     ['entertainments.update', 'Entertainment/Update'],
     ['entertainments.destroy', 'Entertainment/Destroy'],
   ])
-  .middleware(new Map([[['index', 'store', 'update', 'destroy'], ['auth']]]))
+  .middleware(new Map([[['store', 'update', 'destroy'], ['auth']]]))
   .apiOnly()
