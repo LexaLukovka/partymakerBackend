@@ -17,16 +17,9 @@ class RoomController {
    * @param {object} ctx
    * @param {Request} ctx.request
    */
-  async index({ request, auth }) {
+  async index({ request }) {
     const { page, limit } = request.all()
-
-    if (auth.user.is_superadmin) {
-      return Room.query().with('place').paginate({ page, limit })
-    }
-
-    return auth.user.rooms()
-      .with('place')
-      .paginate({ page, limit })
+    return Room.query().with('place').paginate({ page, limit })
   }
 
   /**
@@ -39,15 +32,8 @@ class RoomController {
    */
   async store({ request, response, auth }) {
     const fields = request.all()
-
-    if (auth.user.cannot('create', Room)) {
-      return response.forbidden()
-    }
-
     const room = await Room.create(fields)
-
     await room.users().attach([auth.user.id])
-
     return response.created(await Room.find(room.id))
   }
 
@@ -74,18 +60,13 @@ class RoomController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, auth, request, response }) {
+  async update({ auth, request, response, room }) {
     const fields = request.all()
-    const room = await Room.find(params.id)
     const date = moment(fields.date).format('D MMMM, dddd')
-
-    if (room.date !== fields.date) {
-      await room.notify(`${auth.user.name} установил(а) дату события на ${date}`)
-    }
-
+    const isNewDate = room.date !== fields.date
+    if (isNewDate) await room.notify(`${auth.user.name} установил(а) дату события на ${date}`)
     room.merge(fields)
     await room.save()
-
     return response.updated(room)
   }
 
@@ -96,8 +77,7 @@ class RoomController {
    * @param {object} ctx
    * @param {Response} ctx.response
    */
-  async destroy({ params, auth: { user }, response }) {
-    const room = await Room.find(params.id)
+  async destroy({ auth: { user }, response, room }) {
     Event.fire('ws:guest:left', user)
     await room.notify(`${user.name} покинул к событие`)
     await room.users().detach([user.id])

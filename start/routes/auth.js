@@ -26,4 +26,6 @@ Route.group(() => {
   Route.get('auth/user/account', 'User/AccountController.show')
   Route.put('auth/user/account', 'User/AccountController.update').validator('Auth/User/Account/Update')
 
+  Route.get('auth/rooms', 'RoomController.index')
+
 }).namespace('Auth')
