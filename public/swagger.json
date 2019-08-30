@@ -588,6 +588,66 @@
         }
       }
     },
+    "/auth/rooms": {
+      "get": {
+        "tags": [
+          "rooms"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "get list of rooms available for the user",
+        "operationId": "rooms",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "type": "integer",
+            "format": "int64",
+            "default": 0
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "type": "integer",
+            "format": "int64",
+            "default": 20
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "$ref": "#/definitions/Room"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/InternalServerError"
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "tags": [
@@ -1263,7 +1323,7 @@
             "bearer": []
           }
         ],
-        "summary": "get list of rooms available for the user",
+        "summary": "get list of all rooms",
         "operationId": "rooms",
         "consumes": [
           "application/json"
