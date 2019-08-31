@@ -47,7 +47,7 @@ class RoomController {
     return Room
       .query()
       .with('users')
-      .with('place')
+      .with('place.entertainment')
       .where({ id: params.id })
       .first()
   }

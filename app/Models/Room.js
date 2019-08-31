@@ -25,7 +25,7 @@ class Room extends Model {
   users() {
     return this.belongsToMany('App/Models/User')
       .pivotModel('App/Models/RoomUser')
-      .withPivot(['is_online', 'last_seen'])
+      .withPivot(['last_seen'])
   }
 
   place() {

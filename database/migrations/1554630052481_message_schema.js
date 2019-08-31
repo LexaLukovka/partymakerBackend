@@ -15,7 +15,7 @@ class MessageSchema extends Schema {
       table.integer('place_id').unsigned().references('id').inTable('places').onDelete('CASCADE')
       table.boolean('is_read').defaultTo(false)
       table.date('date').nullable()
-      table.time('time').nullable()
+      table.string('time').nullable()
       table.timestamps()
     })
   }

@@ -50,7 +50,7 @@ class MessageController {
       ...fields,
       room_id: params.rooms_id,
       user_id: auth.user.id,
-      is_read: await RoomUser.isSomeoneOnline(params.rooms_id, auth),
+      is_read: false,
     })
 
     return response.created(await this.messages.find(message.id))
