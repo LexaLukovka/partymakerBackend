@@ -1,4 +1,14 @@
+const User = use('App/Models/User')
+
 module.exports = class Update {
+
+  async authorize() {
+    const { auth, response, params } = this.ctx
+    this.ctx.user = await User.findOrFail(params.id)
+    const isEditable = auth.user.can('edit', this.ctx.user)
+    if (!isEditable) return response.forbidden()
+    return true
+  }
 
   get rules() {
     return {

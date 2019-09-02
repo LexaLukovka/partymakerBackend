@@ -1,8 +1,8 @@
 'use strict'
 
+const Ws = use('Ws')
 const Room = use('App/Models/Room')
 const User = use('App/Models/User')
-const Event = use('Event')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 
@@ -37,11 +37,18 @@ class GuestController {
     if (!await room.contains(guest)) {
       return response.notFound('Guest not found!')
     }
+
     if (auth.user.cannot('removeGuest', room)) {
       return response.forbidden('Only member of the room can delete guest!')
     }
 
-    Event.fire('guest:remove', room, auth.user, guest)
+    await room.users().detach([guest.id])
+
+    Ws.getChannel('room:*')
+      .topic(`room:${room.id}`)
+      .broadcast('guest:removed', { user_id: guest.id, room_id: room.id })
+
+    room.notify(`${auth.user.name} удалил(а) пользователя ${guest.name} из компании`)
 
     return response.deleted('User kicked out from the room!')
   }

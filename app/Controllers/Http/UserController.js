@@ -17,20 +17,15 @@ class UserController {
 
   async index({ request }) {
     const { page, limit } = request.all()
-    return this.user.paginate({ page: page || 1, limit: limit || 10 })
+    return User.query().paginate(page || 1, limit || 10)
   }
 
   /**
    * Create/save a new user.
    * POST users
    */
-  async store({ request, auth, response }) {
-    if (auth.user.cannot('create', User)) {
-      return response.forbidden()
-    }
-
-    const user = this.user.create(request.all())
-
+  async store({ request, response }) {
+    const user = await User.create(request.all())
     return response.created(user)
   }
 
@@ -46,20 +41,14 @@ class UserController {
    * Update user details.
    * PUT or PATCH users/:id
    */
-  async update({ params, request, auth, response }) {
+  async update({ request, auth, response, user }) {
     const fields = request.all()
-
-    const user = await User.findOrFail(params.id)
-
-    if (auth.user.cannot('edit', user)) {
-      return response.forbidden()
-    }
-
-    await this.user.edit(user, fields)
+    user.merge(fields)
+    await user.save()
 
     const tokens = await auth
       .withRefreshToken()
-      .generate(await User.find(params.id), true)
+      .generate(await User.find(user.id), true)
 
     return response.updated(tokens)
   }
@@ -68,15 +57,8 @@ class UserController {
    * Delete a user with id.
    * DELETE users/:id
    */
-  async destroy({ params, auth, response }) {
-
-    const user = await User.findOrFail(params.id)
-
-    if (auth.user.cannot('delete', user)) {
-      return response.forbidden()
-    }
+  async destroy({ response, user }) {
     await user.delete()
-
     return response.deleted()
   }
 }

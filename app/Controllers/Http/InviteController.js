@@ -1,7 +1,7 @@
 'use strict'
 
 const Room = use('App/Models/Room')
-
+const Ws = use('Ws')
 
 class InviteController {
 
@@ -25,13 +25,21 @@ class InviteController {
    */
   async accept({ auth, response, params: { room_id } }) {
     const room = await Room.findOrFail(room_id)
-    await room.users().attach([auth.user.id])
+
+    room.users().attach([auth.user.id])
 
     const updatedRoom = await Room.query()
       .with('users')
       .with('place')
       .where({ id: room.id })
       .firstOrFail()
+
+
+    Ws.getChannel('room:*')
+      .topic(`room:${room.id}`)
+      .broadcast('room:updated', updatedRoom)
+
+    room.notify(`${auth.user.name} принял(а) приглашение ${room.title}`)
 
     return response.accepted(updatedRoom)
   }

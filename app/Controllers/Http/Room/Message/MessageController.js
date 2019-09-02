@@ -1,8 +1,4 @@
-const autoBind = require('auto-bind')
-
-const RoomUser = use('App/Models/RoomUser')
 const Message = use('App/Models/Message')
-const MessageRepository = use('App/Repositories/MessageRepository')
 
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -15,11 +11,6 @@ const MessageRepository = use('App/Repositories/MessageRepository')
  */
 class MessageController {
 
-  constructor() {
-    autoBind(this)
-    this.messages = new MessageRepository()
-  }
-
   /**
    * Show a list of all messages of room.
    * GET /rooms/:rooms_id/messages
@@ -28,11 +19,15 @@ class MessageController {
    * @param {Request} ctx.request
    */
 
-  async index({ request, params }) {
-    const { rooms_id } = params
+  async index({ request, params: { rooms_id } }) {
     const { page, limit } = request.all()
 
-    return this.messages.paginate(rooms_id, { page, limit })
+    return Message.query()
+      .with('asset')
+      .with('place')
+      .orderBy('created_at', 'DESC')
+      .where({ room_id: rooms_id })
+      .paginate(page, limit)
   }
 
   /**
@@ -53,7 +48,13 @@ class MessageController {
       is_read: false,
     })
 
-    return response.created(await this.messages.find(message.id))
+    const newMessage = await Message.query()
+      .with('asset')
+      .with('place')
+      .where({ id: message.id })
+      .first()
+
+    return response.created(newMessage)
   }
 
   /**
@@ -63,7 +64,11 @@ class MessageController {
    * @param {object} ctx
    */
   async show({ params }) {
-    return this.messages.find(params.id)
+    return Message.query()
+      .with('asset')
+      .with('place')
+      .where({ id: params.id })
+      .first()
   }
 
   /**
@@ -74,18 +79,16 @@ class MessageController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, auth, request, response }) {
+  async update({ request, response, message }) {
     const fields = request.all()
-    const message = await Message.findOrFail(params.id)
-
-    if (auth.user.cannot('edit', message)) {
-      return response.forbidden()
-    }
-
     message.merge(fields)
     await message.save()
 
-    const newMessage = await this.messages.find(message.id)
+    const newMessage = await Message.query()
+      .with('asset')
+      .with('place')
+      .where({ id: message.id })
+      .first()
 
     return response.updated(newMessage)
   }
@@ -97,15 +100,8 @@ class MessageController {
    * @param {object} ctx
    * @param {Response} ctx.response
    */
-  async destroy({ params, auth, response }) {
-    const message = await Message.findOrFail(params.id)
-
-    if (auth.user.cannot('delete', message)) {
-      return response.forbidden()
-    }
-
+  async destroy({ response, message }) {
     await message.delete()
-
     return response.deleted()
   }
 }

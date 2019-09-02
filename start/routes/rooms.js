@@ -1,6 +1,5 @@
 const Route = use('Route')
 
-const ICUD = new Map([[['index', 'store', 'update', 'destroy'], ['auth']]])
 const CUD = new Map([[['store', 'update', 'destroy'], ['auth']]])
 const LD = new Map([[['index', 'destroy'], ['auth']]])
 
@@ -12,7 +11,7 @@ Route.group(() => {
    *
    * */
   Route.resource('rooms', 'RoomController')
-    .middleware(ICUD)
+    .middleware(['auth'])
     .apiOnly()
     .validator([
       ['rooms.index', 'Room/Index'],
@@ -40,30 +39,43 @@ Route.group(() => {
     .apiOnly()
     .validator([
       ['rooms.place.store', 'Place/Store'],
-      ['rooms.place.update', 'Place/Update']
+      ['rooms.place.update', 'Place/Update'],
+      ['rooms.place.destroy', 'Place/Destroy']
     ])
 
   Route.put('rooms/:rooms_id/place', 'PlaceController.update')
-
-}).namespace('Room')
-
-
-Route.group(() => {
 
   /**
    *
    * Message routes
    *
    * */
-  Route.put('/rooms/:rooms_id/messages/read', 'ReadController.update')
+  Route.put('/rooms/:rooms_id/messages/read', 'Message/ReadController.update')
 
-  Route.resource('rooms.messages', 'MessageController')
+  Route.resource('rooms.messages', 'Message/MessageController')
     .middleware(CUD)
     .apiOnly()
     .validator([
-      ['rooms.messages.store', 'Message/Store'],
-      ['rooms.messages.update', 'Message/Update']
+      ['rooms.messages.store', 'Room/Message/Store'],
+      ['rooms.messages.update', 'Room/Message/Update'],
+      ['rooms.messages.destroy', 'Room/Message/Destroy']
     ])
 
 
-}).namespace('Room/Message')
+  /**
+   *
+   * Order routes
+   *
+   * */
+  Route.resource('rooms.orders', 'OrderController')
+    .middleware(['auth'])
+    .apiOnly()
+    .validator([
+      ['rooms.orders.store', 'Room/Order/Store'],
+      ['rooms.orders.update', 'Room/Order/Update'],
+      ['rooms.orders.destroy', 'Room/Order/Destroy'],
+    ])
+
+
+}).namespace('Room')
+

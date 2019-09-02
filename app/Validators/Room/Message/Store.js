@@ -4,12 +4,8 @@ module.exports = class Store {
 
   async authorize() {
     const { auth, response } = this.ctx
-    if (auth.user.cannot('create', Message)) {
-      response.forbidden()
-
-      return false
-    }
-
+    const isCreatable = auth.user.can('create', Message)
+    if (!isCreatable) return response.forbidden()
     return true
   }
 

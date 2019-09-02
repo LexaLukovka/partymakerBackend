@@ -1,5 +1,6 @@
 const Room = use('App/Models/Room')
 const Event = use('Event')
+const Ws = use('Ws')
 
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 
@@ -17,7 +18,10 @@ class ReadController {
    */
   async update({ response, params, auth }) {
     const room = await Room.findOrFail(params.rooms_id)
-    Event.fire('message:read', room, auth.user)
+
+    Ws.getChannel('room:*')
+      .topic(`room:${room.id}`)
+      .broadcast('message:read', auth.user)
 
     return response.accepted()
   }

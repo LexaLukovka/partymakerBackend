@@ -1,6 +1,7 @@
 const Room = use('App/Models/Room')
 const Event = use('Event')
 const moment = require('moment')
+const Ws = use('Ws')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 
@@ -33,8 +34,8 @@ class RoomController {
   async store({ request, response, auth }) {
     const fields = request.all()
     const room = await Room.create(fields)
-    await room.users().attach([auth.user.id])
-    return response.created(await Room.find(room.id))
+    room.users().attach([auth.user.id])
+    return response.created(room)
   }
 
   /**
@@ -69,10 +70,13 @@ class RoomController {
     await room.save()
 
     const newRoom = await Room.query()
-      .with('users')
       .with('place')
       .where({ id: room.id })
       .first()
+
+    Ws.getChannel('room:*')
+      .topic(`room:${room.id}`)
+      .broadcast('room:updated', newRoom)
 
     return response.updated(newRoom)
   }
@@ -85,9 +89,15 @@ class RoomController {
    * @param {Response} ctx.response
    */
   async destroy({ auth: { user }, response, room }) {
-    Event.fire('ws:guest:left', user)
-    await room.notify(`${user.name} покинул к событие`)
+
     await room.users().detach([user.id])
+
+    await room.notify(`${user.name} покинул к событие`)
+
+    Ws.getChannel('room:*')
+      .topic(`room:${room.id}`)
+      .broadcast('guest:left', user)
+
     return response.deleted(`${user.name} left ${room.title}`)
   }
 }

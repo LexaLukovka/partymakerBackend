@@ -1,10 +1,17 @@
 /* eslint-disable no-multi-assign */
-const Event = use('Event')
-const MessageRepository = use('App/Repositories/MessageRepository')
+const Ws = use('Ws')
+const Message = use('App/Models/Message')
 
 const MessageHook = exports = module.exports = {}
 
 MessageHook.afterCreate = async (message) => {
-  const messageRepository = new MessageRepository()
-  Event.fire('ws:message', await messageRepository.find(message.id))
+
+  const newMessage = await Message.query()
+    .with('asset')
+    .with('place')
+    .where({ id: message.id })
+    .first()
+
+  const topic = Ws.getChannel('room:*').topic(`room:${message.room_id}`)
+  if (topic) topic.broadcastToAll('message', newMessage)
 }

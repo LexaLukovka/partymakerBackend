@@ -1,4 +1,14 @@
+const User = use('App/Models/User')
+
 module.exports = class Create {
+
+
+  async authorize() {
+    const { auth, response } = this.ctx
+    const isCreatable = auth.user.can('create', User)
+    if (!isCreatable) response.forbidden()
+    return true
+  }
 
   get rules() {
     return {
