@@ -26,7 +26,7 @@ class InviteController {
   async accept({ auth, response, params: { room_id } }) {
     const room = await Room.findOrFail(room_id)
 
-    room.users().attach([auth.user.id])
+    await room.users().attach([auth.user.id])
 
     const updatedRoom = await Room.query()
       .with('users')
@@ -34,12 +34,16 @@ class InviteController {
       .where({ id: room.id })
       .firstOrFail()
 
+    await room.notify(`${auth.user.name} принял(а) приглашение ${room.title}`)
 
-    Ws.getChannel('room:*')
-      .topic(`room:${room.id}`)
-      .broadcast('room:updated', updatedRoom)
+    const topic = Ws.getChannel('room:*').topic(`room:${room.id}`)
 
-    room.notify(`${auth.user.name} принял(а) приглашение ${room.title}`)
+    if (topic) {
+      topic.broadcast('guest:joined', {
+        user: auth.user,
+        room_id: room.id
+      })
+    }
 
     return response.accepted(updatedRoom)
   }

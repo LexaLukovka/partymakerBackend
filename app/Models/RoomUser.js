@@ -10,7 +10,6 @@ class RoomUser extends Model {
 
   static boot() {
     super.boot()
-    this.addHook('afterCreate', 'RoomUserHook.notifyAddUser')
   }
 
 

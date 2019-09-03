@@ -11,7 +11,7 @@ Route.group(() => {
    *
    * */
   Route.resource('rooms', 'RoomController')
-    .middleware(['auth'])
+    .middleware(CUD)
     .apiOnly()
     .validator([
       ['rooms.index', 'Room/Index'],

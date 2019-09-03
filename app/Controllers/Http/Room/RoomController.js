@@ -1,11 +1,9 @@
 const Room = use('App/Models/Room')
-const Event = use('Event')
 const moment = require('moment')
 const Ws = use('Ws')
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
 
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
+const diff = (fields, room, name) => fields[name] && room[name] !== fields[name]
 
 /**
  * Resourceful controller for interacting with rooms
@@ -63,20 +61,25 @@ class RoomController {
    */
   async update({ auth, request, response, room }) {
     const fields = request.all()
-    const date = moment(fields.date).format('D MMMM, dddd')
-    const isNewDate = room.date !== fields.date
-    if (isNewDate) await room.notify(`${auth.user.name} установил(а) дату события на ${date}`)
     room.merge(fields)
     await room.save()
 
-    const newRoom = await Room.query()
-      .with('place')
-      .where({ id: room.id })
-      .first()
+    const newRoom = await Room.query().with('place').where({ id: room.id }).first()
 
-    Ws.getChannel('room:*')
-      .topic(`room:${room.id}`)
-      .broadcast('room:updated', newRoom)
+    const date = moment(fields.date).format('D MMMM, dddd')
+
+    if (diff(fields, room, 'date')) {
+      await room.notify(`${auth.user.name} установил(а) дату события на ${date}`)
+    }
+
+    if (diff(fields, room, 'time')) {
+      await room.notify(`${auth.user.name} установил(а) время события на ${fields.time}`)
+    }
+
+    if (diff(fields, room, 'place_id')) {
+      await room.notify(`${auth.user.name} установил(а) место события ${newRoom.place.title}`)
+    }
+
 
     return response.updated(newRoom)
   }

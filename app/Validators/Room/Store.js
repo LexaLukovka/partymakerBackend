@@ -11,7 +11,7 @@ module.exports = class Store {
 
   get rules() {
     return {
-      title: 'string|max:30',
+      title: 'string',
       date: 'date',
       place_id: 'exists:places,id'
     }
