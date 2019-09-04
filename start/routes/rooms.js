@@ -61,7 +61,6 @@ Route.group(() => {
       ['rooms.messages.destroy', 'Room/Message/Destroy']
     ])
 
-
   /**
    *
    * Order routes

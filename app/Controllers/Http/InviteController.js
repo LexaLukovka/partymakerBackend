@@ -40,8 +40,9 @@ class InviteController {
 
     if (topic) {
       topic.broadcast('guest:joined', {
-        user: auth.user,
-        room_id: room.id
+        ...auth.user.toJSON(),
+        room_id: room.id,
+        is_online: 1,
       })
     }
 

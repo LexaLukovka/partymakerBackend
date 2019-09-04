@@ -10,6 +10,7 @@ class RoomUserSchema extends Schema {
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.integer('room_id').unsigned().references('id').inTable('rooms').onDelete('CASCADE')
       table.datetime('last_seen').nullable()
+      table.boolean('is_online').defaultTo(false)
     })
   }
 

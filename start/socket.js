@@ -1,36 +1,46 @@
 const Ws = use('Ws')
+const RoomUser = use('App/Models/RoomUser')
+const moment = require('moment')
 
-class ActiveUsers {
 
-  users = {}
+const startConnection = async ({ socket, auth }) => {
+  const room_id = socket.topic.substring(5, 6)
+  const user_id = auth.user.id
 
-  all() {
-    return Object.values(this.users)
-  }
+  await RoomUser
+    .query()
+    .where({ user_id, room_id })
+    .update({ is_online: true })
 
-  ids() {
-    return this.all().map(u => u.id)
-  }
+  const onlineUsers = await RoomUser.query().where({ is_online: true }).fetch()
 
-  add(socket_id, user) {
-    this.users[socket_id] = user
-  }
+  socket.broadcastToAll('online', onlineUsers.toJSON().map(p => p.user_id))
 
-  remove(socket_id) {
-    delete this.users[socket_id]
-  }
 }
 
-const activeUsers = new ActiveUsers()
+const closeConnection = async ({ socket, _auth_: auth }) => {
+  const room_id = socket.topic.substring(5, 6)
+  const user_id = auth.user.id
 
-Ws.channel('room:*', ({ socket, auth }) => {
-  activeUsers.add(socket.id, auth.user)
-  socket.emit('online', activeUsers.ids())
+  await RoomUser
+    .query()
+    .where({ user_id, room_id })
+    .update({
+      is_online: false,
+      last_seen: moment().format('YYYY-MM-DD HH:mm:ss'),
+    })
 
-  socket.on('close', (closingSocket) => {
-    activeUsers.remove(closingSocket.id)
-    socket.emit('online', activeUsers.ids())
-    socket.close()
-    // Event.removeAllListeners()
+  const online = await RoomUser.query().where({ is_online: true }).fetch()
+
+  socket.broadcastToAll('online', online.toJSON().map(p => p.user_id))
+}
+
+
+Ws.channel('room:*', async (ctx) => {
+  const { auth, socket } = ctx
+  await startConnection({ socket, auth })
+
+  ctx.socket.on('close', async (closingSocket) => {
+    await closeConnection({ ...ctx, socket: closingSocket, })
   })
 }).middleware(['auth'])

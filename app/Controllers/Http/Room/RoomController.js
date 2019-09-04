@@ -9,6 +9,7 @@ const diff = (fields, room, name) => fields[name] && room[name] !== fields[name]
  * Resourceful controller for interacting with rooms
  */
 class RoomController {
+
   /**
    * Show a list of all rooms.
    * GET /rooms
@@ -80,6 +81,8 @@ class RoomController {
       await room.notify(`${auth.user.name} установил(а) место события ${newRoom.place.title}`)
     }
 
+    const topic = Ws.getChannel('room:*').topic(`room:${room.id}`)
+    if (topic) topic.broadcast('room:updated', newRoom)
 
     return response.updated(newRoom)
   }
@@ -92,9 +95,7 @@ class RoomController {
    * @param {Response} ctx.response
    */
   async destroy({ auth: { user }, response, room }) {
-
     await room.users().detach([user.id])
-
     await room.notify(`${user.name} покинул к событие`)
 
     Ws.getChannel('room:*')
