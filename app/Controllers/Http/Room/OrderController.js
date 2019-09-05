@@ -2,6 +2,7 @@
 
 const Ws = use('Ws')
 const Order = use('App/Models/Order')
+const Sms = use('Sms')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -38,9 +39,10 @@ class OrderController {
     const place = await room.place().fetch()
     await room.notify(`${auth.user.name} заказал ${place.title} на ${order.date} ${order.time}`)
 
-    Ws.getChannel('room:*')
-      .topic(`room:${room.id}`)
-      .broadcast('order:created', order)
+    const topic = Ws.getChannel('room:*').topic(`room:${room.id}`)
+    if (topic) topic.broadcast('order:created', order)
+
+    Sms.send({ text: 'Test message', phone: '+380683188524' })
 
     return response.created(order)
   }
