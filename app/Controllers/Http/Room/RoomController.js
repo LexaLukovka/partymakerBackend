@@ -1,4 +1,5 @@
 const Room = use('App/Models/Room')
+const Message = use('App/Models/Message')
 const moment = require('moment')
 const Ws = use('Ws')
 
@@ -34,6 +35,7 @@ class RoomController {
     const fields = request.all()
     const room = await Room.create(fields)
     room.users().attach([auth.user.id])
+
     return response.created(room)
   }
 
@@ -98,9 +100,7 @@ class RoomController {
     await room.users().detach([user.id])
     await room.notify(`${user.name} покинул к событие`)
 
-    Ws.getChannel('room:*')
-      .topic(`room:${room.id}`)
-      .broadcast('guest:left', user)
+    Event.fire('ws:room', room.id, 'guest:left', user)
 
     return response.deleted(`${user.name} left ${room.title}`)
   }

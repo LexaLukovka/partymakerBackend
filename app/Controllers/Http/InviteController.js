@@ -34,7 +34,7 @@ class InviteController {
       .where({ id: room.id })
       .firstOrFail()
 
-    await room.notify(`${auth.user.name} принял(а) приглашение ${room.title}`)
+    await room.notify(`${auth.user.name} принял(а) приглашение ${room.title || ''}`)
 
     const topic = Ws.getChannel('room:*').topic(`room:${room.id}`)
 

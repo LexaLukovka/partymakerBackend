@@ -5,6 +5,10 @@ const Model = use('Model')
 
 class Order extends Model {
 
+  room() {
+    return this.belongsTo('App/Models/Room')
+  }
+
 }
 
 module.exports = Order

@@ -1,12 +1,14 @@
 const Room = use('App/Models/Room')
 
-module.exports = class Update {
+module.exports = class Store {
 
   async authorize() {
-    const { auth, response, params } = this.ctx
-    this.ctx.room = await Room.findOrFail(params.rooms_id)
+    const { request, auth, response } = this.ctx
+    const { room_id } = request.all()
+    this.ctx.room = await Room.findOrFail(room_id)
     const can = await this.ctx.room.contains(auth.user)
     if (!can) return response.forbidden()
+
     return true
   }
 
@@ -14,7 +16,7 @@ module.exports = class Update {
     return {
       date: 'date|required',
       time: 'string',
-      guests: 'number',
+      guests: 'number|required',
       phone: 'string|required',
     }
   }

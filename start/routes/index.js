@@ -51,6 +51,13 @@ require('./invite')
 
 /**
  *
+ * Order routes
+ *
+ * */
+require('./orders')
+
+/**
+ *
  * Asset routes
  *
  * */

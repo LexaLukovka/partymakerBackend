@@ -1,5 +1,5 @@
 /* eslint-disable no-multi-assign */
-const Ws = use('Ws')
+const Event = use('Event')
 const Message = use('App/Models/Message')
 
 const MessageHook = exports = module.exports = {}
@@ -12,6 +12,5 @@ MessageHook.afterCreate = async (message) => {
     .where({ id: message.id })
     .first()
 
-  const topic = Ws.getChannel('room:*').topic(`room:${message.room_id}`)
-  if (topic) topic.broadcastToAll('message', newMessage)
+  Event.fire('ws:room', message.room_id, 'message', newMessage)
 }

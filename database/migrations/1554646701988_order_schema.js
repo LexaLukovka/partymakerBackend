@@ -11,6 +11,8 @@ class OrdersSchema extends Schema {
       table.string('time')
       table.string('phone')
       table.integer('guests')
+      table.string('token')
+      table.integer('room_id').unsigned().references('id').inTable('rooms').onDelete('CASCADE')
       table.timestamps()
     })
   }

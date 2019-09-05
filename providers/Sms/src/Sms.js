@@ -13,8 +13,9 @@ class Sms {
   }
 
   send({ sender = this.Config.get('sms.sender'), text, phone }) {
-    this.client.sendSMS({ sender, text, phone })
+    //this.client.sendSMS({ sender, text, phone })
 
+    console.log({ text, phone })
     return this
   }
 }

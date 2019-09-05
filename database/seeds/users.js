@@ -1,5 +1,14 @@
 module.exports = [
   {
+    name: 'Partymaker',
+    email: 'bot@partymaker.zp.ua',
+    phone: '+380555555555',
+    password: 'qwerty123',
+    avatar_url: '/images/logo_big.png',
+    is_superadmin: true,
+    is_active: true,
+  },
+  {
     name: 'Super Admin',
     email: 'admin@mailinator.com',
     phone: '+380683188524',

@@ -61,20 +61,5 @@ Route.group(() => {
       ['rooms.messages.destroy', 'Room/Message/Destroy']
     ])
 
-  /**
-   *
-   * Order routes
-   *
-   * */
-  Route.resource('rooms.orders', 'OrderController')
-    .middleware(['auth'])
-    .apiOnly()
-    .validator([
-      ['rooms.orders.store', 'Room/Order/Store'],
-      ['rooms.orders.update', 'Room/Order/Update'],
-      ['rooms.orders.destroy', 'Room/Order/Destroy'],
-    ])
-
-
 }).namespace('Room')
 
