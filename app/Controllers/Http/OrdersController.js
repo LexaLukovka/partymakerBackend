@@ -8,16 +8,6 @@ const Event = use('Event')
 class OrdersController {
 
   /**
-   * Find order by token
-   * GET /order/:token
-   *
-   * @param {object} ctx
-   */
-  async token({ params: { token } }) {
-    return Order.findBy({ token })
-  }
-
-  /**
    * Display a single order.
    * GET /orders/:id
    *

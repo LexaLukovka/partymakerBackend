@@ -7,10 +7,11 @@ const Route = use('Route')
  *
  * */
 
-Route.get('/order/:token', 'OrdersController.token')
+Route.get('/order/:token', 'OrderController.token')
+Route.put('/order/:token/confirm', 'OrderController.confirm')
+Route.put('/order/:token/reject', 'OrderController.reject')
+
 
 Route.resource('orders', 'OrdersController')
   .apiOnly()
-  .validator([
-    ['orders.store', 'Order/Store'],
-  ])
+  .validator([['orders.store', 'Order/Store']])

@@ -8,6 +8,7 @@ class OrdersSchema extends Schema {
     this.create('orders', (table) => {
       table.increments()
       table.date('date')
+      table.string('state').defaultTo('pending')
       table.string('time')
       table.string('phone')
       table.integer('guests')
