@@ -44,7 +44,7 @@
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.11.1",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.19",
     "lodash-clean": "^2.0.1",
     "moment": "^2.22.2",
     "mysql": "^2.16.0",
